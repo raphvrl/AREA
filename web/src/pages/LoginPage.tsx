@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useAuth();
 
   const handleLogin = () => {
     // Logique de connexion ici
     console.log('Username:', username);
     console.log('Password:', password);
+    login();
   };
 
   return (
