@@ -1,13 +1,16 @@
+import { createUser, getUserByEmail, updateUserApiKey } from './UserController';
 import express, { Request, Response, NextFunction } from 'express';
 import https from 'https';
 import fs from 'fs';
 import passport from 'passport';
 import axios from 'axios';
 import './linkedinAuth';
-
+import connectDB from './db';
 
 const app = express();
 const PORT = 5000;
+
+connectDB();
 
 // Middleware Passport
 app.use(passport.initialize());
@@ -16,68 +19,68 @@ app.use(passport.initialize());
 app.get('/api/auth/linkedin', passport.authenticate('linkedin'));
 
 // Route de callback après authentification LinkedIn
-app.get(
-    '/api/auth/linkedin/callback',
-    passport.authenticate('linkedin', { failureRedirect: '/' }),
-    async (req: Request, res: Response) => {
-      try {
-        const user = req.user as any; // Ajoutez le type approprié si nécessaire
-        const accessToken = user?.accessToken;
-  
-        if (!accessToken) {
-          throw new Error('Access token is missing');
-        }
-  
-        // Faites une requête manuelle pour récupérer les informations utilisateur
-        const profileResponse = await axios.get('https://api.linkedin.com/v2/me', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-  
-        const emailResponse = await axios.get(
-          'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))',
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-  
-        res.json({
-          message: 'Successfully authenticated with LinkedIn!',
-          profile: profileResponse.data, // Informations utilisateur
-          email: emailResponse.data, // Adresse e-mail
-        });
-      } catch (error: any) {
-        console.error('Error during LinkedIn callback:', error.message);
-        res.status(500).json({ error: error.message });
-      }
-    }
-  );
+app.get('/api/auth/linkedin/callback', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const authorizationCode = req.query.code as string;
 
-// Route pour récupérer les informations utilisateur depuis LinkedIn
-app.get('/api/auth/userinfo', async (req: Request, res: Response): Promise<void> => {
-    try {
-      const accessToken = req.headers.authorization?.split(' ')[1];
-      if (!accessToken) {
-        res.status(401).json({ error: 'Access token is missing!' });
-        return;
-      }
-  
-      const response = await axios.get('https://api.linkedin.com/v2/userinfo', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-  
-      res.json({ userInfo: response.data });
-    } catch (error: any) {
-      console.error('Error fetching user info:', error.message);
-      res.status(500).json({ error: error.message });
+    if (!authorizationCode) {
+      res.status(400).json({ error: 'Authorization code is missing from the callback URL' });
+      return;
     }
-  });
-  
+
+    const response = await axios.post(
+      'https://www.linkedin.com/oauth/v2/accessToken',
+      null,
+      {
+        params: {
+          grant_type: 'authorization_code',
+          code: authorizationCode,
+          redirect_uri: process.env.LINKEDIN_CALLBACK_URL || 'https://localhost:5000/api/auth/linkedin/callback',
+          client_id: process.env.LINKEDIN_CLIENT_ID || 'your-client-id',
+          client_secret: process.env.LINKEDIN_CLIENT_SECRET || 'your-client-secret',
+        },
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
+
+    const accessToken = response.data.access_token;
+    if (!accessToken) {
+      throw new Error('Failed to retrieve access token');
+    }
+
+    const profileResponse = await axios.get('https://api.linkedin.com/v2/userinfo', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const userData = profileResponse.data;
+
+    // Logique d'insertion ou de mise à jour dans la base de données
+    let isFirstLogin = false;
+    const existingUser = await getUserByEmail(userData.email);
+    if (existingUser) {
+      console.log(`User already exists: ${existingUser.email}`);
+    } else {
+      await createUser({
+        firstName: userData.given_name,
+        lastName: userData.family_name,
+        email: userData.email,
+        apiKeys: {}, // Ajoutez les API keys si nécessaire
+      });
+      isFirstLogin = true;
+      console.log(`New user created: ${userData.email}`);
+    }
+
+    // Envoyez une réponse au client
+    res.redirect(`http://localhost:3000/login?firstName=${userData.given_name}&lastName=${userData.family_name}&isFirstLogin=${isFirstLogin}`);
+  } catch (error) {
+    res.redirect('/login?error=LinkedIn%20authentication%20failed');
+  }
+});
+
 
 // Middleware de gestion des erreurs
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

@@ -9,7 +9,7 @@ passport.use(
         clientID: process.env.LINKEDIN_CLIENT_ID as string,
         clientSecret: process.env.LINKEDIN_CLIENT_SECRET as string,
         callbackURL: 'https://localhost:5000/api/auth/linkedin/callback',
-        scope: ['openid', 'profile'],
+        scope: ['openid', 'profile', 'email'],
       },
       async (accessToken: string, refreshToken: string, profile: Profile, done: (error: any, user?: any) => void) => {
         try {
