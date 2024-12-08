@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: ./server
+    ports:
+      - "8080:8080"
+    volumes:
+      - shared_volume:/app/shared
+    command: ["python3", "-m", "http.server", "8080"]
+
+  client_mobile:
+    build:
+      context: ./client_mobile
+    volumes:
+      - shared_volume:/app/shared
+    command: ["bash", "-c", "flutter build apk --release && cp build/app/outputs/flutter-apk/app-release.apk /app/shared/client.apk"]
+
+  client_web:
+    build:
+      context: ./client_web
+    ports:
+      - "8081:8081"
+    depends_on:
+      - client_mobile
+      - server
+    volumes:
+      - shared_volume:/app/shared
+    command: ["npm", "start"]
+
+volumes:
+  shared_volume:

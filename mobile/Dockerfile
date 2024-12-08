@@ -1,0 +1,9 @@
+FROM cirrusci/flutter:stable
+
+WORKDIR /app
+COPY . /app/
+
+RUN flutter pub get
+
+# Commande par défaut
+CMD ["bash", "-c", "flutter build apk --release && cp build/app/outputs/flutter-apk/app-release.apk /app/shared/client.apk"]
