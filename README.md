@@ -50,3 +50,6 @@ L'application offre les fonctionnalités suivantes :
    ```bash
    git clone git@github.com:EpitechPromo2027/B-DEV-500-BDX-5-2-area-thomas.gaboriaud.git
    cd B-DEV-500-BDX-5-2-area-thomas.gaboriaud
+
+## Notion
+    https://www.notion.so/AREA-1440ebe6f616804f951ce34dc0a993ae
