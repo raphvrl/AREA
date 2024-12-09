@@ -7,6 +7,8 @@ Le projet **Action-Reaction** vise à créer une plateforme d'automatisation sim
 - **Client Web** : Fournit une interface utilisateur pour interagir avec l'application.
 - **Client Mobile** : Permet d'utiliser l'application sur un smartphone.
 
+Pour plus d'informations, consultez notre documentation complète sur [Notion](https://www.notion.so/AREA-1440ebe6f616804f951ce34dc0a993ae).
+
 ## Fonctionnalités
 
 L'application offre les fonctionnalités suivantes :
@@ -50,6 +52,3 @@ L'application offre les fonctionnalités suivantes :
    ```bash
    git clone git@github.com:EpitechPromo2027/B-DEV-500-BDX-5-2-area-thomas.gaboriaud.git
    cd B-DEV-500-BDX-5-2-area-thomas.gaboriaud
-
-## Notion
-    https://www.notion.so/AREA-1440ebe6f616804f951ce34dc0a993ae
