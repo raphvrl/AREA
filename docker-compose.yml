@@ -9,25 +9,36 @@ services:
     volumes:
       - shared_volume:/app/shared
     command: ["npm", "run", "start:prod"]
+    environment:
+      - LINKEDIN_CLIENT_ID=78p5acp52ftpdr
+      - LINKEDIN_CLIENT_SECRET=WPL_AP1.20KBPvqvQwocsCSZ.J09t1A==
+      - JWT_SECRET=your_jwt_secret
+      - CALLBACK_URL=http://localhost:8080/api/auth/linkedin/callback
+      - FRONTEND_URL=http://localhost:8081/
+      - GOOGLE_client_id=650219705682-620vqkun1fdddg3jjflrkb2ad0fimp5r.apps.googleusercontent.com
+      - GOOGLE_client_secret=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
 
-  client_mobile:
-    build:
-      context: ./client_mobile
-    volumes:
-      - shared_volume:/app/shared
-    command: ["bash", "-c", "flutter build apk --release && cp build/app/outputs/flutter-apk/app-release.apk /app/shared/client.apk"]
+  # client_mobile:
+  #   build:
+  #     context: ./client_mobile
+  #   volumes:
+  #     - shared_volume:/app/shared
+  #   command: ["bash", "-c", "flutter build apk --release && cp build/app/outputs/flutter-apk/app-release.apk /app/shared/client.apk"]
 
   client_web:
     build:
-      context: ./client_web
+      context: ./web
     ports:
       - "8081:8081"
     depends_on:
-      - client_mobile
+      # - client_mobile
       - server
     volumes:
       - shared_volume:/app/shared
     command: ["npm", "start"]
+    environment:
+      - REACT_APP_API_URL=http://localhost:8080
+      - PORT=8081
 
 volumes:
   shared_volume:
