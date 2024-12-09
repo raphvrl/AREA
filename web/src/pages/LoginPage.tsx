@@ -43,7 +43,7 @@ const LoginPage: React.FC = () => {
         <h2 className="text-2xl font-bold mb-6 text-center">Connexion</h2>
         <div className="space-y-4">
           <a
-            href="https://localhost:5000/api/auth/linkedin"
+            href="https://localhost:8080/api/auth/linkedin"
             className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded text-center"
           >
             Se connecter avec LinkedIn
@@ -59,7 +59,7 @@ const LoginPage: React.FC = () => {
           </div>
           
           <a
-            href="https://localhost:5000/api/auth/spotify"
+            href="https://localhost:8080/api/auth/spotify"
             className="block w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded text-center"
           >
             Se connecter avec Spotify

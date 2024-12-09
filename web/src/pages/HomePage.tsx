@@ -38,7 +38,7 @@ const HomePage: React.FC = () => {
         return;
       }
 
-      const response = await fetch('https://localhost:5000/api/spotify/play', {
+      const response = await fetch('https://localhost:8080/api/spotify/play', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ const HomePage: React.FC = () => {
 
     try {
       const spotifyToken = localStorage.getItem('spotify_token');
-      const response = await fetch('https://localhost:5000/api/spotify/save-track', {
+      const response = await fetch('https://localhost:8080/api/spotify/save-track', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -162,7 +162,7 @@ const HomePage: React.FC = () => {
           </div>
 
           <button
-            onClick={() => window.location.href = 'https://localhost:5000/api/auth/spotify'}
+            onClick={() => window.location.href = 'https://localhost:8080/api/auth/spotify'}
             className={`py-2 px-4 rounded ${!isSpotifyConnected ? 'bg-green-500 hover:bg-green-600 text-white' : 'bg-gray-300'}`}
             disabled={isSpotifyConnected}
           >
