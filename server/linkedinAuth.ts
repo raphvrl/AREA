@@ -3,7 +3,7 @@ import { Strategy as LinkedInStrategy, Profile } from 'passport-linkedin-oauth2'
 import dotenv from 'dotenv';
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.BACKEND_PORT || 5000;
 const CALLBACK_URL = `https://localhost:${PORT}/api/auth/linkedin/callback`;
 
 passport.use(
