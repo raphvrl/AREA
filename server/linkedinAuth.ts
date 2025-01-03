@@ -3,12 +3,14 @@ import { Strategy as LinkedInStrategy, Profile } from 'passport-linkedin-oauth2'
 import dotenv from 'dotenv';
 dotenv.config();
 
+const PORT = process.env.BACKEND_PORT || 8080;
+
 passport.use(
     new LinkedInStrategy(
       {
         clientID: process.env.LINKEDIN_CLIENT_ID as string,
         clientSecret: process.env.LINKEDIN_CLIENT_SECRET as string,
-        callbackURL: 'https://localhost:8080/api/auth/linkedin/callback',
+        callbackURL: `https://localhost:${PORT}/api/auth/linkedin/callback`,
         scope: ['openid', 'profile', 'email'],
       },
       async (accessToken: string, refreshToken: string, profile: Profile, done: (error: any, user?: any) => void) => {

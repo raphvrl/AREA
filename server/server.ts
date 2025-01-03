@@ -10,15 +10,15 @@ import connectDB from './db';
 import SpotifyWebApi from 'spotify-web-api-node';
 import dotenv from 'dotenv';
 import cors from 'cors';
-
 dotenv.config();
 
 const app = express();
-const PORT = 8080;
+const PORT = process.env.BACKEND_PORT || 8080;
+const FRONTEND_PORT = process.env.FRONTEND_PORT || 8081;
 
 // Configuration CORS
 app.use(cors({
-  origin: 'http://localhost:8081',
+  origin: `http://localhost:${FRONTEND_PORT}`,
   credentials: true
 }));
 
@@ -26,7 +26,7 @@ app.use(cors({
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  redirectUri: 'https://localhost:8080/api/auth/spotify/callback'
+  redirectUri: `https://localhost:${PORT}/api/auth/spotify/callback`
 });
 
 // Connexion à MongoDB
@@ -55,7 +55,7 @@ app.get('/api/auth/linkedin/callback', async (req: Request, res: Response): Prom
         params: {
           grant_type: 'authorization_code',
           code: authorizationCode,
-          redirect_uri: process.env.LINKEDIN_CALLBACK_URL || 'https://localhost:8080/api/auth/linkedin/callback',
+          redirect_uri: `https://localhost:${PORT}/api/auth/linkedin/callback`,
           client_id: process.env.LINKEDIN_CLIENT_ID || 'your-client-id',
           client_secret: process.env.LINKEDIN_CLIENT_SECRET || 'your-client-secret',
         },
@@ -90,7 +90,7 @@ app.get('/api/auth/linkedin/callback', async (req: Request, res: Response): Prom
       isFirstLogin = true;
     }
 
-    res.redirect(`http://localhost:8081/login?firstName=${userData.given_name}&lastName=${userData.family_name}&isFirstLogin=${isFirstLogin}`);
+    res.redirect(`http://localhost:${FRONTEND_PORT}/login?firstName=${userData.given_name}&lastName=${userData.family_name}&isFirstLogin=${isFirstLogin}`);
   } catch (error) {
     console.error('Error during LinkedIn authentication:', error);
     res.redirect('/login?error=linkedin_auth_failed');
@@ -125,10 +125,10 @@ app.get('/api/auth/spotify/callback', async (req: Request, res: Response) => {
     spotifyApi.setAccessToken(access_token);
     spotifyApi.setRefreshToken(refresh_token);
     
-    res.redirect(`http://localhost:8081/login?spotify_token=${access_token}&firstName=Spotify&lastName=User&isFirstLogin=true`);
+    res.redirect(`http://localhost:${FRONTEND_PORT}/login?spotify_token=${access_token}&firstName=Spotify&lastName=User&isFirstLogin=true`);
   } catch (error) {
     console.error('Error getting Spotify tokens:', error);
-    res.redirect('http://localhost:8081/login?error=spotify_auth_failed');
+    res.redirect('http://localhost:${FRONTEND_PORT}/login?error=spotify_auth_failed');
   }
 });
 
