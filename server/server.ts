@@ -36,7 +36,7 @@ app.get('/api/auth/linkedin/callback', async (req: Request, res: Response): Prom
         params: {
           grant_type: 'authorization_code',
           code: authorizationCode,
-          redirect_uri: process.env.LINKEDIN_CALLBACK_URL || `https://localhost:${PORT}/api/auth/linkedin/callback`,
+          redirect_uri: `https://localhost:${PORT}/api/auth/linkedin/callback`,
           client_id: process.env.LINKEDIN_CLIENT_ID || 'your-client-id',
           client_secret: process.env.LINKEDIN_CLIENT_SECRET || 'your-client-secret',
         },
