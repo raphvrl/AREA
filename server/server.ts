@@ -10,6 +10,8 @@ import dotenv from 'dotenv';
 
 const app = express();
 const PORT = process.env.BACKEND_PORT || 5000;
+const FRONTEND_PORT = process.env.FRONTEND_PORT || 3000;
+const LINKEDIN_CALLBACK_URL = `https://localhost:${PORT}/api/auth/linkedin/callback`;
 
 connectDB();
 
@@ -36,7 +38,7 @@ app.get('/api/auth/linkedin/callback', async (req: Request, res: Response): Prom
         params: {
           grant_type: 'authorization_code',
           code: authorizationCode,
-          redirect_uri: `https://localhost:${PORT}/api/auth/linkedin/callback`,
+          redirect_uri: LINKEDIN_CALLBACK_URL,
           client_id: process.env.LINKEDIN_CLIENT_ID || 'your-client-id',
           client_secret: process.env.LINKEDIN_CLIENT_SECRET || 'your-client-secret',
         },
@@ -76,7 +78,7 @@ app.get('/api/auth/linkedin/callback', async (req: Request, res: Response): Prom
     }
 
     // Envoyez une réponse au client
-    res.redirect(`http://localhost:3000/login?firstName=${userData.given_name}&lastName=${userData.family_name}&isFirstLogin=${isFirstLogin}`);
+    res.redirect(`http://localhost:${FRONTEND_PORT}/login?firstName=${userData.given_name}&lastName=${userData.family_name}&isFirstLogin=${isFirstLogin}`);
   } catch (error) {
     res.redirect('/login?error=LinkedIn%20authentication%20failed');
   }
