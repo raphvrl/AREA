@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
+const BACKEND_PORT = process.env.BACKEND_PORT || 8080;
+
 const HomePage: React.FC = () => {
   const [isSpotifyConnected, setIsSpotifyConnected] = useState<boolean>(false);
   const [timerDuration, setTimerDuration] = useState<number>(30);
@@ -38,7 +40,7 @@ const HomePage: React.FC = () => {
         return;
       }
 
-      const response = await fetch('https://localhost:8080/api/spotify/play', {
+      const response = await fetch(`https://localhost:${BACKEND_PORT}/api/spotify/play`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -111,7 +113,7 @@ const HomePage: React.FC = () => {
 
     try {
       const spotifyToken = localStorage.getItem('spotify_token');
-      const response = await fetch('https://localhost:8080/api/spotify/save-track', {
+      const response = await fetch(`https://localhost:${BACKEND_PORT}/api/spotify/save-track`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -162,7 +164,7 @@ const HomePage: React.FC = () => {
           </div>
 
           <button
-            onClick={() => window.location.href = 'https://localhost:8080/api/auth/spotify'}
+            onClick={() => window.location.href = `https://localhost:${BACKEND_PORT}/api/auth/spotify`}
             className={`py-2 px-4 rounded ${!isSpotifyConnected ? 'bg-green-500 hover:bg-green-600 text-white' : 'bg-gray-300'}`}
             disabled={isSpotifyConnected}
           >
