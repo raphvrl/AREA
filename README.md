@@ -7,7 +7,7 @@ Le projet **Action-Reaction** vise à créer une plateforme d'automatisation sim
 - **Client Web** : Fournit une interface utilisateur pour interagir avec l'application.
 - **Client Mobile** : Permet d'utiliser l'application sur un smartphone.
 
-Pour plus d'informations, consultez notre documentation complète sur [Notion](https://www.notion.so/AREA-1440ebe6f616804f951ce34dc0a993ae).
+Pour plus d'informations, consultez notre étude comparative sur [EtudeComparative.md](EtudeComparative.md).
 
 ## Fonctionnalités
 
