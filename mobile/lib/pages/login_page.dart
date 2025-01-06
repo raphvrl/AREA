@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/accessibility_provider.dart';
 import 'home_page.dart';
+import '../services/api_service.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -37,6 +38,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     final accessibilityProvider = context.watch<AccessibilityProvider>();
+    final apiService = Provider.of<ApiService>(context, listen: false);
 
     return Scaffold(
       body: LayoutBuilder(
@@ -73,9 +75,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                           position: _slideAnimation,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min, // Utilise minimum d'espace vertical
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              SizedBox(height: 20), // Réduit l'espacement
+                              SizedBox(height: 20),
                               Hero(
                                 tag: 'logo',
                                 child: Container(
@@ -100,7 +102,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 12), // Réduit l'espacement
+                              SizedBox(height: 12),
                               Card(
                                 elevation: 8,
                                 shape: RoundedRectangleBorder(
@@ -136,9 +138,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                           prefixIcon: Icon(Icons.lock_outline),
                                           suffixIcon: IconButton(
                                             icon: Icon(
-                                              _isPasswordVisible
-                                                  ? Icons.visibility_off
-                                                  : Icons.visibility,
+                                              _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
                                             ),
                                             onPressed: () {
                                               setState(() {
@@ -152,6 +152,10 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                           ),
                                           filled: true,
                                           fillColor: Colors.grey[100],
+                                          contentPadding: EdgeInsets.symmetric(
+                                            vertical: 12,
+                                            horizontal: 16,
+                                          ),
                                         ),
                                       ),
                                       SizedBox(height: 24),
@@ -161,7 +165,10 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                           Navigator.pushReplacement(
                                             context,
                                             PageRouteBuilder(
-                                              pageBuilder: (context, animation, secondaryAnimation) => HomePage(title: 'Accueil'),
+                                              pageBuilder: (context, animation, secondaryAnimation) => HomePage(
+                                                title: 'Accueil',
+                                                apiService: apiService,
+                                              ),
                                               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                                 return FadeTransition(opacity: animation, child: child);
                                               },

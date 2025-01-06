@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart'; // Ajoutez cette ligne
-import '../widgets/column_widget.dart';
+import 'package:provider/provider.dart';
 import '../services/api_service.dart';
-import '../widgets/accessibility_menu.dart';
-import '../providers/accessibility_provider.dart'; // Ajoutez cette ligne
+import '../providers/accessibility_provider.dart';
 import 'settings_page.dart';
 import 'services_page.dart';
 import 'profile_page.dart';
@@ -12,8 +10,7 @@ class HomePage extends StatefulWidget {
   final String title;
   final ApiService apiService;
 
-  const HomePage({super.key, required this.title}) 
-      : apiService = const ApiService();
+  const HomePage({super.key, required this.title, required this.apiService});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -21,13 +18,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  
+
   // Liste des pages
-  final List<Widget> _pages = [
-    _HomeContent(), // Extrayez le contenu actuel de la page d'accueil dans un widget séparé
-    ServicesPage(),
-    ProfilePage(),
-  ];
+  late final List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      _HomeContent(apiService: widget.apiService),
+      ServicesPage(),
+      ProfilePage(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,10 +91,14 @@ class _HomePageState extends State<HomePage> {
 }
 
 class _HomeContent extends StatelessWidget {
-  final ApiService apiService = const ApiService();
+  final ApiService apiService;
+
+  _HomeContent({required this.apiService});
 
   @override
   Widget build(BuildContext context) {
+    final accessibilityProvider = context.watch<AccessibilityProvider>();
+
     return Column(
       children: [
         Expanded(
@@ -139,21 +146,24 @@ class _HomeContent extends StatelessWidget {
                             'API 1',
                             'Description for API 1',
                             Icons.api,
-                            () async => await apiService.callApi1(),
+                            () async => await apiService.authenticateWithLinkedIn(),
                           ),
                           _buildServiceCard(
                             context,
                             'API 2',
                             'Description for API 2',
                             Icons.cloud,
-                            () async => await apiService.callApi2(),
+                            () async => await apiService.authenticateWithSpotify(),
                           ),
                           _buildServiceCard(
                             context,
                             'API 3',
                             'Description for API 3',
                             Icons.architecture,
-                            () async => await apiService.callApi3(),
+                            () async {
+                              final token = 'your_token'; // Remplacez par le token d'accès valide
+                              await apiService.playSpotifyTrack(token, 30);
+                            },
                           ),
                         ],
                       ),

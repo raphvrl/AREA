@@ -3,11 +3,17 @@ import 'package:provider/provider.dart';
 import 'pages/login_page.dart';
 import 'pages/home_page.dart';
 import 'providers/accessibility_provider.dart';
+import 'services/api_service.dart';
 
 void main() {
+  final apiService = ApiService(baseUrl: 'https://10.0.2.2:5000');
+
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => AccessibilityProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AccessibilityProvider()),
+        Provider<ApiService>.value(value: apiService),
+      ],
       child: MyApp(),
     ),
   );
