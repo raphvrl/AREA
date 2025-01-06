@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
+import { useTranslation } from '../context/TranslationContext';
 
 const BACKEND_PORT = process.env.BACKEND_PORT || 8080;
 
@@ -10,6 +12,8 @@ const HomePage: React.FC = () => {
   const [recognizedTrack, setRecognizedTrack] = useState<any>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const { isAuthenticated } = useAuth();
+  const { isDarkMode } = useTheme();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -138,20 +142,22 @@ const HomePage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-100'} p-8 transition-colors duration-200`}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Section Spotify */}
-        <div className="flex flex-col space-y-4 p-6 bg-white rounded-lg shadow">
+        <div className={`flex flex-col space-y-4 p-6 ${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow transition-colors duration-200`}>
           <img 
             src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_Green.png" 
             alt="Spotify" 
             className="w-32 h-auto mx-auto mb-4"
           />
-          <h3 className="text-xl font-semibold text-center">Spotify Integration</h3>
+          <h3 className={`text-xl font-semibold text-center ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+            {t('home.spotify.title')}
+          </h3>
           
           <div className="flex flex-col space-y-2">
-            <label htmlFor="timer" className="text-sm font-medium text-gray-700">
-              Durée de lecture (secondes)
+            <label htmlFor="timer" className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              {t('home.spotify.timer')}
             </label>
             <input
               type="number"
@@ -159,16 +165,22 @@ const HomePage: React.FC = () => {
               min="1"
               value={timerDuration}
               onChange={(e) => setTimerDuration(Math.max(1, parseInt(e.target.value) || 1))}
-              className="border rounded-md px-3 py-2"
+              className={`border rounded-md px-3 py-2 ${
+                isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
+              } focus:ring-2 focus:ring-blue-500`}
             />
           </div>
 
           <button
             onClick={() => window.location.href = `https://localhost:${BACKEND_PORT}/api/auth/spotify`}
-            className={`py-2 px-4 rounded ${!isSpotifyConnected ? 'bg-green-500 hover:bg-green-600 text-white' : 'bg-gray-300'}`}
+            className={`py-2 px-4 rounded transition-colors ${
+              !isSpotifyConnected 
+                ? 'bg-green-500 hover:bg-green-600 text-white' 
+                : isDarkMode ? 'bg-gray-700 text-gray-400' : 'bg-gray-300 text-gray-500'
+            }`}
             disabled={isSpotifyConnected}
           >
-            {isSpotifyConnected ? 'Connecté à Spotify' : 'Se connecter à Spotify'}
+            {isSpotifyConnected ? t('home.spotify.connected') : t('home.spotify.connect')}
           </button>
 
           <button
@@ -176,35 +188,49 @@ const HomePage: React.FC = () => {
             className={`py-2 px-4 rounded ${isSpotifyConnected ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-gray-300'}`}
             disabled={!isSpotifyConnected}
           >
-            Lancer la musique
+            {t('home.spotify.play')}
           </button>
         </div>
 
         {/* Section Reconnaissance musicale */}
-        <div className="flex flex-col space-y-4 p-6 bg-white rounded-lg shadow">
-          <h3 className="text-xl font-semibold text-center">Reconnaissance musicale</h3>
+        <div className={`flex flex-col space-y-4 p-6 ${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow transition-colors duration-200`}>
+          <h3 className={`text-xl font-semibold text-center ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+            {t('home.recognition.title')}
+          </h3>
           <div 
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-              isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-blue-500'
+              isDragging 
+                ? 'border-blue-500 bg-blue-50' 
+                : isDarkMode 
+                  ? 'border-gray-600 hover:border-blue-500' 
+                  : 'border-gray-300 hover:border-blue-500'
             }`}
           >
-            <p>Déposez un fichier audio/vidéo ici pour identifier la musique</p>
+            <p className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>
+              {t('home.recognition.dropzone')}
+            </p>
           </div>
 
           {recognizedTrack && (
-            <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-              <h4 className="font-semibold mb-2">Musique reconnue :</h4>
-              <p className="mb-1">Titre : {recognizedTrack.title}</p>
-              <p className="mb-3">Artiste : {recognizedTrack.artist}</p>
+            <div className={`mt-4 p-4 ${isDarkMode ? 'bg-gray-700' : 'bg-gray-50'} rounded-lg`}>
+              <h4 className={`font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                {t('home.recognition.result')}
+              </h4>
+              <p className={`mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                {t('home.recognition.title')}: {recognizedTrack.title}
+              </p>
+              <p className={`mb-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                {t('home.recognition.artist')}: {recognizedTrack.artist}
+              </p>
               {isSpotifyConnected && (
                 <button
                   onClick={addToSpotifyFavorites}
                   className="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition-colors"
                 >
-                  Ajouter aux favoris Spotify
+                  {t('home.recognition.addToSpotify')}
                 </button>
               )}
             </div>

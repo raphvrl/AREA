@@ -30,8 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^6.0.5  # Ajout du package provider
+  provider: ^6.0.5
   cupertino_icons: ^1.0.8
+  http: ^0.13.4  # Ajoutez cette ligne
 
 dev_dependencies:
   flutter_test:
