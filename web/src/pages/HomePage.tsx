@@ -1,0 +1,337 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
+import { useTranslation } from '../context/TranslationContext';
+
+const BACKEND_PORT = process.env.BACKEND_PORT || 8080;
+
+const HomePage: React.FC = () => {
+  const [isSpotifyConnected, setIsSpotifyConnected] = useState<boolean>(false);
+  const [timerDuration, setTimerDuration] = useState<number>(30);
+  const [recognizedTrack, setRecognizedTrack] = useState<any>(null);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [isConnectedToX, setIsConnectedToX] = useState<boolean>(false);
+  const [isServiceXActive, setIsServiceXActive] = useState<boolean>(false);
+  const { isAuthenticated } = useAuth();
+  const { isDarkMode } = useTheme();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+
+    const spotifyToken = localStorage.getItem('spotify_token');
+    setIsSpotifyConnected(!!spotifyToken);
+
+    const params = new URLSearchParams(window.location.search);
+    const newSpotifyToken = params.get('spotify_token');
+    
+    if (newSpotifyToken) {
+      localStorage.setItem('spotify_token', newSpotifyToken);
+      setIsSpotifyConnected(true);
+      window.history.replaceState({}, document.title, '/');
+    }
+    // Twitter (X) setup
+    const connectedToX = params.get('connectedToX');
+    if (connectedToX === 'true') {
+      setIsConnectedToX(true);
+      window.history.replaceState({}, document.title, '/');
+    }
+
+    // Check if service X is active
+    fetch(`https://localhost:${BACKEND_PORT}/api/service/x/status`, {
+      method: 'GET',
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setIsServiceXActive(data.isActive);
+      })
+      .catch((error) => console.error('Error fetching service X status:', error));
+  }, [isAuthenticated, navigate]);
+
+  const handleSpotifyPlay = async () => {
+    try {
+      const spotifyToken = localStorage.getItem('spotify_token');
+      
+      if (!spotifyToken) {
+        alert('Veuillez d\'abord vous connecter à Spotify');
+        return;
+      }
+
+      const response = await fetch(`https://localhost:${BACKEND_PORT}/api/spotify/play`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${spotifyToken}`
+        },
+        body: JSON.stringify({ timer: timerDuration })
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem('spotify_token');
+        setIsSpotifyConnected(false);
+        alert('Session Spotify expirée. Veuillez vous reconnecter.');
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error('Failed to play track');
+      }
+
+      alert(`La musique va jouer pendant ${timerDuration} secondes !`);
+    } catch (error) {
+      console.error('Error playing track:', error);
+      alert('Erreur lors de la lecture. Vérifiez que Spotify est ouvert.');
+    }
+  };
+  const handleActivateServiceX = async () => {
+    try {
+      const response = await fetch(`https://localhost:${BACKEND_PORT}/api/service/x/activate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: 'user@example.com' }), // Remplacez par l'email de l'utilisateur connecté
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to activate service X');
+      }
+
+      setIsServiceXActive(true);
+      alert('Service X activé avec succès !');
+    } catch (error) {
+      console.error('Error activating service X:', error);
+      alert('Erreur lors de l\'activation du service X.');
+    }
+  };
+
+  const handleDeactivateServiceX = async () => {
+    try {
+      const response = await fetch(`https://localhost:${BACKEND_PORT}/api/service/x/deactivate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: 'user@example.com' }), // Remplacez par l'email de l'utilisateur connecté
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to deactivate service X');
+      }
+
+      setIsServiceXActive(false);
+      alert('Service X désactivé avec succès !');
+    } catch (error) {
+      console.error('Error deactivating service X:', error);
+      alert('Erreur lors de la désactivation du service X.');
+    }
+  };
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragging(false);
+    
+    const file = event.dataTransfer.files[0];
+    if (!file || !file.type.startsWith('audio/') && !file.type.startsWith('video/')) {
+      alert('Veuillez déposer un fichier audio ou vidéo');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('api_token', process.env.REACT_APP_AUDD_API_KEY || '');
+
+    try {
+      const response = await fetch('https://api.audd.io/', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+      if (data.result) {
+        setRecognizedTrack(data.result);
+      } else {
+        alert('Aucune musique reconnue');
+      }
+    } catch (error) {
+      console.error('Error recognizing music:', error);
+      alert('Erreur lors de la reconnaissance');
+    }
+  };
+
+  const addToSpotifyFavorites = async () => {
+    if (!recognizedTrack || !isSpotifyConnected) return;
+
+    try {
+      const spotifyToken = localStorage.getItem('spotify_token');
+      const response = await fetch(`https://localhost:${BACKEND_PORT}/api/spotify/save-track`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${spotifyToken}`
+        },
+        body: JSON.stringify({
+          trackName: recognizedTrack.title,
+          artist: recognizedTrack.artist
+        })
+      });
+
+      if (!response.ok) throw new Error('Failed to save track');
+      alert('Musique ajoutée à vos favoris !');
+    } catch (error) {
+      console.error('Error saving to favorites:', error);
+      alert('Erreur lors de l\'ajout aux favoris');
+    }
+  };
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
+  return (
+    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-100'} p-8 transition-colors duration-200`}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Section Spotify */}
+        <div className={`flex flex-col space-y-4 p-6 ${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow transition-colors duration-200`}>
+          <img 
+            src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_Green.png" 
+            alt="Spotify" 
+            className="w-32 h-auto mx-auto mb-4"
+          />
+          <h3 className={`text-xl font-semibold text-center ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+            {t('home.spotify.title')}
+          </h3>
+          
+          <div className="flex flex-col space-y-2">
+            <label htmlFor="timer" className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              {t('home.spotify.timer')}
+            </label>
+            <input
+              type="number"
+              id="timer"
+              min="1"
+              value={timerDuration}
+              onChange={(e) => setTimerDuration(Math.max(1, parseInt(e.target.value) || 1))}
+              className={`border rounded-md px-3 py-2 ${
+                isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
+              } focus:ring-2 focus:ring-blue-500`}
+            />
+          </div>
+
+          <button
+            onClick={() => window.location.href = `https://localhost:${BACKEND_PORT}/api/auth/spotify`}
+            className={`py-2 px-4 rounded transition-colors ${
+              !isSpotifyConnected 
+                ? 'bg-green-500 hover:bg-green-600 text-white' 
+                : isDarkMode ? 'bg-gray-700 text-gray-400' : 'bg-gray-300 text-gray-500'
+            }`}
+            disabled={isSpotifyConnected}
+          >
+            {isSpotifyConnected ? t('home.spotify.connected') : t('home.spotify.connect')}
+          </button>
+
+          <button
+            onClick={handleSpotifyPlay}
+            className={`py-2 px-4 rounded ${isSpotifyConnected ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-gray-300'}`}
+            disabled={!isSpotifyConnected}
+          >
+            {t('home.spotify.play')}
+          </button>
+        </div>
+
+        {/* Section Reconnaissance musicale */}
+        <div className={`flex flex-col space-y-4 p-6 ${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow transition-colors duration-200`}>
+          <h3 className={`text-xl font-semibold text-center ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+            {t('home.recognition.title')}
+          </h3>
+          <div 
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+              isDragging 
+                ? 'border-blue-500 bg-blue-50' 
+                : isDarkMode 
+                  ? 'border-gray-600 hover:border-blue-500' 
+                  : 'border-gray-300 hover:border-blue-500'
+            }`}
+          >
+            <p className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>
+              {t('home.recognition.dropzone')}
+            </p>
+          </div>
+
+          {recognizedTrack && (
+            <div className={`mt-4 p-4 ${isDarkMode ? 'bg-gray-700' : 'bg-gray-50'} rounded-lg`}>
+              <h4 className={`font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                {t('home.recognition.result')}
+              </h4>
+              <p className={`mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                {t('home.recognition.title')}: {recognizedTrack.title}
+              </p>
+              <p className={`mb-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                {t('home.recognition.artist')}: {recognizedTrack.artist}
+              </p>
+              {isSpotifyConnected && (
+                <button
+                  onClick={addToSpotifyFavorites}
+                  className="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition-colors"
+                >
+                  {t('home.recognition.addToSpotify')}
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+        {/* Section Twitter (X) */}
+        <div className={`flex flex-col space-y-4 p-6 ${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow transition-colors duration-200`}>
+          <h2 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+            Connexion à Twitter (X)
+          </h2>
+          {!isConnectedToX ? (
+            <a
+              href={`https://localhost:${BACKEND_PORT}/api/auth/twitter`}
+              className="py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white rounded"
+            >
+              Se connecter à Twitter
+            </a>
+          ) : (
+            <p>Connecté à Twitter !</p>
+          )}
+          <div className="flex space-x-4">
+            <button
+              onClick={handleActivateServiceX}
+              className={`py-2 px-4 rounded ${isServiceXActive ? 'bg-gray-300 text-gray-500' : 'bg-green-500 text-white'}`}
+              disabled={isServiceXActive}
+            >
+              Activer Service X
+            </button>
+            <button
+              onClick={handleDeactivateServiceX}
+              className={`py-2 px-4 rounded ${!isServiceXActive ? 'bg-gray-300 text-gray-500' : 'bg-red-500 text-white'}`}
+              disabled={!isServiceXActive}
+            >
+              Désactiver Service X
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default HomePage;
