@@ -15,6 +15,7 @@ const HomePage: React.FC = () => {
   const [isServiceXActive, setIsServiceXActive] = useState<boolean>(false);
   const { isAuthenticated } = useAuth();
   const { isDarkMode } = useTheme();
+  const { user } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -54,6 +55,59 @@ const HomePage: React.FC = () => {
       .catch((error) => console.error('Error fetching service X status:', error));
   }, [isAuthenticated, navigate]);
 
+  const handleActivateServiceX = async () => {
+    try {
+      const response = await fetch(`https://localhost:${BACKEND_PORT}/api/service/x`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: user?.firstName,
+          lastName: user?.lastName,
+          is_activate: true, // Activer le service X
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to activate service X');
+      }
+  
+      setIsServiceXActive(true); // Met à jour l'état du service dans le front
+      alert('Service X activé avec succès !');
+    } catch (error) {
+      console.error('Error activating service X:', error);
+      alert('Erreur lors de l\'activation du service X.');
+    }
+  };
+  
+  const handleDeactivateServiceX = async () => {
+    try {
+      const response = await fetch(`https://localhost:${BACKEND_PORT}/api/service/x`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: user?.firstName,
+          lastName: user?.lastName,
+          is_activate: false, // Désactiver le service X
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to deactivate service X');
+      }
+  
+      setIsServiceXActive(false); // Met à jour l'état du service dans le front
+      alert('Service X désactivé avec succès !');
+    } catch (error) {
+      console.error('Error deactivating service X:', error);
+      alert('Erreur lors de la désactivation du service X.');
+    }
+  };
+  
+
   const handleSpotifyPlay = async () => {
     try {
       const spotifyToken = localStorage.getItem('spotify_token');
@@ -89,49 +143,7 @@ const HomePage: React.FC = () => {
       alert('Erreur lors de la lecture. Vérifiez que Spotify est ouvert.');
     }
   };
-  const handleActivateServiceX = async () => {
-    try {
-      const response = await fetch(`https://localhost:${BACKEND_PORT}/api/service/x/activate`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: 'user@example.com' }), // Remplacez par l'email de l'utilisateur connecté
-      });
 
-      if (!response.ok) {
-        throw new Error('Failed to activate service X');
-      }
-
-      setIsServiceXActive(true);
-      alert('Service X activé avec succès !');
-    } catch (error) {
-      console.error('Error activating service X:', error);
-      alert('Erreur lors de l\'activation du service X.');
-    }
-  };
-
-  const handleDeactivateServiceX = async () => {
-    try {
-      const response = await fetch(`https://localhost:${BACKEND_PORT}/api/service/x/deactivate`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: 'user@example.com' }), // Remplacez par l'email de l'utilisateur connecté
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to deactivate service X');
-      }
-
-      setIsServiceXActive(false);
-      alert('Service X désactivé avec succès !');
-    } catch (error) {
-      console.error('Error deactivating service X:', error);
-      alert('Erreur lors de la désactivation du service X.');
-    }
-  };
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setIsDragging(true);
@@ -313,20 +325,20 @@ const HomePage: React.FC = () => {
             <p>Connecté à Twitter !</p>
           )}
           <div className="flex space-x-4">
-            <button
-              onClick={handleActivateServiceX}
-              className={`py-2 px-4 rounded ${isServiceXActive ? 'bg-gray-300 text-gray-500' : 'bg-green-500 text-white'}`}
-              disabled={isServiceXActive}
-            >
-              Activer Service X
-            </button>
-            <button
-              onClick={handleDeactivateServiceX}
-              className={`py-2 px-4 rounded ${!isServiceXActive ? 'bg-gray-300 text-gray-500' : 'bg-red-500 text-white'}`}
-              disabled={!isServiceXActive}
-            >
-              Désactiver Service X
-            </button>
+          <button
+    onClick={handleActivateServiceX}
+    className={`py-2 px-4 rounded ${isServiceXActive ? 'bg-gray-300 text-gray-500' : 'bg-green-500 text-white'}`}
+    disabled={isServiceXActive}
+  >
+    Activer Service X
+  </button>
+  <button
+    onClick={handleDeactivateServiceX}
+    className={`py-2 px-4 rounded ${!isServiceXActive ? 'bg-gray-300 text-gray-500' : 'bg-red-500 text-white'}`}
+    disabled={!isServiceXActive}
+  >
+    Désactiver Service X
+  </button>
           </div>
         </div>
       </div>

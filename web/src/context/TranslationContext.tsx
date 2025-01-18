@@ -14,6 +14,10 @@ type TranslationKey =
   | 'login.with_linkedin'
   | 'login.with_spotify'
   | 'login.or'
+  | 'login.first_name' // Ajout
+  | 'login.last_name'  // Ajout
+  | 'login.is_first_login' // Ajout
+  | 'login.submit' // Ajout
   | 'home.title'
   | 'home.spotify.title'
   | 'home.spotify.timer'
@@ -60,6 +64,10 @@ const translations: TranslationsType = {
     'login.with_linkedin': 'Se connecter avec LinkedIn',
     'login.with_spotify': 'Se connecter avec Spotify',
     'login.or': 'ou',
+    'login.first_name': 'Prénom',
+    'login.last_name': 'Nom',
+    'login.is_first_login': 'Ceci est votre première connexion ?',
+    'login.submit': 'Se connecter',
     
     // Home
     'home.title': 'Bienvenue',
@@ -101,6 +109,10 @@ const translations: TranslationsType = {
     'login.with_linkedin': 'Sign in with LinkedIn',
     'login.with_spotify': 'Sign in with Spotify',
     'login.or': 'or',
+    'login.first_name': 'First Name',
+    'login.last_name': 'Last Name',
+    'login.is_first_login': 'Is this your first login?',
+    'login.submit': 'Submit',
     
     // Home
     'home.title': 'Welcome',
@@ -142,6 +154,10 @@ const translations: TranslationsType = {
     'login.with_linkedin': 'Mit LinkedIn anmelden',
     'login.with_spotify': 'Mit Spotify anmelden',
     'login.or': 'oder',
+    'login.first_name': 'Vorname',
+    'login.last_name': 'Nachname',
+    'login.is_first_login': 'Ist dies Ihr erstes Login?',
+    'login.submit': 'Einloggen',
     
     // Home
     'home.title': 'Willkommen',
@@ -170,7 +186,6 @@ const translations: TranslationsType = {
     'profile.firstname': 'Vorname',
     'profile.lastname': 'Nachname'
   },
-
   it: {
     // Navigation
     'nav.home': 'Home',
@@ -184,6 +199,10 @@ const translations: TranslationsType = {
     'login.with_linkedin': 'Accedi con LinkedIn',
     'login.with_spotify': 'Accedi con Spotify',
     'login.or': 'oppure',
+    'login.first_name': 'Nome',
+    'login.last_name': 'Cognome',
+    'login.is_first_login': 'È il tuo primo accesso?',
+    'login.submit': 'Accedi',
     
     // Home
     'home.title': 'Benvenuto',
@@ -212,7 +231,6 @@ const translations: TranslationsType = {
     'profile.firstname': 'Nome',
     'profile.lastname': 'Cognome'
   },
-
   es: {
     // Navigation
     'nav.home': 'Inicio',
@@ -226,6 +244,10 @@ const translations: TranslationsType = {
     'login.with_linkedin': 'Iniciar sesión con LinkedIn',
     'login.with_spotify': 'Iniciar sesión con Spotify',
     'login.or': 'o',
+    'login.first_name': 'Nombre',
+    'login.last_name': 'Apellido',
+    'login.is_first_login': '¿Es tu primer inicio de sesión?',
+    'login.submit': 'Iniciar',
     
     // Home
     'home.title': 'Bienvenido',
@@ -254,7 +276,6 @@ const translations: TranslationsType = {
     'profile.firstname': 'Nombre',
     'profile.lastname': 'Apellido'
   },
-
   zh: {
     // Navigation
     'nav.home': '首页',
@@ -268,6 +289,10 @@ const translations: TranslationsType = {
     'login.with_linkedin': '使用领英登录',
     'login.with_spotify': '使用Spotify登录',
     'login.or': '或',
+    'login.first_name': '名',
+    'login.last_name': '姓',
+    'login.is_first_login': '这是您第一次登录吗？',
+    'login.submit': '登录',
     
     // Home
     'home.title': '欢迎',
@@ -296,7 +321,6 @@ const translations: TranslationsType = {
     'profile.firstname': '名',
     'profile.lastname': '姓'
   },
-
   ja: {
     // Navigation
     'nav.home': 'ホーム',
@@ -310,6 +334,10 @@ const translations: TranslationsType = {
     'login.with_linkedin': 'LinkedInでログイン',
     'login.with_spotify': 'Spotifyでログイン',
     'login.or': 'または',
+    'login.first_name': '名',
+    'login.last_name': '姓',
+    'login.is_first_login': 'これは初回ログインですか？',
+    'login.submit': 'ログイン',
     
     // Home
     'home.title': 'ようこそ',
