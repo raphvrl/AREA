@@ -1,6 +1,10 @@
 // server/server.ts
 import { createUser, getUserByEmail, updateUserApiKey, updateUserIdService, updateUserService} from './UserController';
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
+import type { Request, Response, NextFunction } from 'express';
+import bcrypt from 'bcrypt';
+import User from './UserModel';
+import loginRoutes from './login';
 import https from 'https';
 import fs from 'fs';
 import passport from 'passport';
@@ -164,6 +168,7 @@ app.get('/api/auth/discord/callback', async (req: Request, res: Response) => {
     res.redirect(`http://localhost:${FRONTEND_PORT}/login?error=discord_auth_failed`);
   }
 });
+app.use(loginRoutes);
 
 // Routes Twitter
 app.get("/api/auth/twitter", (req: Request, res: Response) => {
