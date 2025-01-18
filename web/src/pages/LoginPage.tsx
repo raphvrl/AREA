@@ -3,6 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from '../context/TranslationContext';
+import axios from 'axios';
+
+interface LoginResponse {
+  message: string;
+  user: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    isFirstLogin: boolean; // Ajout de la propriété manquante
+    [key: string]: any; // Si l'objet utilisateur contient d'autres propriétés
+  };
+}
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -23,11 +35,22 @@ const LoginPage: React.FC = () => {
     }));
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.identifier && formData.password) {
-      console.log('Form data submitted:', formData);
-      // Appel à l'API à implémenter plus tard
+      try {
+        const response = await axios.post<LoginResponse>('https://localhost:8080/api/login', {
+          lastFirstName: formData.identifier,
+          password: formData.password,
+        });
+
+        console.log('API response:', response.data);
+        login(response.data.user); // Met à jour le contexte utilisateur si nécessaire
+        navigate('/'); // Redirige l'utilisateur après connexion réussie
+      } catch (error: any) {
+        console.error('Error during login:', error.response?.data || error.message);
+        alert(error.response?.data?.error || 'Login failed. Please try again.');
+      }
     }
   };
 
