@@ -13,6 +13,7 @@ const HomePage: React.FC = () => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const { isAuthenticated } = useAuth();
   const { isDarkMode } = useTheme();
+  const { user } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -34,6 +35,59 @@ const HomePage: React.FC = () => {
       window.history.replaceState({}, document.title, '/');
     }
   }, [isAuthenticated, navigate]);
+
+  const handleActivateServiceX = async () => {
+    try {
+      const response = await fetch(`https://localhost:${BACKEND_PORT}/api/service/x`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: user?.firstName,
+          lastName: user?.lastName,
+          is_activate: true, // Activer le service X
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to activate service X');
+      }
+  
+      setIsServiceXActive(true); // Met à jour l'état du service dans le front
+      alert('Service X activé avec succès !');
+    } catch (error) {
+      console.error('Error activating service X:', error);
+      alert('Erreur lors de l\'activation du service X.');
+    }
+  };
+  
+  const handleDeactivateServiceX = async () => {
+    try {
+      const response = await fetch(`https://localhost:${BACKEND_PORT}/api/service/x`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: user?.firstName,
+          lastName: user?.lastName,
+          is_activate: false, // Désactiver le service X
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to deactivate service X');
+      }
+  
+      setIsServiceXActive(false); // Met à jour l'état du service dans le front
+      alert('Service X désactivé avec succès !');
+    } catch (error) {
+      console.error('Error deactivating service X:', error);
+      alert('Erreur lors de la désactivation du service X.');
+    }
+  };
+  
 
   const handleSpotifyPlay = async () => {
     try {
@@ -237,6 +291,38 @@ const HomePage: React.FC = () => {
               </p>
             </div>
           )}
+        </div>
+        {/* Section Twitter (X) */}
+        <div className={`flex flex-col space-y-4 p-6 ${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow transition-colors duration-200`}>
+          <h2 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+            Connexion à Twitter (X)
+          </h2>
+          {!isConnectedToX ? (
+            <a
+              href={`https://localhost:${BACKEND_PORT}/api/auth/twitter`}
+              className="py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white rounded"
+            >
+              Se connecter à Twitter
+            </a>
+          ) : (
+            <p>Connecté à Twitter !</p>
+          )}
+          <div className="flex space-x-4">
+          <button
+    onClick={handleActivateServiceX}
+    className={`py-2 px-4 rounded ${isServiceXActive ? 'bg-gray-300 text-gray-500' : 'bg-green-500 text-white'}`}
+    disabled={isServiceXActive}
+  >
+    Activer Service X
+  </button>
+  <button
+    onClick={handleDeactivateServiceX}
+    className={`py-2 px-4 rounded ${!isServiceXActive ? 'bg-gray-300 text-gray-500' : 'bg-red-500 text-white'}`}
+    disabled={!isServiceXActive}
+  >
+    Désactiver Service X
+  </button>
+          </div>
         </div>
       </div>
     </div>
