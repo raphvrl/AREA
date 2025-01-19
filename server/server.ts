@@ -558,4 +558,3 @@ const credentials = { key: privateKey, cert: certificate };
 https.createServer(credentials, app).listen(PORT, () => {
   console.log(`Server running on https://localhost:${PORT}`);
 });
-
