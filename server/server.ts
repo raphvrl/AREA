@@ -1,5 +1,9 @@
-import { createUser, getUserByEmail, updateUserApiKey } from './UserController';
-import express, { Request, Response, NextFunction } from 'express';
+import { createUser, getUserByEmail, updateUserApiKey, updateUserIdService ,updateUserService} from './UserController';
+import express from 'express';
+import type { Request, Response, NextFunction } from 'express';
+import bcrypt from 'bcrypt';
+import User from './UserModel';
+import loginRoutes from './login';
 import https from 'https';
 import fs from 'fs';
 import passport from 'passport';
@@ -20,7 +24,9 @@ const PORT = process.env.BACKEND_PORT || 8080;
 const FRONTEND_PORT = process.env.FRONTEND_PORT || 8081;
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
-
+const TWITTER_CLIENT_ID = process.env.TWITTER_CLIENT_ID;
+const TWITTER_CLIENT_SECRET = process.env.TWITTER_CLIENT_SECRET;
+const TWITTER_CALLBACK_URL = process.env.REACT_APP_TWITTER_CALLBACK_URL;
 if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
   console.error('Missing Telegram configuration');
 }
@@ -43,6 +49,112 @@ connectDB();
 
 app.use(passport.initialize());
 app.use(express.json());
+app.use(loginRoutes);
+
+app.get("/api/auth/twitter", (req: Request, res: Response) => {
+  const state = Math.random().toString(36).substring(7); // Générer un état unique pour la sécurité
+  const params = new URLSearchParams({
+    response_type: "code",
+    client_id: TWITTER_CLIENT_ID!,
+    redirect_uri: TWITTER_CALLBACK_URL!,
+    scope: "tweet.read tweet.write users.read offline.access like.read like.write",
+    state,
+    code_challenge: "challenge", // Remplacez par une valeur sécurisée si vous implémentez PKCE
+    code_challenge_method: "plain",
+  });
+
+  res.redirect(`https://twitter.com/i/oauth2/authorize?${params.toString()}`);
+});
+
+app.get("/api/auth/twitter/callback", async (req: Request, res: Response) => {
+  const { code, state } = req.query;
+
+  if (!code || !state) {
+    res.status(400).send("Missing code or state");
+    return;
+  }
+
+  try {
+    const tokenResponse = await axios.post(
+      "https://api.twitter.com/2/oauth2/token",
+      new URLSearchParams({
+        code: code as string,
+        grant_type: "authorization_code",
+        client_id: TWITTER_CLIENT_ID!,
+        redirect_uri: TWITTER_CALLBACK_URL!,
+        code_verifier: "challenge", // Utilisez la même valeur que dans le challenge de l'étape précédente
+      }).toString(),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Basic ${Buffer.from(
+            `${TWITTER_CLIENT_ID}:${TWITTER_CLIENT_SECRET}`
+          ).toString("base64")}`,
+        },
+      }
+    );
+
+    const { access_token, refresh_token, expires_in } = tokenResponse.data;
+
+    console.log("Access Token:", access_token);
+
+    // Utiliser l'access token pour récupérer les informations de l'utilisateur
+    const userResponse = await axios.get("https://api.twitter.com/2/users/me", {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+
+    const userInfo = userResponse.data;
+    // Sauvegarder les informations dans la base de données
+    await updateUserApiKey(
+      userInfo.data.name.split(" ")[0], // Prénom
+      userInfo.data.name.split(" ").slice(1).join(" "), // Nom
+      "X",
+      access_token
+    );
+    await updateUserIdService (
+      userInfo.data.name.split(" ")[0], // Prénom
+      userInfo.data.name.split(" ").slice(1).join(" "), // Nom
+      "X",
+      userInfo.data.id
+    );
+    console.log(`User ${userInfo.data.username} authenticated successfully`);
+    res.redirect(`http://localhost:${FRONTEND_PORT}/login?lastName=${userInfo.data.name.split(" ")[0]}&firstName=${userInfo.data.name.split(" ").slice(1).join(" ")}&isFirstLogin=${true}`);
+  } catch (error) {
+    console.error("Error obtaining access token:", error);
+    res.redirect(`http://localhost:${FRONTEND_PORT}/?error=twitter_auth_failed`);
+  }
+});
+
+// API pour activer ou désactiver l'API X
+app.post("/api/service/x", async (req: Request, res: Response) => {
+  const { firstName, lastName, is_activate } = req.body;
+
+  if (!firstName || !lastName || typeof is_activate === "undefined") {
+    res.status(400).json({ error: "Missing email or is_activate parameter" });
+    return;
+  }
+
+  try {
+    // Mettre à jour le statut du service X dans la base de données
+    console.log(firstName, lastName)
+    const updatedUser = await updateUserService(firstName, lastName, "X", is_activate);
+
+    if (!updatedUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    res.status(200).json({
+      message: `Service X ${is_activate ? "activated" : "deactivated"} successfully for user ${firstName} ${lastName}`,
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("Error updating user service:", error);
+    res.status(500).json({ error: "Failed to update service status" });
+  }
+});
 
 // Routes pour les notifications Telegram
 app.post('/api/telegram/notify', async (req: Request, res: Response) => {
