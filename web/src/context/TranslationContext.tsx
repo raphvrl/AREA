@@ -13,6 +13,8 @@ type TranslationKey =
   | 'login.title'
   | 'login.with_linkedin'
   | 'login.with_spotify'
+  | 'login.with_discord'
+  | 'login.with_github'
   | 'login.or'
   | 'home.title'
   | 'home.spotify.title'
@@ -58,7 +60,9 @@ const translations: TranslationsType = {
     // Login
     'login.title': 'Connexion',
     'login.with_linkedin': 'Se connecter avec LinkedIn',
+    'login.with_github': 'Se connecter avec GitHub',
     'login.with_spotify': 'Se connecter avec Spotify',
+    'login.with_discord': 'Se connecter avec Discord',
     'login.or': 'ou',
     
     // Home
@@ -100,6 +104,8 @@ const translations: TranslationsType = {
     'login.title': 'Login',
     'login.with_linkedin': 'Sign in with LinkedIn',
     'login.with_spotify': 'Sign in with Spotify',
+    'login.with_discord': 'Sign in with Discord',
+    'login.with_github': 'Sign in with GitHub',
     'login.or': 'or',
     
     // Home
@@ -141,6 +147,8 @@ const translations: TranslationsType = {
     'login.title': 'Anmelden',
     'login.with_linkedin': 'Mit LinkedIn anmelden',
     'login.with_spotify': 'Mit Spotify anmelden',
+    'login.with_discord': 'Sign in with Discord',
+    'login.with_github': 'Se connecter avec GitHub',
     'login.or': 'oder',
     
     // Home
@@ -183,6 +191,8 @@ const translations: TranslationsType = {
     'login.title': 'Accesso',
     'login.with_linkedin': 'Accedi con LinkedIn',
     'login.with_spotify': 'Accedi con Spotify',
+    'login.with_discord': 'Sign in with Discord',
+    'login.with_github': 'Se connecter avec GitHub',
     'login.or': 'oppure',
     
     // Home
@@ -225,6 +235,8 @@ const translations: TranslationsType = {
     'login.title': 'Iniciar sesión',
     'login.with_linkedin': 'Iniciar sesión con LinkedIn',
     'login.with_spotify': 'Iniciar sesión con Spotify',
+    'login.with_discord': 'Sign in with Discord',
+    'login.with_github': 'Se connecter avec GitHub',
     'login.or': 'o',
     
     // Home
@@ -267,6 +279,8 @@ const translations: TranslationsType = {
     'login.title': '登录',
     'login.with_linkedin': '使用领英登录',
     'login.with_spotify': '使用Spotify登录',
+    'login.with_discord': 'Sign in with Discord',
+    'login.with_github': 'Se connecter avec GitHub',
     'login.or': '或',
     
     // Home
@@ -309,6 +323,8 @@ const translations: TranslationsType = {
     'login.title': 'ログイン',
     'login.with_linkedin': 'LinkedInでログイン',
     'login.with_spotify': 'Spotifyでログイン',
+    'login.with_discord': 'Sign in with Discord',
+    'login.with_github': 'Se connecter avec GitHub',
     'login.or': 'または',
     
     // Home

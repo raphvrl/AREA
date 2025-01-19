@@ -89,51 +89,61 @@ const HomePage: React.FC = () => {
       alert('Veuillez déposer un fichier audio ou vidéo');
       return;
     }
-
+  
     const formData = new FormData();
     formData.append('file', file);
     formData.append('api_token', process.env.REACT_APP_AUDD_API_KEY || '');
-
+  
     try {
       const response = await fetch('https://api.audd.io/', {
         method: 'POST',
         body: formData
       });
-
+  
       const data = await response.json();
       if (data.result) {
         setRecognizedTrack(data.result);
+        
+        if (isSpotifyConnected) {
+          const spotifyToken = localStorage.getItem('spotify_token');
+          const saveResponse = await fetch(`https://localhost:${BACKEND_PORT}/api/spotify/save-track`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${spotifyToken}`
+            },
+            body: JSON.stringify({
+              trackName: data.result.title,
+              artist: data.result.artist
+            })
+          });
+  
+          if (saveResponse.ok) {
+            await fetch(`https://localhost:${BACKEND_PORT}/api/telegram/notify`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                title: data.result.title,
+                artist: data.result.artist,
+                imageUrl: data.result.spotify?.album?.images[0]?.url || data.result.album_art
+              })
+            });
+            
+            alert('Musique reconnue, ajoutée à vos favoris et notification envoyée !');
+          } else {
+            alert('Musique reconnue mais erreur lors de l\'ajout aux favoris');
+          }
+        } else {
+          alert('Musique reconnue ! Connectez-vous à Spotify pour l\'ajouter à vos favoris.');
+        }
       } else {
         alert('Aucune musique reconnue');
       }
     } catch (error) {
-      console.error('Error recognizing music:', error);
+      console.error('Error:', error);
       alert('Erreur lors de la reconnaissance');
-    }
-  };
-
-  const addToSpotifyFavorites = async () => {
-    if (!recognizedTrack || !isSpotifyConnected) return;
-
-    try {
-      const spotifyToken = localStorage.getItem('spotify_token');
-      const response = await fetch(`https://localhost:${BACKEND_PORT}/api/spotify/save-track`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${spotifyToken}`
-        },
-        body: JSON.stringify({
-          trackName: recognizedTrack.title,
-          artist: recognizedTrack.artist
-        })
-      });
-
-      if (!response.ok) throw new Error('Failed to save track');
-      alert('Musique ajoutée à vos favoris !');
-    } catch (error) {
-      console.error('Error saving to favorites:', error);
-      alert('Erreur lors de l\'ajout aux favoris');
     }
   };
 
@@ -225,14 +235,6 @@ const HomePage: React.FC = () => {
               <p className={`mb-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                 {t('home.recognition.artist')}: {recognizedTrack.artist}
               </p>
-              {isSpotifyConnected && (
-                <button
-                  onClick={addToSpotifyFavorites}
-                  className="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition-colors"
-                >
-                  {t('home.recognition.addToSpotify')}
-                </button>
-              )}
             </div>
           )}
         </div>
