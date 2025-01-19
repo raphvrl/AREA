@@ -13,7 +13,7 @@ services:
       - LINKEDIN_CLIENT_ID=78p5acp52ftpdr
       - LINKEDIN_CLIENT_SECRET=WPL_AP1.20KBPvqvQwocsCSZ.J09t1A==
       - JWT_SECRET=your_jwt_secret
-      - CALLBACK_URL=http://localhost:5000/api/auth/linkedin/callback
+      - CALLBACK_URL=http://localhost:8081/api/auth/linkedin/callback
       - FRONTEND_URL=http://localhost:8081/
       - GOOGLE_client_id=650219705682-620vqkun1fdddg3jjflrkb2ad0fimp5r.apps.googleusercontent.com
       - GOOGLE_client_secret=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
