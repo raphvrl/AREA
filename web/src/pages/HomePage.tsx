@@ -11,6 +11,8 @@ const HomePage: React.FC = () => {
   const [timerDuration, setTimerDuration] = useState<number>(30);
   const [recognizedTrack, setRecognizedTrack] = useState<any>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [isConnectedToX, setIsConnectedToX] = useState<boolean>(false);
+  const [isServiceXActive, setIsServiceXActive] = useState<boolean>(false);
   const { isAuthenticated } = useAuth();
   const { isDarkMode } = useTheme();
   const { user } = useAuth();
@@ -34,6 +36,23 @@ const HomePage: React.FC = () => {
       setIsSpotifyConnected(true);
       window.history.replaceState({}, document.title, '/');
     }
+    // Twitter (X) setup
+    const connectedToX = params.get('connectedToX');
+    if (connectedToX === 'true') {
+      setIsConnectedToX(true);
+      window.history.replaceState({}, document.title, '/');
+    }
+
+    // Check if service X is active
+    fetch(`https://localhost:${BACKEND_PORT}/api/service/x/status`, {
+      method: 'GET',
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setIsServiceXActive(data.isActive);
+      })
+      .catch((error) => console.error('Error fetching service X status:', error));
   }, [isAuthenticated, navigate]);
 
   const handleActivateServiceX = async () => {
