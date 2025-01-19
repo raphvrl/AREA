@@ -477,6 +477,73 @@ function startReposCheck(token: string, webhookUrl: string, username: string) {
   return setInterval(checkRepositories, 30000);
 }
 
+// Route pour about.json
+app.get('/about.json', (req: Request, res: Response) => {
+  const clientIp = req.ip || req.socket.remoteAddress || '0.0.0.0';
+
+  const aboutJson = {
+    client: {
+      host: clientIp
+    },
+    server: {
+      current_time: Math.floor(Date.now() / 1000),
+      services: [
+        {
+          name: "spotify",
+          actions: [
+            {
+              name: "add_to_favorites",
+              description: "Add a track to user's Spotify favorites"
+            },
+            {
+              name: "play_music",
+              description: "Play a music on Spotify for a defined duration"
+            }
+          ],
+          reactions: [
+            {
+              name: "notify_telegram",
+              description: "Send a notification on Telegram when a track is added"
+            }
+          ]
+        },
+        {
+          name: "github",
+          actions: [
+            {
+              name: "new_repository",
+              description: "A new repository is created by the user"
+            }
+          ],
+          reactions: [
+            {
+              name: "notify_discord",
+              description: "Send a notification on Discord when a new repository is created"
+            }
+          ]
+        },
+        {
+          name: "discord",
+          actions: [
+            {
+              name: "receive_webhook",
+              description: "Receive notifications through Discord webhook"
+            }
+          ],
+          reactions: [
+            {
+              name: "send_message",
+              description: "Send a message to a Discord channel"
+            }
+          ]
+        }
+      ]
+    }
+  };
+
+  res.json(aboutJson);
+});
+
 // Middleware de gestion des erreurs
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error('Error:', err.message);
