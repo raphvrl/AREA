@@ -7,7 +7,8 @@ export const createUser = async (userData: {firstName: string; lastName: string;
 };
 
 export const createUserWithCredentials = async (lastFirstName: string, password: string) => {
-    const user = new User({ lastFirstName, password });
+    const [lastName, firstName] = lastFirstName.split(' ');
+    const user = new User({ lastFirstName, password, lastName, firstName });
     await user.save();
     console.log('User created with credentials:', user);
     return user;
