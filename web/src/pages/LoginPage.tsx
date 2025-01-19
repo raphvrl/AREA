@@ -11,8 +11,8 @@ interface LoginResponse {
     id: string;
     firstName: string;
     lastName: string;
-    isFirstLogin: boolean; // Ajout de la propriété manquante
-    [key: string]: any; // Si l'objet utilisateur contient d'autres propriétés
+    isFirstLogin: boolean;
+    [key: string]: any;
   };
 }
 
@@ -26,6 +26,23 @@ const LoginPage: React.FC = () => {
     identifier: '',
     password: '',
   });
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const firstName = urlParams.get('firstName');
+    const lastName = urlParams.get('lastName');
+    const isFirstLogin = urlParams.get('isFirstLogin') === 'true';
+
+    if (firstName && lastName) {
+      login({ firstName, lastName, isFirstLogin });
+      if (isFirstLogin) {
+        alert(`Bienvenue, ${firstName} ${lastName} !`);
+      } else {
+        alert(`Bon retour parmi nous, ${firstName} ${lastName} !`);
+      }
+      navigate('/');
+    }
+  }, [login, navigate]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -45,8 +62,13 @@ const LoginPage: React.FC = () => {
         });
 
         console.log('API response:', response.data);
-        login(response.data.user); // Met à jour le contexte utilisateur si nécessaire
-        navigate('/'); // Redirige l'utilisateur après connexion réussie
+        login(response.data.user);
+        if (response.data.user.isFirstLogin) {
+          alert(`Bienvenue, ${response.data.user.firstName} ${response.data.user.lastName} !`);
+        } else {
+          alert(`Bon retour parmi nous, ${response.data.user.firstName} ${response.data.user.lastName} !`);
+        }
+        navigate('/');
       } catch (error: any) {
         console.error('Error during login:', error.response?.data || error.message);
         alert(error.response?.data?.error || 'Login failed. Please try again.');
@@ -73,7 +95,6 @@ const LoginPage: React.FC = () => {
           {t('login.title')}
         </h2>
 
-        {/* Formulaire de connexion */}
         <form className="space-y-4" onSubmit={handleFormSubmit}>
           <input
             type="text"
@@ -99,7 +120,6 @@ const LoginPage: React.FC = () => {
           </button>
         </form>
 
-        {/* Options de connexion */}
         <div className="space-y-4 mt-6">
           <a
             href="https://localhost:8080/api/auth/linkedin"
