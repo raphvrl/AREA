@@ -14,7 +14,7 @@ interface IUser extends Document {
 const UserSchema: Schema = new Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    email: { type: String, unique: true },
+    email: { type: String, unique: true , default: '' },
     apiKeys: { type: Map, of: String, default: {} },
     idService: { type: Map, of: String, default: {} },
     service: { type: Map, of: String, default: {} },
