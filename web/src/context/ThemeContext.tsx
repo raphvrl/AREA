@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 type ThemeContextType = {
   isDarkMode: boolean;
   toggleTheme: () => void;
+  setTheme: (theme: string) => void;
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -26,8 +27,26 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setIsDarkMode(!isDarkMode);
   };
 
+  const setTheme = (theme: string) => {
+    // Remove existing theme classes
+    document.documentElement.classList.remove('dark', 'high-contrast-mode');
+    
+    // Apply new theme
+    switch (theme) {
+      case 'dark':
+        setIsDarkMode(true);
+        break;
+      case 'high-contrast':
+        document.documentElement.classList.add('high-contrast-mode');
+        setIsDarkMode(true);
+        break;
+      default:
+        setIsDarkMode(false);
+    }
+  };
+
   return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
+    <ThemeContext.Provider value={{ isDarkMode, toggleTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );
