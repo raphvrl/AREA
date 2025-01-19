@@ -1,0 +1,76 @@
+/* src/styles/globals.css */
+:root {
+  /* Base accessibility variables */
+  --min-touch-target: 44px;
+  --focus-outline: 3px solid #2196F3;
+  --base-font-size: 1rem;
+  --heading-font-size: 1.25rem;
+  --text-contrast: 4.5:1;
+  --spacing: 1rem;
+  --letter-spacing: normal;
+  --line-height: 1.5;
+  --text-spacing: 1rem;
+}
+
+/* High contrast mode */
+.high-contrast-mode {
+  --text-primary: #ffffff;
+  --text-secondary: #ffeb3b;
+  --bg-primary: #000000;
+  --bg-secondary: #1a1a1a;
+  
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.high-contrast-mode a {
+  color: var(--text-secondary);
+}
+
+/* Simplified UI mode */
+.simplified-ui {
+  --ui-complexity: simple;
+}
+
+.simplified-ui .decorative,
+.simplified-ui .optional {
+  display: none !important;
+}
+
+/* Base accessibility improvements */
+* {
+  line-height: var(--line-height);
+  letter-spacing: var(--letter-spacing);
+}
+
+/* Ensure sufficient touch targets */
+button,
+a,
+input,
+select {
+  min-height: var(--min-touch-target);
+  min-width: var(--min-touch-target);
+}
+
+/* Focus indicators */
+:focus {
+  outline: var(--focus-outline);
+  outline-offset: 2px;
+}
+
+/* Reduce motion when requested */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.reduced-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

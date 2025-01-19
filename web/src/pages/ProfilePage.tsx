@@ -2,6 +2,7 @@ import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from '../context/TranslationContext';
+import { AccessibilityFab } from '../components/AccessibilityFab';
 
 const ProfilePage: React.FC = () => {
   const { user } = useAuth();
@@ -9,35 +10,78 @@ const ProfilePage: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-100'} p-8 transition-colors duration-200`}>
-      <div className={`max-w-2xl mx-auto ${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg p-8`}>
-        <div className="text-center mb-8">
-          <div className={`w-24 h-24 mx-auto bg-blue-500 rounded-full flex items-center justify-center mb-4`}>
-            <span className="text-white text-3xl font-bold">
-              {user?.firstName.charAt(0)}{user?.lastName.charAt(0)}
+    <div className="min-h-screen relative">
+      <div className="container mx-auto px-4 py-8">
+        {/* Profile Header */}
+        <div className="flex items-center space-x-4 mb-6">
+          <div 
+            className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center"
+            role="img" 
+            aria-label={t('profile.avatar_description')}
+            tabIndex={0}
+          >
+            <span className="text-4xl" aria-hidden="true">
+              {user?.firstName?.[0]?.toUpperCase()}
             </span>
           </div>
-          <h1 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+          <h1 
+            className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+            tabIndex={0}
+          >
             {user?.firstName} {user?.lastName}
           </h1>
         </div>
 
+        {/* Profile Information */}
         <div className="space-y-6">
-          <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-            <h2 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+          <section 
+            className={`p-4 rounded-lg ${isDarkMode ? 'bg-gray-700' : 'bg-gray-50'}`}
+            role="region" 
+            aria-label={t('profile.info')}
+          >
+            <h2 
+              className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+              tabIndex={0}
+            >
               {t('profile.info')}
             </h2>
             <div className="space-y-2">
-              <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                <span className="font-medium">{t('profile.firstname')}:</span> {user?.firstName}
-              </p>
-              <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                <span className="font-medium">{t('profile.lastname')}:</span> {user?.lastName}
-              </p>
+              <dl>
+                <div className="grid grid-cols-2 gap-4">
+                  <dt 
+                    className={`font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
+                    tabIndex={0}
+                  >
+                    {t('profile.firstname')}:
+                  </dt>
+                  <dd 
+                    className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
+                    tabIndex={0}
+                  >
+                    {user?.firstName}
+                  </dd>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <dt 
+                    className={`font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
+                    tabIndex={0}
+                  >
+                    {t('profile.lastname')}:
+                  </dt>
+                  <dd 
+                    className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
+                    tabIndex={0}
+                  >
+                    {user?.lastName}
+                  </dd>
+                </div>
+              </dl>
             </div>
-          </div>
+          </section>
         </div>
       </div>
+      
+      <AccessibilityFab />
     </div>
   );
 };

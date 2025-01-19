@@ -34,7 +34,8 @@ type TranslationKey =
   | 'profile.title'
   | 'profile.info'
   | 'profile.firstname'
-  | 'profile.lastname';
+  | 'profile.lastname'
+  | 'profile.avatar_description';
 
 interface TranslationContextType {
   language: Language;
@@ -90,7 +91,8 @@ const translations: TranslationsType = {
     'profile.title': 'Profil',
     'profile.info': 'Informations personnelles',
     'profile.firstname': 'Prénom',
-    'profile.lastname': 'Nom'
+    'profile.lastname': 'Nom',
+    'profile.avatar_description': 'Photo de profil de l\'utilisateur'
   },
   en: {
     // Navigation
@@ -133,7 +135,8 @@ const translations: TranslationsType = {
     'profile.title': 'Profile',
     'profile.info': 'Personal Information',
     'profile.firstname': 'First Name',
-    'profile.lastname': 'Last Name'
+    'profile.lastname': 'Last Name',
+    'profile.avatar_description': 'User profile picture'
   },
   de: {
     // Navigation
@@ -176,7 +179,8 @@ const translations: TranslationsType = {
     'profile.title': 'Profil',
     'profile.info': 'Persönliche Informationen',
     'profile.firstname': 'Vorname',
-    'profile.lastname': 'Nachname'
+    'profile.lastname': 'Nachname',
+    'profile.avatar_description': 'Benutzerprofilbild'
   },
 
   it: {
@@ -220,7 +224,8 @@ const translations: TranslationsType = {
     'profile.title': 'Profilo',
     'profile.info': 'Informazioni personali',
     'profile.firstname': 'Nome',
-    'profile.lastname': 'Cognome'
+    'profile.lastname': 'Cognome',
+    'profile.avatar_description': 'Immagine del profilo utente'
   },
 
   es: {
@@ -264,7 +269,8 @@ const translations: TranslationsType = {
     'profile.title': 'Perfil',
     'profile.info': 'Información personal',
     'profile.firstname': 'Nombre',
-    'profile.lastname': 'Apellido'
+    'profile.lastname': 'Apellido',
+    'profile.avatar_description': 'Foto de perfil del usuario'
   },
 
   zh: {
@@ -308,7 +314,8 @@ const translations: TranslationsType = {
     'profile.title': '个人资料',
     'profile.info': '个人信息',
     'profile.firstname': '名',
-    'profile.lastname': '姓'
+    'profile.lastname': '姓',
+    'profile.avatar_description': '用户头像'
   },
 
   ja: {
@@ -352,7 +359,8 @@ const translations: TranslationsType = {
     'profile.title': 'プロフィール',
     'profile.info': '個人情報',
     'profile.firstname': '名',
-    'profile.lastname': '姓'
+    'profile.lastname': '姓',
+    'profile.avatar_description': 'ユーザープロフィール画像'
   }
 };
 

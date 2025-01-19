@@ -9,6 +9,7 @@ import ProfilePage from './pages/ProfilePage';
 import AuthenticatedNavbar from './components/AuthenticatedNavbar';
 import LoginNavbar from './components/LoginNavbar';
 import Footer from './components/Footer';
+import { AccessibilityFab } from './components/AccessibilityFab';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -24,6 +25,15 @@ const NavigationBar: React.FC = () => {
   }
 
   return isAuthenticated ? <AuthenticatedNavbar /> : null;
+};
+
+export const Layout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <>
+      {children}
+      <AccessibilityFab />
+    </>
+  );
 };
 
 const App: React.FC = () => {
@@ -56,6 +66,7 @@ const App: React.FC = () => {
                 </Routes>
               </main>
               <Footer />
+              <AccessibilityFab />
             </div>
           </Router>
         </TranslationProvider>
