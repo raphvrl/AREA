@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { TranslationProvider } from './context/TranslationContext';
@@ -21,6 +22,9 @@ const NavigationBar: React.FC = () => {
   const location = useLocation();
 
   if (location.pathname === '/login') {
+    return <LoginNavbar />;
+  }
+  if (location.pathname === '/signup') {
     return <LoginNavbar />;
   }
 
@@ -47,6 +51,7 @@ const App: React.FC = () => {
               <main className="flex-grow">
                 <Routes>
                   <Route path="/login" element={<LoginPage />} />
+                  <Route path="/signup" element={<SignupPage />} />
                   <Route
                     path="/"
                     element={
