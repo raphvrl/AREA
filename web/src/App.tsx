@@ -12,6 +12,7 @@ import LoginNavbar from './components/LoginNavbar';
 import Footer from './components/Footer';
 import { AccessibilityFab } from './components/AccessibilityFab';
 import LandingPage from './pages/LandingPage';
+import { AccessibilityProvider } from './context/AccessibilityContext';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -63,16 +64,18 @@ const App: React.FC = () => {
     <AuthProvider>
       <ThemeProvider>
         <TranslationProvider>
-          <Router>
-            <div className="flex flex-col min-h-screen">
-              <NavigationBar />
-              <main className="flex-grow">
-                <AppRoutes />
-              </main>
-              <Footer />
-              <AccessibilityFab />
-            </div>
-          </Router>
+          <AccessibilityProvider>
+            <Router>
+              <div className="flex flex-col min-h-screen">
+                <NavigationBar />
+                <main className="flex-grow">
+                  <AppRoutes />
+                </main>
+                <Footer />
+                <AccessibilityFab />
+              </div>
+            </Router>
+          </AccessibilityProvider>
         </TranslationProvider>
       </ThemeProvider>
     </AuthProvider>
