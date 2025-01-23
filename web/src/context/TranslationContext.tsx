@@ -52,11 +52,38 @@ type TranslationKey =
   | 'about.description'
   | 'contact.title'
   | 'contact.description'
+  | 'contact.phone'
+  | 'contact.address'
+  | 'contact.form.name'
+  | 'contact.form.email'
+  | 'contact.form.subject'
+  | 'contact.form.message'
+  | 'contact.form.send'
   | 'profile.title'
   | 'profile.info'
   | 'profile.firstname'
   | 'profile.lastname'
-  | 'profile.avatar_description';
+  | 'profile.avatar_description'
+  | 'profile.edit_profile'
+  | 'profile.connected_services'
+  | 'footer.description'
+  | 'footer.quick_links'
+  | 'footer.home'
+  | 'footer.about'
+  | 'footer.contact'
+  | 'footer.contact_us'
+  | 'footer.follow_us'
+  | 'footer.rights'
+  | 'footer.privacy'
+  | 'footer.terms'
+  | 'home.title_welcome'
+  | 'home.subtitle_welcome'
+  | 'home.services.title'
+  | 'home.areas.title'
+  | 'home.areas.create'
+  | 'home.areas.empty'
+  | 'home.areas.fill_all_fields'
+  | 'home.areas.count';
 
 interface TranslationContextType {
   language: Language;
@@ -122,6 +149,14 @@ const translations: TranslationsType = {
     'home.recognition.result': 'Musique reconnue :',
     'home.recognition.artist': 'Artiste',
     'home.recognition.addToSpotify': 'Ajouter aux favoris Spotify',
+    'home.title_welcome': 'Bienvenue sur AREA',
+    'home.subtitle_welcome': 'Gérez vos intégrations et automatisez vos tâches',
+    'home.services.title': 'Services Disponibles',
+    'home.areas.title': 'Mes Automatisations',
+    'home.areas.create': 'Créer une nouvelle automatisation',
+    'home.areas.empty': 'Aucune automatisation pour le moment',
+    'home.areas.fill_all_fields': 'Veuillez remplir tous les champs',
+    'home.areas.count': 'automatisations',
     
     // About
     'about.title': 'À propos',
@@ -130,13 +165,34 @@ const translations: TranslationsType = {
     // Contact
     'contact.title': 'Contact',
     'contact.description': 'Contactez-nous pour plus d\'informations.',
+    'contact.phone': 'Téléphone',
+    'contact.address': 'Adresse',
+    'contact.form.name': 'Nom',
+    'contact.form.email': 'Email',
+    'contact.form.subject': 'Sujet',
+    'contact.form.message': 'Message',
+    'contact.form.send': 'Envoyer',
     
     // Profile
     'profile.title': 'Profil',
     'profile.info': 'Informations personnelles',
     'profile.firstname': 'Prénom',
     'profile.lastname': 'Nom',
-    'profile.avatar_description': 'Photo de profil de l\'utilisateur'
+    'profile.avatar_description': 'Photo de profil de l\'utilisateur',
+    'profile.edit_profile': 'Modifier le profil',
+    'profile.connected_services': 'Services connectés',
+
+    // Footer
+    'footer.description': 'AREA est une plateforme d\'automatisation qui vous permet de connecter vos services préférés.',
+    'footer.quick_links': 'Liens rapides',
+    'footer.home': 'Accueil',
+    'footer.about': 'À propos',
+    'footer.contact': 'Contact',
+    'footer.contact_us': 'Contactez-nous',
+    'footer.follow_us': 'Suivez-nous',
+    'footer.rights': 'Tous droits réservés.',
+    'footer.privacy': 'Politique de confidentialité',
+    'footer.terms': 'Conditions d\'utilisation'
   },
   en: {
     // Navigation
@@ -189,6 +245,14 @@ const translations: TranslationsType = {
     'home.recognition.result': 'Recognized music:',
     'home.recognition.artist': 'Artist',
     'home.recognition.addToSpotify': 'Add to Spotify favorites',
+    'home.title_welcome': 'Welcome to AREA',
+    'home.subtitle_welcome': 'Manage your integrations and automate your tasks',
+    'home.services.title': 'Available Services',
+    'home.areas.title': 'My Automations',
+    'home.areas.create': 'Create new automation',
+    'home.areas.empty': 'No automation yet',
+    'home.areas.fill_all_fields': 'Please fill all fields',
+    'home.areas.count': 'Number of automations',
     
     // About
     'about.title': 'About',
@@ -197,13 +261,34 @@ const translations: TranslationsType = {
     // Contact
     'contact.title': 'Contact',
     'contact.description': 'Contact us for more information.',
+    'contact.phone': 'Phone',
+    'contact.address': 'Address',
+    'contact.form.name': 'Name',
+    'contact.form.email': 'Email',
+    'contact.form.subject': 'Subject',
+    'contact.form.message': 'Message',
+    'contact.form.send': 'Send',
     
     // Profile
     'profile.title': 'Profile',
     'profile.info': 'Personal Information',
     'profile.firstname': 'First Name',
     'profile.lastname': 'Last Name',
-    'profile.avatar_description': 'User profile picture'
+    'profile.avatar_description': 'User profile picture',
+    'profile.edit_profile': 'Edit Profile',
+    'profile.connected_services': 'Connected Services',
+
+    // Footer
+    'footer.description': 'AREA is an automation platform that lets you connect your favorite services.',
+    'footer.quick_links': 'Quick Links',
+    'footer.home': 'Home',
+    'footer.about': 'About',
+    'footer.contact': 'Contact',
+    'footer.contact_us': 'Contact Us',
+    'footer.follow_us': 'Follow Us',
+    'footer.rights': 'All rights reserved.',
+    'footer.privacy': 'Privacy Policy',
+    'footer.terms': 'Terms of Service'
   },
   de: {
     // Navigation
@@ -256,6 +341,14 @@ const translations: TranslationsType = {
     'home.recognition.result': 'Erkannte Musik:',
     'home.recognition.artist': 'Künstler',
     'home.recognition.addToSpotify': 'Zu Spotify-Favoriten hinzufügen',
+    'home.title_welcome': 'Willkommen bei AREA',
+    'home.subtitle_welcome': 'Verwalten Sie Ihre Integrationen und automatisieren Sie Ihre Aufgaben',
+    'home.services.title': 'Verfügbare Dienste',
+    'home.areas.title': 'Meine Automatisierungen',
+    'home.areas.create': 'Neue Automatisierung erstellen',
+    'home.areas.empty': 'Noch keine Automatisierung vorhanden',
+    'home.areas.fill_all_fields': 'Bitte füllen Sie alle Felder aus',
+    'home.areas.count': 'Anzahl der Automatisierungen',
     
     // About
     'about.title': 'Über uns',
@@ -264,13 +357,34 @@ const translations: TranslationsType = {
     // Contact
     'contact.title': 'Kontakt',
     'contact.description': 'Kontaktieren Sie uns für weitere Informationen.',
+    'contact.phone': 'Telefon',
+    'contact.address': 'Adresse',
+    'contact.form.name': 'Name',
+    'contact.form.email': 'E-Mail',
+    'contact.form.subject': 'Betreff',
+    'contact.form.message': 'Nachricht',
+    'contact.form.send': 'Senden',
     
     // Profile
     'profile.title': 'Profil',
     'profile.info': 'Persönliche Informationen',
     'profile.firstname': 'Vorname',
     'profile.lastname': 'Nachname',
-    'profile.avatar_description': 'Benutzerprofilbild'
+    'profile.avatar_description': 'Benutzerprofilbild',
+    'profile.edit_profile': 'Profil bearbeiten',
+    'profile.connected_services': 'Verbundene Dienste',
+
+    // Footer
+    'footer.description': 'AREA ist eine Automatisierungsplattform, die es Ihnen ermöglicht, Ihre bevorzugten Dienste zu verbinden.',
+    'footer.quick_links': 'Schnellzugriffe',
+    'footer.home': 'Startseite',
+    'footer.about': 'Über uns',
+    'footer.contact': 'Kontakt',
+    'footer.contact_us': 'Kontaktieren Sie uns',
+    'footer.follow_us': 'Folgen Sie uns',
+    'footer.rights': 'Alle Rechte vorbehalten.',
+    'footer.privacy': 'Datenschutzerklärung',
+    'footer.terms': 'Nutzungsbedingungen'
   },
 
   it: {
@@ -324,6 +438,14 @@ const translations: TranslationsType = {
     'home.recognition.result': 'Musica riconosciuta:',
     'home.recognition.artist': 'Artista',
     'home.recognition.addToSpotify': 'Aggiungi ai preferiti Spotify',
+    'home.title_welcome': 'Benvenuto su AREA',
+    'home.subtitle_welcome': 'Gestisci le tue integrazioni e automatizza le tue attività',
+    'home.services.title': 'Servizi Disponibili',
+    'home.areas.title': 'Le Mie Automazioni',
+    'home.areas.create': 'Crea nuova automazione',
+    'home.areas.empty': 'Nessuna automazione presente',
+    'home.areas.fill_all_fields': 'Si prega di compilare tutti i campi',
+    'home.areas.count': 'Numero di automazioni',
     
     // About
     'about.title': 'Chi siamo',
@@ -332,13 +454,34 @@ const translations: TranslationsType = {
     // Contact
     'contact.title': 'Contatti',
     'contact.description': 'Contattaci per maggiori informazioni.',
+    'contact.phone': 'Telefono',
+    'contact.address': 'Indirizzo',
+    'contact.form.name': 'Nome',
+    'contact.form.email': 'Email',
+    'contact.form.subject': 'Oggetto',
+    'contact.form.message': 'Messaggio',
+    'contact.form.send': 'Invia',
     
     // Profile
     'profile.title': 'Profilo',
     'profile.info': 'Informazioni personali',
     'profile.firstname': 'Nome',
     'profile.lastname': 'Cognome',
-    'profile.avatar_description': 'Immagine del profilo utente'
+    'profile.avatar_description': 'Immagine del profilo utente',
+    'profile.edit_profile': 'Modifica profilo',
+    'profile.connected_services': 'Servizi collegati',
+
+    // Footer
+    'footer.description': 'AREA è una piattaforma di automazione che ti permette di connettere i tuoi servizi preferiti.',
+    'footer.quick_links': 'Link Rapidi',
+    'footer.home': 'Home',
+    'footer.about': 'Chi Siamo',
+    'footer.contact': 'Contatti',
+    'footer.contact_us': 'Contattaci',
+    'footer.follow_us': 'Seguici',
+    'footer.rights': 'Tutti i diritti riservati.',
+    'footer.privacy': 'Informativa sulla Privacy',
+    'footer.terms': 'Termini di Servizio'
   },
 
   es: {
@@ -392,6 +535,14 @@ const translations: TranslationsType = {
     'home.recognition.result': 'Música reconocida:',
     'home.recognition.artist': 'Artista',
     'home.recognition.addToSpotify': 'Añadir a favoritos de Spotify',
+    'home.title_welcome': 'Bienvenido a AREA',
+    'home.subtitle_welcome': 'Gestiona tus integraciones y automatiza tus tareas',
+    'home.services.title': 'Servicios Disponibles',
+    'home.areas.title': 'Mis Automatizaciones',
+    'home.areas.create': 'Crear nueva automatización',
+    'home.areas.empty': 'No hay automatizaciones todavía',
+    'home.areas.fill_all_fields': 'Por favor, rellena todos los campos',
+    'home.areas.count': 'Número de automatizaciones',
     
     // About
     'about.title': 'Acerca de',
@@ -400,13 +551,34 @@ const translations: TranslationsType = {
     // Contact
     'contact.title': 'Contacto',
     'contact.description': 'Contáctanos para más información.',
+    'contact.phone': 'Teléfono',
+    'contact.address': 'Dirección',
+    'contact.form.name': 'Nombre',
+    'contact.form.email': 'Correo electrónico',
+    'contact.form.subject': 'Asunto',
+    'contact.form.message': 'Mensaje',
+    'contact.form.send': 'Enviar',
     
     // Profile
     'profile.title': 'Perfil',
     'profile.info': 'Información personal',
     'profile.firstname': 'Nombre',
     'profile.lastname': 'Apellido',
-    'profile.avatar_description': 'Foto de perfil del usuario'
+    'profile.avatar_description': 'Foto de perfil del usuario',
+    'profile.edit_profile': 'Editar perfil',
+    'profile.connected_services': 'Servicios conectados',
+
+    // Footer
+    'footer.description': 'AREA es una plataforma de automatización que te permite conectar tus servicios favoritos.',
+    'footer.quick_links': 'Enlaces Rápidos',
+    'footer.home': 'Inicio',
+    'footer.about': 'Acerca de',
+    'footer.contact': 'Contacto',
+    'footer.contact_us': 'Contáctanos',
+    'footer.follow_us': 'Síguenos',
+    'footer.rights': 'Todos los derechos reservados.',
+    'footer.privacy': 'Política de Privacidad',
+    'footer.terms': 'Términos de Servicio'
   },
 
   zh: {
@@ -460,6 +632,14 @@ const translations: TranslationsType = {
     'home.recognition.result': '识别的音乐：',
     'home.recognition.artist': '艺术家',
     'home.recognition.addToSpotify': '添加到Spotify收藏',
+    'home.title_welcome': '欢迎使用 AREA',
+    'home.subtitle_welcome': '管理您的集成并自动化您的任务',
+    'home.services.title': '可用服务',
+    'home.areas.title': '我的自动化',
+    'home.areas.create': '创建新的自动化',
+    'home.areas.empty': '暂无自动化',
+    'home.areas.fill_all_fields': '请填写所有字段',
+    'home.areas.count': '自动化数量',
     
     // About
     'about.title': '关于',
@@ -468,13 +648,34 @@ const translations: TranslationsType = {
     // Contact
     'contact.title': '联系我们',
     'contact.description': '如需更多信息，请与我们联系。',
+    'contact.phone': '电话',
+    'contact.address': '地址',
+    'contact.form.name': '姓名',
+    'contact.form.email': '电子邮件',
+    'contact.form.subject': '主题',
+    'contact.form.message': '消息',
+    'contact.form.send': '发送',
     
     // Profile
     'profile.title': '个人资料',
     'profile.info': '个人信息',
     'profile.firstname': '名',
     'profile.lastname': '姓',
-    'profile.avatar_description': '用户头像'
+    'profile.avatar_description': '用户头像',
+    'profile.edit_profile': '编辑资料',
+    'profile.connected_services': '关联服务',
+
+    // Footer
+    'footer.description': 'AREA是一个自动化平台，让您可以连接您喜欢的服务。',
+    'footer.quick_links': '快速链接',
+    'footer.home': '首页',
+    'footer.about': '关于我们',
+    'footer.contact': '联系我们',
+    'footer.contact_us': '联系我们',
+    'footer.follow_us': '关注我们',
+    'footer.rights': '版权所有。',
+    'footer.privacy': '隐私政策',
+    'footer.terms': '服务条款'
   },
 
   ja: {
@@ -528,6 +729,14 @@ const translations: TranslationsType = {
     'home.recognition.result': '認識された音楽：',
     'home.recognition.artist': 'アーティスト',
     'home.recognition.addToSpotify': 'Spotifyのお気に入りに追加',
+    'home.title_welcome': 'AREAへようこそ',
+    'home.subtitle_welcome': '統合を管理してタスクを自動化する',
+    'home.services.title': '利用可能なサービス',
+    'home.areas.title': '私の自動化',
+    'home.areas.create': '新しい自動化を作成',
+    'home.areas.empty': '自動化はまだありません',
+    'home.areas.fill_all_fields': 'すべてのフィールドに入力してください',
+    'home.areas.count': '自動化の数',
     
     // About
     'about.title': '概要',
@@ -536,13 +745,34 @@ const translations: TranslationsType = {
     // Contact
     'contact.title': 'お問い合わせ',
     'contact.description': '詳細については、お問い合わせください。',
+    'contact.phone': '電話番号',
+    'contact.address': '住所',
+    'contact.form.name': '名前',
+    'contact.form.email': 'メールアドレス',
+    'contact.form.subject': '件名',
+    'contact.form.message': 'メッセージ',
+    'contact.form.send': '送信',
     
     // Profile
     'profile.title': 'プロフィール',
     'profile.info': '個人情報',
     'profile.firstname': '名',
     'profile.lastname': '姓',
-    'profile.avatar_description': 'ユーザープロフィール画像'
+    'profile.avatar_description': 'ユーザープロフィール画像',
+    'profile.edit_profile': 'プロフィール編集',
+    'profile.connected_services': '接続済みのサービス',
+
+    // Footer
+    'footer.description': 'AREAは、お気に入りのサービスを接続できる自動化プラットフォームです。',
+    'footer.quick_links': 'クイックリンク',
+    'footer.home': 'ホーム',
+    'footer.about': '概要',
+    'footer.contact': 'お問い合わせ',
+    'footer.contact_us': 'お問い合わせ',
+    'footer.follow_us': 'フォローする',
+    'footer.rights': '全著作権所有。',
+    'footer.privacy': 'プライバシーポリシー',
+    'footer.terms': '利用規約'
   }
 };
 
