@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from '../context/TranslationContext';
 import axios from 'axios';
+import { motion } from 'framer-motion';
 
 const BACKEND_PORT = process.env.BACKEND_PORT || 8080;
 
@@ -100,82 +101,119 @@ const LoginPage: React.FC = () => {
       }
     }
   };
-  
 
   return (
-    <div
-      className={`min-h-screen flex items-center justify-center ${
-        isDarkMode ? 'bg-gray-900' : 'bg-gray-100'
-      } transition-colors duration-200`}
-    >
-      <div
-        className={`max-w-md w-full p-6 ${
+    <div className={`min-h-screen flex items-center justify-center ${
+      isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50 to-indigo-100'
+    } transition-colors duration-200`}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className={`max-w-md w-full mx-4 p-8 ${
           isDarkMode ? 'bg-gray-800' : 'bg-white'
-        } rounded-lg shadow-lg`}
+        } rounded-2xl shadow-2xl space-y-6`}
       >
-        <h2
-          className={`text-3xl font-bold text-center mb-6 ${
-            isDarkMode ? 'text-white' : 'text-gray-900'
-          }`}
-        >
-          {t('login.title')}
-        </h2>
+        <div className="text-center">
+          <h2 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+            {t('login.title')}
+          </h2>
+          <p className={`mt-2 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+            {t('login.welcome_back')}
+          </p>
+        </div>
 
         <form className="space-y-4" onSubmit={handleFormSubmit}>
-          <input
-            type="text"
-            name="identifier"
-            placeholder="Nom Prénom"
-            value={formData.identifier}
-            onChange={handleInputChange}
-            className="w-full p-3 border rounded focus:outline-none focus:ring"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Mot de passe"
-            value={formData.password}
-            onChange={handleInputChange}
-            className="w-full p-3 border rounded focus:outline-none focus:ring"
-          />
+          <div>
+            <input
+              type="text"
+              name="identifier"
+              placeholder={t('login.identifier_placeholder')}
+              value={formData.identifier}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            />
+          </div>
+          <div>
+            <input
+              type="password"
+              name="password"
+              placeholder={t('login.password_placeholder')}
+              value={formData.password}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            />
+          </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transform transition-all duration-200 hover:scale-[1.02]"
           >
-            Login
+            {t('login.sign_in')}
           </button>
         </form>
 
-        <div className="space-y-4 mt-6">
-          <a
-            href={`https://localhost:${BACKEND_PORT}/api/auth/linkedin`}
-            className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded text-center"
-          >
-            {t('login.with_linkedin')}
-          </a>
-
-          <a
-            href={`https://localhost:${BACKEND_PORT}/api/auth/spotify`}
-            className="block w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded text-center"
-          >
-            {t('login.with_spotify')}
-          </a>
-
-          <a
-            href={`https://localhost:${BACKEND_PORT}/api/auth/discord`}
-            className="block w-full bg-[#7289DA] hover:bg-[#6A7EC5] text-white font-bold py-3 px-4 rounded text-center"
-          >
-            {t('login.with_discord')}
-          </a>
-
-          <a
-            href={`https://localhost:${BACKEND_PORT}/api/auth/github`}
-            className="block w-full bg-gray-900 hover:bg-gray-800 text-white font-bold py-3 px-4 rounded text-center"
-          >
-            {t('login.with_github')}
-          </a>
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300"></div>
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className={`px-2 ${isDarkMode ? 'bg-gray-800 text-gray-400' : 'bg-white text-gray-500'}`}>
+              {t('login.or')}
+            </span>
+          </div>
         </div>
-      </div>
+
+        <div className="space-y-3">
+          {/* Social login buttons with hover effects and icons */}
+          <motion.a
+            whileHover={{ scale: 1.02 }}
+            href={`https://localhost:${BACKEND_PORT}/api/auth/linkedin`}
+            className="flex items-center justify-center w-full py-3 px-4 rounded-lg bg-[#0077B5] hover:bg-[#006699] text-white transition-colors duration-200"
+          >
+            <i className="fab fa-linkedin mr-2"></i>
+            {t('login.with_linkedin')}
+          </motion.a>
+
+          <motion.a
+            whileHover={{ scale: 1.02 }}
+            href={`https://localhost:${BACKEND_PORT}/api/auth/spotify`}
+            className="flex items-center justify-center w-full py-3 px-4 rounded-lg bg-green-500 hover:bg-green-600 text-white transition-colors duration-200"
+          >
+            <i className="fab fa-spotify mr-2"></i>
+            {t('login.with_spotify')}
+          </motion.a>
+
+          <motion.a
+            whileHover={{ scale: 1.02 }}
+            href={`https://localhost:${BACKEND_PORT}/api/auth/discord`}
+            className="flex items-center justify-center w-full py-3 px-4 rounded-lg bg-[#7289DA] hover:bg-[#6A7EC5] text-white transition-colors duration-200"
+          >
+            <i className="fab fa-discord mr-2"></i>
+            {t('login.with_discord')}
+          </motion.a>
+
+          <motion.a
+            whileHover={{ scale: 1.02 }}
+            href={`https://localhost:${BACKEND_PORT}/api/auth/github`}
+            className="flex items-center justify-center w-full py-3 px-4 rounded-lg bg-gray-900 hover:bg-gray-800 text-white transition-colors duration-200"
+          >
+            <i className="fab fa-github mr-2"></i>
+            {t('login.with_github')}
+          </motion.a>
+        </div>
+
+        <div className="text-center mt-6">
+          <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+            {t('login.no_account')}{' '}
+            <Link
+              to="/signup"
+              className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200"
+            >
+              {t('login.create_account')}
+            </Link>
+          </p>
+        </div>
+      </motion.div>
     </div>
   );
 };
