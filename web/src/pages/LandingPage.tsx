@@ -8,7 +8,6 @@ import {
   IoFlash, 
   IoGitNetwork, 
   IoShieldCheckmark, 
-  IoRocket,
   IoLogoGithub,
   IoLogoDiscord
 } from 'react-icons/io5';
