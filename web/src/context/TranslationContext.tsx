@@ -83,7 +83,19 @@ type TranslationKey =
   | 'home.areas.create'
   | 'home.areas.empty'
   | 'home.areas.fill_all_fields'
-  | 'home.areas.count';
+  | 'home.areas.count'
+  | 'landing.hero.title'
+  | 'landing.hero.subtitle'
+  | 'landing.hero.start_button'
+  | 'landing.hero.login_button'
+  | 'landing.features.automation.title'
+  | 'landing.features.automation.description'
+  | 'landing.features.services.title'
+  | 'landing.features.services.description'
+  | 'landing.features.security.title'
+  | 'landing.features.security.description'
+  | 'landing.services.title'
+  | 'landing.services.subtitle';
 
 interface TranslationContextType {
   language: Language;
@@ -192,7 +204,21 @@ const translations: TranslationsType = {
     'footer.follow_us': 'Suivez-nous',
     'footer.rights': 'Tous droits réservés.',
     'footer.privacy': 'Politique de confidentialité',
-    'footer.terms': 'Conditions d\'utilisation'
+    'footer.terms': 'Conditions d\'utilisation',
+
+    // Landing
+    'landing.hero.title': 'AREA - Action REAction',
+    'landing.hero.subtitle': 'Automatisez vos tâches quotidiennes en connectant vos services préférés',
+    'landing.hero.start_button': 'Commencer gratuitement',
+    'landing.hero.login_button': 'Se connecter',
+    'landing.features.automation.title': 'Automatisation Rapide',
+    'landing.features.automation.description': 'Créez des automatisations en quelques clics pour gagner du temps dans vos tâches quotidiennes.',
+    'landing.features.services.title': 'Services Connectés',
+    'landing.features.services.description': 'Intégrez facilement vos services préférés comme Spotify, Discord, et bien plus.',
+    'landing.features.security.title': 'Sécurité Avancée',
+    'landing.features.security.description': 'Vos données sont protégées avec les meilleurs standards de sécurité.',
+    'landing.services.title': 'Services Disponibles',
+    'landing.services.subtitle': 'Connectez-vous avec vos plateformes favorites'
   },
   en: {
     // Navigation
@@ -288,7 +314,21 @@ const translations: TranslationsType = {
     'footer.follow_us': 'Follow Us',
     'footer.rights': 'All rights reserved.',
     'footer.privacy': 'Privacy Policy',
-    'footer.terms': 'Terms of Service'
+    'footer.terms': 'Terms of Service',
+
+    // Landing
+    'landing.hero.title': 'AREA - Action REAction',
+    'landing.hero.subtitle': 'Automate your daily tasks by connecting your favorite services',
+    'landing.hero.start_button': 'Start for free',
+    'landing.hero.login_button': 'Login',
+    'landing.features.automation.title': 'Quick Automation',
+    'landing.features.automation.description': 'Create automations in just a few clicks to save time on your daily tasks.',
+    'landing.features.services.title': 'Connected Services',
+    'landing.features.services.description': 'Easily integrate your favorite services like Spotify, Discord, and more.',
+    'landing.features.security.title': 'Advanced Security',
+    'landing.features.security.description': 'Your data is protected with the highest security standards.',
+    'landing.services.title': 'Available Services',
+    'landing.services.subtitle': 'Connect with your favorite platforms'
   },
   de: {
     // Navigation
@@ -384,7 +424,21 @@ const translations: TranslationsType = {
     'footer.follow_us': 'Folgen Sie uns',
     'footer.rights': 'Alle Rechte vorbehalten.',
     'footer.privacy': 'Datenschutzerklärung',
-    'footer.terms': 'Nutzungsbedingungen'
+    'footer.terms': 'Nutzungsbedingungen',
+
+    // Landing
+    'landing.hero.title': 'AREA - Action REAction',
+    'landing.hero.subtitle': 'Automatisieren Sie Ihre täglichen Aufgaben durch die Verbindung Ihrer bevorzugten Dienste',
+    'landing.hero.start_button': 'Kostenlos starten',
+    'landing.hero.login_button': 'Anmelden',
+    'landing.features.automation.title': 'Schnelle Automatisierung',
+    'landing.features.automation.description': 'Erstellen Sie Automatisierungen mit wenigen Klicks und sparen Sie Zeit bei Ihren täglichen Aufgaben.',
+    'landing.features.services.title': 'Verbundene Dienste',
+    'landing.features.services.description': 'Integrieren Sie einfach Ihre bevorzugten Dienste wie Spotify, Discord und mehr.',
+    'landing.features.security.title': 'Erweiterte Sicherheit',
+    'landing.features.security.description': 'Ihre Daten werden mit höchsten Sicherheitsstandards geschützt.',
+    'landing.services.title': 'Verfügbare Dienste',
+    'landing.services.subtitle': 'Verbinden Sie sich mit Ihren Lieblingsplattformen'
   },
 
   it: {
@@ -481,7 +535,21 @@ const translations: TranslationsType = {
     'footer.follow_us': 'Seguici',
     'footer.rights': 'Tutti i diritti riservati.',
     'footer.privacy': 'Informativa sulla Privacy',
-    'footer.terms': 'Termini di Servizio'
+    'footer.terms': 'Termini di Servizio',
+
+    // Landing
+    'landing.hero.title': 'AREA - Action REAction',
+    'landing.hero.subtitle': 'Automatizza le tue attività quotidiane connettendo i tuoi servizi preferiti',
+    'landing.hero.start_button': 'Inizia gratuitamente',
+    'landing.hero.login_button': 'Accedi',
+    'landing.features.automation.title': 'Automazione Rapida',
+    'landing.features.automation.description': 'Crea automazioni in pochi clic per risparmiare tempo nelle tue attività quotidiane.',
+    'landing.features.services.title': 'Servizi Connessi',
+    'landing.features.services.description': 'Integra facilmente i tuoi servizi preferiti come Spotify, Discord e altri.',
+    'landing.features.security.title': 'Sicurezza Avanzata',
+    'landing.features.security.description': 'I tuoi dati sono protetti con i più alti standard di sicurezza.',
+    'landing.services.title': 'Servizi Disponibili',
+    'landing.services.subtitle': 'Connettiti con le tue piattaforme preferite'
   },
 
   es: {
@@ -578,7 +646,21 @@ const translations: TranslationsType = {
     'footer.follow_us': 'Síguenos',
     'footer.rights': 'Todos los derechos reservados.',
     'footer.privacy': 'Política de Privacidad',
-    'footer.terms': 'Términos de Servicio'
+    'footer.terms': 'Términos de Servicio',
+
+    // Landing
+    'landing.hero.title': 'AREA - Action REAction',
+    'landing.hero.subtitle': 'Automatiza tus tareas diarias conectando tus servicios favoritos',
+    'landing.hero.start_button': 'Comenzar gratis',
+    'landing.hero.login_button': 'Iniciar sesión',
+    'landing.features.automation.title': 'Automatización Rápida',
+    'landing.features.automation.description': 'Crea automatizaciones en pocos clics para ahorrar tiempo en tus tareas diarias.',
+    'landing.features.services.title': 'Servicios Conectados',
+    'landing.features.services.description': 'Integra fácilmente tus servicios favoritos como Spotify, Discord y más.',
+    'landing.features.security.title': 'Seguridad Avanzada',
+    'landing.features.security.description': 'Tus datos están protegidos con los más altos estándares de seguridad.',
+    'landing.services.title': 'Servicios Disponibles',
+    'landing.services.subtitle': 'Conéctate con tus plataformas favoritas'
   },
 
   zh: {
@@ -675,7 +757,21 @@ const translations: TranslationsType = {
     'footer.follow_us': '关注我们',
     'footer.rights': '版权所有。',
     'footer.privacy': '隐私政策',
-    'footer.terms': '服务条款'
+    'footer.terms': '服务条款',
+
+    // Landing
+    'landing.hero.title': 'AREA - Action REAction',
+    'landing.hero.subtitle': '连接您喜爱的服务，实现日常任务自动化',
+    'landing.hero.start_button': '免费开始',
+    'landing.hero.login_button': '登录',
+    'landing.features.automation.title': '快速自动化',
+    'landing.features.automation.description': '只需点击几下即可创建自动化，节省日常任务时间。',
+    'landing.features.services.title': '连接服务',
+    'landing.features.services.description': '轻松集成您喜爱的服务，如Spotify、Discord等。',
+    'landing.features.security.title': '高级安全',
+    'landing.features.security.description': '您的数据受到最高安全标准的保护。',
+    'landing.services.title': '可用服务',
+    'landing.services.subtitle': '与您喜爱的平台连接'
   },
 
   ja: {
@@ -772,7 +868,21 @@ const translations: TranslationsType = {
     'footer.follow_us': 'フォローする',
     'footer.rights': '全著作権所有。',
     'footer.privacy': 'プライバシーポリシー',
-    'footer.terms': '利用規約'
+    'footer.terms': '利用規約',
+
+    // Landing
+    'landing.hero.title': 'AREA - Action REAction',
+    'landing.hero.subtitle': 'お気に入りのサービスを連携して日常のタスクを自動化',
+    'landing.hero.start_button': '無料で始める',
+    'landing.hero.login_button': 'ログイン',
+    'landing.features.automation.title': '迅速な自動化',
+    'landing.features.automation.description': '数回のクリックで日常のタスクを自動化し、時間を節約できます。',
+    'landing.features.services.title': '連携サービス',
+    'landing.features.services.description': 'SpotifyやDiscordなど、お気に入りのサービスを簡単に統合できます。',
+    'landing.features.security.title': '高度なセキュリティ',
+    'landing.features.security.description': 'お客様のデータは最高のセキュリティ基準で保護されています。',
+    'landing.services.title': '利用可能なサービス',
+    'landing.services.subtitle': 'お気に入りのプラットフォームと連携'
   }
 };
 
