@@ -60,6 +60,8 @@ const LoginNavbar: React.FC = () => {
                   <option value="de">Deutsch</option>
                   <option value="it">Italiano</option>
                   <option value="es">Español</option>
+                  <option value="ja">日本語</option>
+                  <option value="zh">中文</option>
                 </select>
               </div>
             </div>
