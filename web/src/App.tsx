@@ -11,6 +11,8 @@ import AuthenticatedNavbar from './components/AuthenticatedNavbar';
 import LoginNavbar from './components/LoginNavbar';
 import Footer from './components/Footer';
 import { AccessibilityFab } from './components/AccessibilityFab';
+import LandingPage from './pages/LandingPage';
+import { AccessibilityProvider } from './context/AccessibilityContext';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -21,22 +23,39 @@ const NavigationBar: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
 
-  if (location.pathname === '/login') {
-    return <LoginNavbar />;
-  }
-  if (location.pathname === '/signup') {
+  if (location.pathname === '/login' || location.pathname === '/signup') {
     return <LoginNavbar />;
   }
 
   return isAuthenticated ? <AuthenticatedNavbar /> : null;
 };
 
-export const Layout = ({ children }: { children: React.ReactNode }) => {
+// Create a separate component for the routes
+const AppRoutes: React.FC = () => {
+  const { isAuthenticated } = useAuth();
+  
   return (
-    <>
-      {children}
-      <AccessibilityFab />
-    </>
+    <Routes>
+      <Route path="/" element={
+        isAuthenticated ? (
+          <ProtectedRoute>
+            <HomePage />
+          </ProtectedRoute>
+        ) : (
+          <LandingPage />
+        )
+      } />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
   );
 };
 
@@ -45,35 +64,18 @@ const App: React.FC = () => {
     <AuthProvider>
       <ThemeProvider>
         <TranslationProvider>
-          <Router>
-            <div className="flex flex-col min-h-screen">
-              <NavigationBar />
-              <main className="flex-grow">
-                <Routes>
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/signup" element={<SignupPage />} />
-                  <Route
-                    path="/"
-                    element={
-                      <ProtectedRoute>
-                        <HomePage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/profile"
-                    element={
-                      <ProtectedRoute>
-                        <ProfilePage />
-                      </ProtectedRoute>
-                    }
-                  />
-                </Routes>
-              </main>
-              <Footer />
-              <AccessibilityFab />
-            </div>
-          </Router>
+          <AccessibilityProvider>
+            <Router>
+              <div className="flex flex-col min-h-screen">
+                <NavigationBar />
+                <main className="flex-grow">
+                  <AppRoutes />
+                </main>
+                <Footer />
+                <AccessibilityFab />
+              </div>
+            </Router>
+          </AccessibilityProvider>
         </TranslationProvider>
       </ThemeProvider>
     </AuthProvider>

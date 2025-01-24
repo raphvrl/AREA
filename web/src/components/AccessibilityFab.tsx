@@ -1,130 +1,324 @@
-// src/components/AccessibilityFab.tsx
-import React, { useState } from 'react';
-import { FaUniversalAccess, FaEye, FaBrain, FaHandPaper, FaTimes } from 'react-icons/fa';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTheme } from '../context/ThemeContext';
-import { useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { 
+  IoAccessibility, 
+  IoTextOutline, 
+  IoContrastOutline, 
+  IoSpeedometerOutline,
+  IoColorPaletteOutline,
+  IoCloseOutline
+} from 'react-icons/io5';
 
-export const AccessibilityFab = () => {
+interface AccessibilityState {
+  fontSize: number;
+  contrast: 'normal' | 'high' | 'maximum';
+  reducedMotion: boolean;
+  simplifiedUI: boolean;
+  lineSpacing: number;
+  letterSpacing: number;
+  dyslexicFont: boolean;
+  wordSpacing: number;
+  paragraphSpacing: number;
+}
+
+const contrastRatios = {
+  normal: 4.5, // AA
+  high: 7,    // AAA
+  maximum: 21  // Ultra AAA
+};
+
+export const AccessibilityFab: React.FC = () => {
+  const { isDarkMode } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-  const { setTheme } = useTheme();
-  const location = useLocation();
+  const [settings, setSettings] = useState<AccessibilityState>(() => {
+    // Charger les paramètres depuis localStorage au montage
+    const savedSettings = localStorage.getItem('accessibilitySettings');
+    return savedSettings ? JSON.parse(savedSettings) : {
+      fontSize: 100,
+      contrast: 'normal',
+      reducedMotion: false,
+      simplifiedUI: false,
+      lineSpacing: 1.5,
+      dyslexicFont: false,
+      letterSpacing: 0 // Default letterSpacing
+    };
+  });
 
-  const getPageDescription = () => {
-    switch (location.pathname) {
-      case '/':
-        return `Bienvenue sur la page d'accueil de AREA. Cette page vous permet de gérer vos intégrations 
-               comme Spotify et d'utiliser la reconnaissance musicale. En haut, vous trouverez la barre de 
-               navigation. Au centre, les différents services disponibles et la zone de reconnaissance musicale.`;
-      
-      case '/profile':
-        return `Page de profil utilisateur. Ici vous pouvez modifier vos informations personnelles,
-               gérer vos paramètres de sécurité et configurer vos préférences. Les options sont 
-               organisées en sections avec des icônes pour faciliter la navigation.`;
+  // Sauvegarder les paramètres quand ils changent
+  useEffect(() => {
+    localStorage.setItem('accessibilitySettings', JSON.stringify(settings));
+  }, [settings]);
 
-      case '/about':
-        return `Page À propos qui présente notre application AREA. Vous trouverez ici une description 
-               détaillée du projet, de ses fonctionnalités et de son utilisation.`;
+  const updateFontSize = (value: number) => {
+    setSettings(prev => ({ ...prev, fontSize: value }));
+    document.documentElement.style.fontSize = `${value}%`;
+  };
 
-      case '/contact':
-        return `Page de contact. Vous pouvez nous contacter via le formulaire présent sur cette page
-               ou trouver nos informations de contact.`;
+  const updateLineSpacing = (value: number) => {
+    setSettings(prev => ({ ...prev, lineSpacing: value }));
+    document.documentElement.style.lineHeight = value.toString();
+  };
 
-      default:
-        return `Vous êtes sur une page de l'application AREA. Utilisez la barre de navigation en haut
-               pour vous déplacer entre les différentes sections.`;
+  const updateLetterSpacing = (value: number) => {
+    setSettings(prev => ({ ...prev, letterSpacing: value }));
+    document.documentElement.style.letterSpacing = `${value}em`;
+  };
+
+  // Contraste
+  const toggleContrast = useCallback(() => {
+    const contrasts: ('normal' | 'high' | 'maximum')[] = ['normal', 'high', 'maximum'];
+    const currentIndex = contrasts.indexOf(settings.contrast);
+    const nextContrast = contrasts[(currentIndex + 1) % contrasts.length];
+    setSettings(prev => ({ ...prev, contrast: nextContrast }));
+
+    // Apply contrast ratio based on the selected level
+    const ratio = contrastRatios[nextContrast];
+    document.documentElement.style.setProperty('--contrast-ratio', ratio.toString());
+
+    // Remove existing contrast classes
+    document.documentElement.classList.remove('contrast-normal', 'contrast-high', 'contrast-maximum');
+    
+    // Add new contrast class if not normal
+    if (nextContrast !== 'normal') {
+      document.documentElement.classList.add(`contrast-${nextContrast}`);
+    }
+  }, [settings.contrast]);
+
+  // Motion réduite
+  const toggleReducedMotion = useCallback(() => {
+    const newReducedMotion = !settings.reducedMotion;
+    setSettings(prev => ({ ...prev, reducedMotion: newReducedMotion }));
+    
+    if (newReducedMotion) {
+      document.documentElement.classList.add('motion-reduce');
+    } else {
+      document.documentElement.classList.remove('motion-reduce');
+    }
+  }, [settings.reducedMotion]);
+
+  // Interface simplifiée
+  const toggleSimplifiedUI = () => {
+    const newSimplifiedUI = !settings.simplifiedUI;
+    setSettings(prev => ({ ...prev, simplifiedUI: newSimplifiedUI }));
+    
+    if (newSimplifiedUI) {
+      document.documentElement.classList.add('simplified');
+    } else {
+      document.documentElement.classList.remove('simplified');
     }
   };
 
-  const applyMotorSettings = () => {
-    // Augmenter significativement la taille des éléments interactifs
-    document.documentElement.style.setProperty('--min-touch-target', '64px');
-    document.documentElement.style.setProperty('--focus-outline', '4px solid #2196F3');
-    document.documentElement.style.setProperty('--spacing', '2rem');
+  // Police dyslexique
+  const toggleDyslexicFont = () => {
+    const newDyslexicFont = !settings.dyslexicFont;
+    setSettings(prev => ({ ...prev, dyslexicFont: newDyslexicFont }));
     
-    // Appliquer aux boutons et liens
-    const elements = document.querySelectorAll('button, a, input, select');
-    elements.forEach(el => {
-      (el as HTMLElement).style.minHeight = '64px';
-      (el as HTMLElement).style.minWidth = '64px';
-      (el as HTMLElement).style.margin = '1rem 0';
-      (el as HTMLElement).style.padding = '1rem';
-      (el as HTMLElement).style.fontSize = '1.25rem';
-    });
+    if (newDyslexicFont) {
+      document.documentElement.classList.add('dyslexic-font');
+      document.documentElement.style.fontFamily = "'OpenDyslexic', sans-serif";
+      document.documentElement.style.letterSpacing = '0.35em';
+      document.documentElement.style.wordSpacing = '1em';
+      document.documentElement.style.lineHeight = '1.8';
+    } else {
+      document.documentElement.classList.remove('dyslexic-font');
+      document.documentElement.style.fontFamily = '';
+      document.documentElement.style.letterSpacing = `${settings.letterSpacing}em`;
+      document.documentElement.style.wordSpacing = '';
+      document.documentElement.style.lineHeight = settings.lineSpacing.toString();
+    }
   };
 
-  const applyVisualSettings = () => {
-    // Thème contraste élevé
-    setTheme('high-contrast');
+  // Effet pour initialiser les paramètres au chargement
+  useEffect(() => {
+    // Appliquer les paramètres initiaux
+    document.documentElement.style.fontSize = `${settings.fontSize}%`;
+    document.documentElement.style.lineHeight = settings.lineSpacing.toString();
+    document.documentElement.style.letterSpacing = `${settings.letterSpacing}em`;
     
-    // Zoom sur la page using transform scale
-    document.body.style.transform = "scale(1.5)";
-    document.body.style.transformOrigin = "0 0";
-    document.body.style.width = "66.67%"; // 100/1.5 to maintain layout
-    
-    // Augmenter la taille des polices
-    document.documentElement.style.setProperty('--base-font-size', '1.5rem');
-    document.documentElement.style.setProperty('--heading-font-size', '2rem');
-    document.documentElement.style.setProperty('--letter-spacing', '0.05em');
-  };
+    if (settings.reducedMotion) document.documentElement.classList.add('reduced-motion');
+    if (settings.simplifiedUI) document.documentElement.classList.add('simplified-ui');
+    if (settings.dyslexicFont) document.documentElement.classList.add('dyslexic-font');
+    if (settings.contrast !== 'normal') {
+      document.documentElement.classList.add(`${settings.contrast}-contrast`);
+    }
 
-  const applyMentalSettings = () => {
-    // Utiliser uniquement la description spécifique de la page
-    const pageDescription = getPageDescription();
+    return () => {
+      document.documentElement.classList.remove(
+        'reduced-motion',
+        'simplified-ui',
+        'dyslexic-font',
+        'high-contrast',
+        'maximum-contrast'
+      );
+      document.documentElement.style.fontSize = '';
+      document.documentElement.style.lineHeight = '';
+      document.documentElement.style.letterSpacing = '';
+    };
+  }, [
+    settings.fontSize,
+    settings.lineSpacing,
+    settings.letterSpacing,
+    settings.reducedMotion,
+    settings.simplifiedUI,
+    settings.dyslexicFont,
+    settings.contrast
+  ]); // Add all settings dependencies
+
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.altKey) {
+        switch(e.key) {
+          case 'c': toggleContrast(); break;
+          case 'f': setIsOpen(prev => !prev); break;
+          case 'm': toggleReducedMotion(); break;
+          // etc
+        }
+      }
+    };
     
-    // Ajouter une instruction de navigation claire à la fin
-    const helpMessage = `\n\nAide à la navigation :\n- Utilisez la touche Tab pour naviguer entre les éléments\n- Utilisez Entrée pour sélectionner\n- Utilisez Échap pour revenir`;
-    
-    // Créer le message d'alerte final
-    const alert = `${pageDescription}${helpMessage}`;
-    
-    // Afficher l'alerte
-    window.alert(alert);
-  
-    // Appliquer les paramètres d'interface simplifiée
-    document.documentElement.classList.add('simplified-ui');
-    document.documentElement.style.setProperty('--reduce-motion', 'reduce');
-  };
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [toggleContrast, toggleReducedMotion]);
 
   return (
-    <div 
-      className="fixed bottom-4 right-4 z-[9999]" 
-      role="region" 
-      aria-label="Options d'accessibilité"
-    >
+    <div className="fixed bottom-4 right-4 z-50">
       {isOpen && (
-        <div className="flex flex-col gap-3 mb-3 bg-white/90 dark:bg-gray-800/90 p-3 rounded-lg shadow-lg backdrop-blur-sm">
-          <button
-            onClick={applyMotorSettings}
-            className="flex items-center gap-2 p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 transition-colors"
-            aria-label="Faciliter la navigation au clavier et à la souris">
-            <FaHandPaper />
-            <span className="text-sm font-medium">Navigation facilitée</span>
-          </button>
-          
-          <button
-            onClick={applyVisualSettings}
-            className="flex items-center gap-2 p-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 transition-colors"
-            aria-label="Améliorer la lisibilité">
-            <FaEye />
-            <span className="text-sm font-medium">Lisibilité améliorée</span>
-          </button>
-          
-          <button
-            onClick={applyMentalSettings}
-            className="flex items-center gap-2 p-3 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 transition-colors"
-            aria-label="Obtenir de l'aide contextuelle">
-            <FaBrain />
-            <span className="text-sm font-medium">Aide contextuelle</span>
-          </button>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.2 }}
+          className={`absolute bottom-16 right-0 p-4 rounded-lg shadow-lg 
+            ${isDarkMode 
+              ? 'bg-gray-800 text-white' 
+              : 'bg-white text-gray-800'} 
+            w-72`}
+        >
+          <div className="space-y-4">
+            {/* Controls reste le même */}
+            <div>
+              <label className={`block text-sm font-medium mb-1 
+                ${isDarkMode 
+                  ? 'text-gray-100' // Plus clair pour un meilleur contraste
+                  : 'text-gray-900' // Plus foncé pour un meilleur contraste
+                }`}>
+                Font Size ({settings.fontSize}%)
+              </label>
+              <input
+                type="range"
+                min="120" // Augmenter la taille minimale à 120%
+                max="200"
+                step="10"
+                value={settings.fontSize}
+                onChange={(e) => updateFontSize(Number(e.target.value))}
+                className={`w-full ${isDarkMode 
+                  ? 'accent-blue-400' 
+                  : 'accent-blue-600'}`}
+                aria-label="Adjust font size"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Line Spacing ({settings.lineSpacing})
+              </label>
+              <input
+                type="range"
+                min="1"
+                max="2.5"
+                step="0.1"
+                value={settings.lineSpacing}
+                onChange={(e) => updateLineSpacing(Number(e.target.value))}
+                className="w-full"
+                aria-label="Adjust line spacing"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Letter Spacing
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={settings.letterSpacing}
+                onChange={(e) => updateLetterSpacing(Number(e.target.value))}
+                className={`w-full ${isDarkMode ? 'accent-blue-400' : 'accent-blue-600'}`}
+                aria-label="Adjust letter spacing"
+              />
+            </div>
+
+            <div role="tooltip" id="contrastHelp" className="sr-only">
+              Normal contrast is 4.5:1, High contrast is 7:1, and Maximum contrast is 21:1
+            </div>
+
+            <button
+              onClick={toggleContrast}
+              aria-describedby="contrastHelp"
+              className={`flex items-center space-x-2 w-full p-2 rounded 
+                ${isDarkMode 
+                  ? 'hover:bg-gray-700 text-gray-200' 
+                  : 'hover:bg-gray-100 text-gray-700'}
+                transition-colors`}
+              aria-label="Toggle contrast mode"
+            >
+              <IoContrastOutline className="w-5 h-5" />
+              <span>Contrast Mode: {settings.contrast}</span>
+            </button>
+
+            <button
+              onClick={toggleReducedMotion}
+              className="flex items-center space-x-2 w-full p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              aria-label="Toggle reduced motion"
+            >
+              <IoSpeedometerOutline className="w-5 h-5" />
+              <span>Reduced Motion: {settings.reducedMotion ? 'On' : 'Off'}</span>
+            </button>
+
+            <button
+              onClick={toggleSimplifiedUI}
+              className="flex items-center space-x-2 w-full p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              aria-label="Toggle simplified interface"
+            >
+              <IoColorPaletteOutline className="w-5 h-5" />
+              <span>Simplified UI: {settings.simplifiedUI ? 'On' : 'Off'}</span>
+            </button>
+
+            <button
+              onClick={toggleDyslexicFont}
+              className="flex items-center space-x-2 w-full p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              aria-label="Toggle dyslexic friendly font"
+            >
+              <IoTextOutline className="w-5 h-5" />
+              <span>Dyslexic Font: {settings.dyslexicFont ? 'On' : 'Off'}</span>
+            </button>
+          </div>
+        </motion.div>
       )}
-      <button
+
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="p-4 bg-blue-500 text-white rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 shadow-lg transition-transform hover:scale-110"
-        aria-label="Ouvrir les options d'accessibilité"
-        aria-expanded={isOpen}>
-        {isOpen ? <FaTimes /> : <FaUniversalAccess size={24} />}
-      </button>
+        className={`p-4 rounded-full shadow-lg 
+          ${isDarkMode 
+            ? 'bg-gray-800 text-gray-200 hover:bg-gray-700' 
+            : 'bg-white text-gray-800 hover:bg-gray-100'}
+          focus:outline-none focus:ring-2 focus:ring-offset-2 
+          ${isDarkMode ? 'focus:ring-blue-400' : 'focus:ring-blue-600'} 
+          transition-colors duration-200 ease-in-out`}
+        aria-label="Accessibility options"
+        aria-expanded={isOpen}
+      >
+        {isOpen ? (
+          <IoCloseOutline className="w-6 h-6" />
+        ) : (
+          <IoAccessibility className="w-6 h-6" />
+        )}
+      </motion.button>
     </div>
   );
 };
