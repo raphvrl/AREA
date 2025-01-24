@@ -4,7 +4,7 @@ import { validationResult } from 'express-validator';
 import UserModel from '../db/UserModel'; // On part du principe que tu as un modèle utilisateur
 
 // Fonction sign_in
-export const sign_in = async (req: Request, res: Response) => {
+export const sign_up = async (req: Request, res: Response) => {
     try {
         // Validation des champs
         const errors = validationResult(req);
@@ -40,7 +40,7 @@ export const sign_in = async (req: Request, res: Response) => {
 };
 
 // Fonction login
-export const login = async (req: Request, res: Response) => {
+export const sign_in = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
 
