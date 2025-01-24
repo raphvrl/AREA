@@ -5,6 +5,8 @@ import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from '../context/TranslationContext';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import { AuthError, ApiValidationError } from '../types/auth';
+import { TranslationKey } from '../translations/types'; // Add this import
 
 const BACKEND_PORT = process.env.BACKEND_PORT || 8080;
 
@@ -26,9 +28,10 @@ const LoginPage: React.FC = () => {
   const { t } = useTranslation();
 
   const [formData, setFormData] = useState({
-    identifier: '',
-    password: '',
+    email: '',
+    password: ''
   });
+  const [errors, setErrors] = useState<AuthError[]>([]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -80,24 +83,42 @@ const LoginPage: React.FC = () => {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.identifier && formData.password) {
-      try {
-        const response = await axios.post<LoginResponse>(`https://localhost:${BACKEND_PORT}/api/login`, {
-          lastFirstName: formData.identifier,
-          password: formData.password,
-        });
+    setErrors([]); // Clear previous errors
+    
+    try {
+      const response = await axios.post<LoginResponse>(
+        `https://localhost:${BACKEND_PORT}/api/sign_in`, 
+        formData
+      );
   
-        const user = response.data.user;
-        login(user);
-        if (user.isFirstLogin) {
-          alert(`Bienvenue, ${user.firstName} ${user.lastName} !`);
-        } else {
-          alert(`Bon retour parmi nous, ${user.firstName} ${user.lastName} !`);
-        }
-        navigate('/');
-      } catch (error: any) {
-        console.error('Error during login:', error.response?.data || error.message);
-        alert(error.response?.data?.error || 'Login failed. Please try again.');
+      const user = response.data.user;
+      login(user);
+      if (user.isFirstLogin) {
+        alert(t('login.welcome_message'));
+      }
+      navigate('/');
+  
+    } catch (error: any) {
+      console.error('Login error:', error);
+      
+      if (error.response?.data?.errors) {
+        const apiErrors = error.response.data as ApiValidationError;
+        const mappedErrors = apiErrors.errors?.map(err => {
+          const translationKey = `login.errors.${err.param}` as TranslationKey;
+          return {
+            field: err.param,
+            message: t(translationKey) || err.msg
+          };
+        }) || [];
+        setErrors(mappedErrors);
+      } else if (error.response?.status === 401) {
+        setErrors([{
+          message: t('login.errors.invalid_credentials')
+        }]);
+      } else {
+        setErrors([{
+          message: t('login.errors.general')
+        }]);
       }
     }
   };
@@ -124,14 +145,21 @@ const LoginPage: React.FC = () => {
         </div>
 
         <form className="space-y-4" onSubmit={handleFormSubmit}>
+          {errors.length > 0 && (
+            <div className="text-red-500 text-sm text-center">
+              {errors.map((error, index) => (
+                <p key={index}>{error.message}</p>
+              ))}
+            </div>
+          )}
           <div>
             <input
-              type="text"
-              name="identifier"
-              placeholder={t('login.identifier_placeholder')}
-              value={formData.identifier}
+              type="email"
+              name="email"
+              placeholder={t('login.email')}
+              value={formData.email}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
           <div>
