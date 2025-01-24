@@ -9,12 +9,12 @@ async function logout_service(name_service: string, email: string) {
         }
 
         // Vérifier si le service existe
-        if (!user.services || !user.services[name_service]) {
+        if (!user.services || !user.service[name_service]) {
             throw new Error(`Service "${name_service}" not found for user "${email}".`);
         }
 
         // Déconnecter le service
-        delete user.services[name_service];
+        user.service[name_service] = false;
 
         // Enregistrer les modifications dans la base de données
         await user.save();
