@@ -20,6 +20,9 @@ export const itTranslations = {
     'login.sign_in': 'Accedi',
     'login.no_account': 'Nessun account?',
     'login.create_account': 'Crea un account',
+    'login.email': 'Email',
+    'login.welcome_message': 'Benvenuto su AREA!',
+    'login.errors.invalid_credentials': 'Email o password non validi',
 
     // Signup
     'signup.sign_in': 'Accedi',

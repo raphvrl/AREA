@@ -20,6 +20,9 @@ export const deTranslations = {
     'login.sign_in': 'Anmelden',
     'login.no_account': 'Kein Konto?',
     'login.create_account': 'Konto erstellen',
+    'login.email': 'E-Mail',
+    'login.welcome_message': 'Willkommen bei AREA!',
+    'login.errors.invalid_credentials': 'Ungültige E-Mail oder Passwort',
 
     // Signup
     'signup.sign_in': 'Anmelden',

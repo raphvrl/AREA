@@ -20,6 +20,9 @@ export const zhTranslations = {
     'login.sign_in': '登录',
     'login.no_account': '没有账户？',
     'login.create_account': '创建账户',
+    'login.email': '电子邮箱',
+    'login.welcome_message': '欢迎来到AREA！',
+    'login.errors.invalid_credentials': '邮箱或密码无效',
 
     // Signup
     'signup.sign_in': '登录',

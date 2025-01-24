@@ -20,6 +20,9 @@ export const esTranslations = {
     'login.sign_in': 'Iniciar sesión',
     'login.no_account': '¿No tienes cuenta?',
     'login.create_account': 'Crear una cuenta',
+    'login.email': 'Correo electrónico',
+    'login.welcome_message': '¡Bienvenido a AREA!',
+    'login.errors.invalid_credentials': 'Correo electrónico o contraseña inválidos',
 
     // Signup
     'signup.sign_in': 'Iniciar sesión',

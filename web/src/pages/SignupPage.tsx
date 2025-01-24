@@ -6,7 +6,7 @@ import { useTranslation } from '../context/TranslationContext';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 
-const BACKEND_PORT = process.env.BACKEND_PORT || 8080;
+const BACKEND_PORT = process.env.REACT_APP_BACKEND_PORT || 8080;
 
 interface SignupResponse {
   user: {
@@ -63,17 +63,42 @@ const SignupPage: React.FC = () => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
+    
     try {
-      const response = await axios.post<SignupResponse>(`https://localhost:${BACKEND_PORT}/api/signup`, {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        password: formData.password,
-      });
-      login(response.data.user);
-      navigate('/');
-    } catch (error) {
+      const response = await axios.post<SignupResponse>(
+        `http://localhost:${BACKEND_PORT}/api/sign_up`,
+        {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      
+      if (response.data.user) {
+        login(response.data.user);
+        navigate('/');
+      }
+    } catch (error: any) {
       console.error('Signup error:', error);
+      if (error.response?.data?.message) {
+        setErrors({ general: error.response.data.message });
+      } else if (error.response?.data?.errors) {
+        // Handle validation errors from express-validator
+        const validationErrors = error.response.data.errors;
+        const newErrors: Record<string, string> = {};
+        validationErrors.forEach((err: any) => {
+          newErrors[err.param] = err.msg;
+        });
+        setErrors(newErrors);
+      } else {
+        setErrors({ general: t('signup.errors.general') });
+      }
     }
   };
 

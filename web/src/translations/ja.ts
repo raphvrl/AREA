@@ -20,6 +20,9 @@ export const jaTranslations = {
     'login.sign_in': 'ログイン',
     'login.no_account': 'アカウントがありませんか？',
     'login.create_account': 'アカウントを作成',
+    'login.email': 'メールアドレス',
+    'login.welcome_message': 'AREAへようこそ！',
+    'login.errors.invalid_credentials': 'メールアドレスまたはパスワードが無効です',
 
     // Signup
     'signup.sign_in': 'ログイン',
