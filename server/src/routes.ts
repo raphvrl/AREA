@@ -6,7 +6,7 @@ import { get_area } from './api/getArea';
 
 const router = Router();
 
-// Sign up route
+// Route pour sign_in
 router.post(
     '/sign_up',
     [
@@ -18,7 +18,7 @@ router.post(
     sign_up
 );
 
-// Sign in route
+// Route pour login
 router.post(
     '/sign_in',
     [
