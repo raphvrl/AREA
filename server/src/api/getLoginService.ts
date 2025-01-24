@@ -9,13 +9,7 @@ async function getLoginService(email: string) {
         }
 
         // Filtrer les services qui sont définis à true
-        const services = Object.entries(user.services || {}).filter(([serviceName, serviceStatus]) => serviceStatus === true);
-
-        // Transformer en un objet avec les services activés
-        const activeServices = services.reduce((acc, [serviceName]) => {
-            acc[serviceName] = true;
-            return acc;
-        }, {});
+        const activeServices = Object.keys(user.service || {}).filter(serviceName => user.service[serviceName] === true);
 
         return activeServices;
     } catch (error) {
