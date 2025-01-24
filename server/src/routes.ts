@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
 import { sign_in, sign_up } from './api/login';
+import { set_area } from './api/setArea';
 
 const router = Router();
 
@@ -24,6 +25,17 @@ router.post(
         body('password').notEmpty().withMessage('Password is required'),
     ],
     sign_in
+);
+
+router.post(
+    '/set_area',
+    [
+        body('email_user').isEmail().withMessage('Invalid email address.'),
+        body('nom_area').notEmpty().withMessage('Area name is required.'),
+        body('action').notEmpty().withMessage('Action is required.'),
+        body('reaction').notEmpty().withMessage('Reaction is required.'),
+    ],
+    set_area
 );
 
 export default router;

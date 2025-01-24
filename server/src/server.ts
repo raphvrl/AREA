@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import routes from './routes';
 import connectDB from './db/db';
+import { executeAreas } from './tasks/asyncTasks';
 const app = express();
 dotenv.config();
 
