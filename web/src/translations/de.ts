@@ -23,6 +23,9 @@ export const deTranslations = {
     'login.email': 'E-Mail',
     'login.welcome_message': 'Willkommen bei AREA!',
     'login.errors.invalid_credentials': 'Ungültige E-Mail oder Passwort',
+    'login.errors.general': 'Bei der Anmeldung ist ein Fehler aufgetreten',
+    'login.errors.email': 'Ungültiges E-Mail-Format',
+    'login.errors.password': 'Ungültiges Passwort',
 
     // Signup
     'signup.sign_in': 'Anmelden',
@@ -34,7 +37,11 @@ export const deTranslations = {
     'signup.errors.required_email': 'E-Mail ist erforderlich',
     'signup.errors.required_password': 'Passwort ist erforderlich',
     'signup.errors.passwords_match': 'Passwörter stimmen nicht überein',
-    'signup.errors.general': 'Ein Fehler ist aufgetreten',
+    'signup.errors.general': 'Bei der Registrierung ist ein Fehler aufgetreten',
+    'signup.errors.email': 'Bitte geben Sie eine gültige E-Mail-Adresse ein',
+    'signup.errors.password': 'Das Passwort muss mindestens 8 Zeichen lang sein',
+    'signup.errors.firstname': 'Vorname ist erforderlich',
+    'signup.errors.lastname': 'Nachname ist erforderlich',
     'signup.create_account': 'Konto erstellen',
     'signup.subtitle': 'Registrieren Sie sich, um zu beginnen',
     'signup.password': 'Passwort',

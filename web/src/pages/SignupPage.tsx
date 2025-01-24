@@ -5,6 +5,8 @@ import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from '../context/TranslationContext';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { AuthError, ApiValidationError } from '../types/auth';
+import { TranslationKey } from '../translations/types';
 
 const BACKEND_PORT = process.env.REACT_APP_BACKEND_PORT || 8080;
 
@@ -16,6 +18,17 @@ interface SignupResponse {
     isFirstLogin: boolean;
   };
 }
+
+// Error display component
+const ErrorMessage: React.FC<{ error?: AuthError }> = ({ error }) => {
+  if (!error) return null;
+  
+  return (
+    <div className="text-red-500 text-sm mt-1">
+      {error.message}
+    </div>
+  );
+};
 
 const SignupPage: React.FC = () => {
   const navigate = useNavigate();
@@ -31,19 +44,48 @@ const SignupPage: React.FC = () => {
     confirmPassword: '',
   });
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<AuthError[]>([]);
 
   const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-    if (!formData.firstName) newErrors.firstName = t('signup.errors.required_firstname');
-    if (!formData.lastName) newErrors.lastName = t('signup.errors.required_lastname');
-    if (!formData.email) newErrors.email = t('signup.errors.required_email');
-    if (!formData.password) newErrors.password = t('signup.errors.required_password');
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = t('signup.errors.passwords_match');
+    const formErrors: AuthError[] = [];
+    
+    if (!formData.firstName) {
+      formErrors.push({
+        field: 'firstName',
+        message: t('signup.errors.firstname')
+      });
     }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    
+    if (!formData.lastName) {
+      formErrors.push({
+        field: 'lastName', 
+        message: t('signup.errors.lastname')
+      });
+    }
+    
+    if (!formData.email) {
+      formErrors.push({
+        field: 'email',
+        message: t('signup.errors.email') 
+      });
+    }
+    
+    if (!formData.password) {
+      formErrors.push({
+        field: 'password',
+        message: t('signup.errors.password')
+      });
+    }
+    
+    if (formData.password !== formData.confirmPassword) {
+      formErrors.push({
+        field: 'confirmPassword',
+        message: t('signup.errors.passwords_match')
+      });
+    }
+    
+    setErrors(formErrors);
+    return formErrors.length === 0;
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,11 +94,8 @@ const SignupPage: React.FC = () => {
       ...prev,
       [name]: value,
     }));
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: '',
-      }));
+    if (errors.find(error => error.field === name)) {
+      setErrors((prev) => prev.filter(error => error.field !== name));
     }
   };
 
@@ -72,11 +111,6 @@ const SignupPage: React.FC = () => {
           lastName: formData.lastName,
           email: formData.email,
           password: formData.password
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
         }
       );
       
@@ -86,18 +120,21 @@ const SignupPage: React.FC = () => {
       }
     } catch (error: any) {
       console.error('Signup error:', error);
-      if (error.response?.data?.message) {
-        setErrors({ general: error.response.data.message });
-      } else if (error.response?.data?.errors) {
-        // Handle validation errors from express-validator
-        const validationErrors = error.response.data.errors;
-        const newErrors: Record<string, string> = {};
-        validationErrors.forEach((err: any) => {
-          newErrors[err.param] = err.msg;
-        });
-        setErrors(newErrors);
+      
+      if (error.response?.data?.errors) {
+        const apiErrors = error.response.data as ApiValidationError;
+        const mappedErrors = apiErrors.errors?.map(err => {
+          const translationKey = `signup.errors.${err.param}` as TranslationKey;
+          return {
+            field: err.param,
+            message: t(translationKey) || err.msg
+          };
+        }) || [];
+        setErrors(mappedErrors);
       } else {
-        setErrors({ general: t('signup.errors.general') });
+        setErrors([{
+          message: t('signup.errors.general')
+        }]);
       }
     }
   };
@@ -126,6 +163,11 @@ const SignupPage: React.FC = () => {
         </div>
 
         <form className="space-y-4" onSubmit={handleFormSubmit}>
+          {errors.filter(e => !e.field).map((error, index) => (
+            <div key={index} className="text-red-500 text-sm text-center">
+              {error.message}
+            </div>
+          ))}
           <div>
             <input
               type="text"
@@ -133,7 +175,12 @@ const SignupPage: React.FC = () => {
               placeholder={t('signup.firstname')}
               value={formData.firstName}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className={`w-full px-4 py-3 rounded-lg border ${
+                errors.find(e => e.field === 'firstName') ? 'border-red-500' : ''
+              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+            />
+            <ErrorMessage 
+              error={errors.find(e => e.field === 'firstName')}
             />
           </div>
           <div>
@@ -143,7 +190,12 @@ const SignupPage: React.FC = () => {
               placeholder={t('signup.lastname')}
               value={formData.lastName}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className={`w-full px-4 py-3 rounded-lg border ${
+                errors.find(e => e.field === 'lastName') ? 'border-red-500' : ''
+              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+            />
+            <ErrorMessage 
+              error={errors.find(e => e.field === 'lastName')}
             />
           </div>
           <div>
@@ -153,7 +205,12 @@ const SignupPage: React.FC = () => {
               placeholder={t('signup.email')}
               value={formData.email}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className={`w-full px-4 py-3 rounded-lg border ${
+                errors.find(e => e.field === 'email') ? 'border-red-500' : ''
+              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+            />
+            <ErrorMessage 
+              error={errors.find(e => e.field === 'email')}
             />
           </div>
           <div>
@@ -163,7 +220,12 @@ const SignupPage: React.FC = () => {
               placeholder={t('signup.password')}
               value={formData.password}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className={`w-full px-4 py-3 rounded-lg border ${
+                errors.find(e => e.field === 'password') ? 'border-red-500' : ''
+              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+            />
+            <ErrorMessage 
+              error={errors.find(e => e.field === 'password')}
             />
           </div>
           <div>
@@ -173,7 +235,12 @@ const SignupPage: React.FC = () => {
               placeholder={t('signup.confirm_password')}
               value={formData.confirmPassword}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className={`w-full px-4 py-3 rounded-lg border ${
+                errors.find(e => e.field === 'confirmPassword') ? 'border-red-500' : ''
+              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+            />
+            <ErrorMessage 
+              error={errors.find(e => e.field === 'confirmPassword')}
             />
           </div>
           <button

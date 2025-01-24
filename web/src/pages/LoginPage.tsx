@@ -5,6 +5,8 @@ import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from '../context/TranslationContext';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import { AuthError, ApiValidationError } from '../types/auth';
+import { TranslationKey } from '../translations/types'; // Add this import
 
 const BACKEND_PORT = process.env.BACKEND_PORT || 8080;
 
@@ -29,7 +31,7 @@ const LoginPage: React.FC = () => {
     email: '',
     password: ''
   });
-  const [error, setError] = useState<string>('');
+  const [errors, setErrors] = useState<AuthError[]>([]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -81,23 +83,43 @@ const LoginPage: React.FC = () => {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrors([]); // Clear previous errors
     
     try {
-      const response = await axios.post<LoginResponse>(`https://localhost:${BACKEND_PORT}/api/sign_in`, {
-        email: formData.email,
-        password: formData.password
-      });
+      const response = await axios.post<LoginResponse>(
+        `https://localhost:${BACKEND_PORT}/api/sign_in`, 
+        formData
+      );
   
       const user = response.data.user;
       login(user);
       if (user.isFirstLogin) {
-        // Use a simple welcome message without parameters
-        alert(t('login.welcome_message')); 
+        alert(t('login.welcome_message'));
       }
       navigate('/');
-    } catch (error) {
+  
+    } catch (error: any) {
       console.error('Login error:', error);
-      setError(t('login.errors.invalid_credentials'));
+      
+      if (error.response?.data?.errors) {
+        const apiErrors = error.response.data as ApiValidationError;
+        const mappedErrors = apiErrors.errors?.map(err => {
+          const translationKey = `login.errors.${err.param}` as TranslationKey;
+          return {
+            field: err.param,
+            message: t(translationKey) || err.msg
+          };
+        }) || [];
+        setErrors(mappedErrors);
+      } else if (error.response?.status === 401) {
+        setErrors([{
+          message: t('login.errors.invalid_credentials')
+        }]);
+      } else {
+        setErrors([{
+          message: t('login.errors.general')
+        }]);
+      }
     }
   };
 
@@ -123,9 +145,11 @@ const LoginPage: React.FC = () => {
         </div>
 
         <form className="space-y-4" onSubmit={handleFormSubmit}>
-          {error && (
+          {errors.length > 0 && (
             <div className="text-red-500 text-sm text-center">
-              {error}
+              {errors.map((error, index) => (
+                <p key={index}>{error.message}</p>
+              ))}
             </div>
           )}
           <div>

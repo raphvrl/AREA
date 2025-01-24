@@ -23,6 +23,9 @@ export const enTranslations = {
     'login.email': 'Email',
     'login.welcome_message': 'Welcome to AREA!',
     'login.errors.invalid_credentials': 'Invalid email or password',
+    'login.errors.general': 'An error occurred during login',
+    'login.errors.email': 'Invalid email format',
+    'login.errors.password': 'Invalid password',
 
     // Signup
     'signup.sign_in': 'Sign in',
@@ -34,7 +37,11 @@ export const enTranslations = {
     'signup.errors.required_email': 'Email is required',
     'signup.errors.required_password': 'Password is required',
     'signup.errors.passwords_match': 'Passwords do not match',
-    'signup.errors.general': 'An error occurred',
+    'signup.errors.general': 'An error occurred during signup',
+    'signup.errors.email': 'Please enter a valid email',
+    'signup.errors.password': 'Password must be at least 8 characters',
+    'signup.errors.firstname': 'First name is required',
+    'signup.errors.lastname': 'Last name is required', 
     'signup.create_account': 'Create an account',
     'signup.subtitle': 'Sign up to get started',
     'signup.password': 'Password',
