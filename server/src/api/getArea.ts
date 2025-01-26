@@ -17,12 +17,17 @@ export const get_area = async (req: Request, res: Response) => {
         }
 
         // Forcer TypeScript à comprendre les types de `area`
-        const areaMap = user.area as Map<string, { action: string; reaction: string; is_on: string }>;
+        const areaMap = user.area as Map<string, { action: string; reaction: string; is_on: string }> | undefined;
+        if (!areaMap) {
+            return res.status(200).json({ areas: [] }); // Aucun area disponible
+        }
 
-        // Récupérer les areas de l'utilisateur
+        // Récupérer les areas de l'utilisateur en filtrant les données inutiles
         const areas = Array.from(areaMap.entries()).map(([nom_area, area]) => ({
             nom_area,
-            ...area,
+            action: area.action,
+            reaction: area.reaction,
+            is_on: area.is_on,
         }));
 
         return res.status(200).json({ areas });

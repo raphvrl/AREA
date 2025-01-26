@@ -20,9 +20,9 @@ app.use(cors( {
 
 app.use('/api', routes);
 
-setInterval(() => {
-    executeAreas();
-}, 10000);
+//setInterval(() => {
+//    executeAreas();
+//}, 10000);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

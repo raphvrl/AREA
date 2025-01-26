@@ -3,10 +3,13 @@ import { body, param } from 'express-validator';
 import { sign_in, sign_up } from './api/login';
 import { set_area } from './api/setArea';
 import { get_area } from './api/getArea';
+import { getLoginService } from './api/getLoginService'; // Import de la fonction getLoginService
+import { logout_service } from './api/logoutService'; // Import de la fonction logout_service
+import { delete_area } from './api/delete_area';
 
 const router = Router();
 
-// Route pour sign_in
+// Route pour sign_up
 router.post(
     '/sign_up',
     [
@@ -18,7 +21,7 @@ router.post(
     sign_up
 );
 
-// Route pour login
+// Route pour sign_in
 router.post(
     '/sign_in',
     [
@@ -47,6 +50,42 @@ router.get(
         param('email_user').isEmail().withMessage('Invalid email address'),
     ],
     get_area
+);
+
+// Route pour getLoginService
+router.post(
+    '/get_login_service',
+    [
+        body('email').isEmail().withMessage('Invalid email address.'),
+    ],
+    getLoginService
+);
+
+// Route pour logout_service
+router.post(
+    '/logout_service',
+    [
+        body('name_service').notEmpty().withMessage('Service name is required.'),
+        body('email').isEmail().withMessage('Invalid email address.'),
+    ],
+    logout_service
+);
+router.delete(
+    '/delete_area',
+    [
+        body('email').isEmail().withMessage('Invalid email address.'),
+        body('nom_area').notEmpty().withMessage('Area name is required.')
+    ],
+    delete_area // Utilisation de la fonction définie séparément
+);
+
+router.delete(
+    '/delete_area',
+    [
+        body('email').isEmail().withMessage('Invalid email address.'),
+        body('nom_area').notEmpty().withMessage('Area name is required.')
+    ],
+    delete_area // Lien vers la fonction API `delete_area`
 );
 
 export default router;
