@@ -3,20 +3,66 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  TextInput 
+  TextInput,
+  Alert
 } from "react-native";
 
 import { Link, router } from "expo-router";
 import { baseStyles } from "@/styles/base_styles";
+import { useState } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Register() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleRegister = async () => {
+    try {
+      const apiUrl = await AsyncStorage.getItem("API_URL");
+
+      const response = await fetch(`${apiUrl}/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          firstName,
+          lastName,
+          email,
+          password
+        }),
+      });
+
+      const data = await response.json();
+
+    if (response.ok) {
+      router.push('/login');
+    } else {
+      Alert.alert("Erreur", data.message);
+    }
+  } catch (error) {
+    Alert.alert("Erreur", "Une erreur est survenue");
+  }
+};
+
   return (
     <View style={baseStyles.container}>
       <Text style={baseStyles.title}>AREA</Text>
 
       <TextInput
         style={baseStyles.input}
-        placeholder="Nom d'utilisateur"
+        placeholder="Prenom"
+        value={firstName}
+        onChangeText={setFirstName}
+      />
+
+<TextInput
+        style={baseStyles.input}
+        placeholder="Nom"
+        value={firstName}
+        onChangeText={setFirstName}
       />
 
       <TextInput
@@ -24,17 +70,21 @@ export default function Register() {
         placeholder="Email"
         keyboardType="email-address"
         autoCapitalize="none"
+        value={email}
+        onChangeText={setEmail}
       />
 
       <TextInput
         style={baseStyles.input}
         placeholder="Mot de passe"
         secureTextEntry
+        value={password}
+        onChangeText={setPassword}
       />
 
       <TouchableOpacity
         style={baseStyles.button}
-        onPress={() => router.push("/login")}
+        onPress={handleRegister}
       >
         <Text style={styles.buttonText}>S'inscrire</Text>
       </TouchableOpacity>

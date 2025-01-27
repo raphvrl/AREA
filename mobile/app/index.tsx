@@ -1,14 +1,37 @@
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
-import { router } from "expo-router";
+import { Text, View, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import { baseStyles } from "../styles/base_styles";
+import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { colors } from "@/styles/colors";
+import { router } from "expo-router";
 
 export default function Index() {
+  const [ipAddress, setIpAddress] = useState("");
+
+  const handleSubmit = async () => {
+    if (ipAddress) {
+      await AsyncStorage.setItem("API_URL", `http://$${ipAddress}:8080`);
+      router.push("/login");
+    }
+  };
+
   return (
     <View style={baseStyles.container}>
       <Text style={baseStyles.title}>AREA</Text>
-      <TouchableOpacity
-        style={baseStyles.button}
-        onPress={() => router.push("/login")}
+
+      <TextInput
+        style={styles.input}
+        placeholder="Entrez l'adresse IP du serveur"
+        value={ipAddress}
+        onChangeText={setIpAddress}
+        keyboardType="numeric"
+        autoCapitalize="none"
+      />
+
+<TouchableOpacity
+        style={[baseStyles.button, !ipAddress && styles.buttonDisabled]}
+        onPress={handleSubmit}
+        disabled={!ipAddress}
       >
         <Text style={styles.buttonText}>C'est partie!</Text>
       </TouchableOpacity>
@@ -37,6 +60,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 15,
+    backgroundColor: '#f9f9f9',
   },
   loginButton: {
     width: '100%',
@@ -49,5 +73,8 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: '600',
+  },
+  buttonDisabled: {
+    opacity: 0.5,
   },
 });
