@@ -6,6 +6,7 @@ export const itTranslations = {
     'nav.logout': 'Disconnettersi',
     'nav.about': 'Chi siamo',
     'nav.contact': 'Contatto',
+    'nav.services': 'Servizi',
     
     // Login
     'login.title': 'Accesso',
@@ -117,5 +118,14 @@ export const itTranslations = {
     'landing.features.security.title': 'Sicurezza Avanzata',
     'landing.features.security.description': 'I tuoi dati sono protetti con i più alti standard di sicurezza.',
     'landing.services.title': 'Servizi Disponibili',
-    'landing.services.subtitle': 'Connettiti con le tue piattaforme preferite'
+    'landing.services.subtitle': 'Connettiti con le tue piattaforme preferite',
+
+    // Services
+    'services.title': 'Servizi Disponibili',
+    'services.subtitle': 'Connetti i tuoi servizi preferiti per automatizzare le attività',
+    'services.github.description': 'Accedi ai tuoi repository e gestisci i progetti GitHub',
+    'services.spotify.description': 'Controlla la tua musica e gestisci le playlist',
+    'services.linkedin.description': 'Gestisci la tua rete professionale e le connessioni',
+    'services.connect': 'Connetti',
+    'services.disconnect': 'Disconnetti'
 };

@@ -6,6 +6,7 @@ export const jaTranslations = {
     'nav.logout': 'ログアウト',
     'nav.about': '概要',
     'nav.contact': 'お問い合わせ',
+    'nav.services': 'サービス',
     'login.welcome_back': 'おかえりなさい！',
     
     // Login
@@ -117,5 +118,14 @@ export const jaTranslations = {
     'landing.features.security.title': '高度なセキュリティ',
     'landing.features.security.description': 'お客様のデータは最高のセキュリティ基準で保護されています。',
     'landing.services.title': '利用可能なサービス',
-    'landing.services.subtitle': 'お気に入りのプラットフォームと連携'
+    'landing.services.subtitle': 'お気に入りのプラットフォームと連携',
+
+    // Services
+    'services.title': '利用可能なサービス',
+    'services.subtitle': 'お気に入りのサービスを接続してタスクを自動化',
+    'services.github.description': 'リポジトリにアクセスしGitHubプロジェクトを管理',
+    'services.spotify.description': '音楽を制御しプレイリストを管理',
+    'services.linkedin.description': 'プロフェッショナルネットワークと人脈を管理',
+    'services.connect': '接続',
+    'services.disconnect': '切断'
 };

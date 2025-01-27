@@ -87,7 +87,7 @@ const LoginPage: React.FC = () => {
     
     try {
       const response = await axios.post<LoginResponse>(
-        `https://localhost:${BACKEND_PORT}/api/sign_in`, 
+        `http://localhost:${BACKEND_PORT}/api/sign_in`, 
         formData
       );
   
@@ -195,7 +195,7 @@ const LoginPage: React.FC = () => {
           {/* Social login buttons with hover effects and icons */}
           <motion.a
             whileHover={{ scale: 1.02 }}
-            href={`https://localhost:${BACKEND_PORT}/api/auth/linkedin`}
+            href={`http://localhost:${BACKEND_PORT}/api/auth/linkedin`}
             className="flex items-center justify-center w-full py-3 px-4 rounded-lg bg-[#0077B5] hover:bg-[#006699] text-white transition-colors duration-200"
           >
             <i className="fab fa-linkedin mr-2"></i>
@@ -204,7 +204,7 @@ const LoginPage: React.FC = () => {
 
           <motion.a
             whileHover={{ scale: 1.02 }}
-            href={`https://localhost:${BACKEND_PORT}/api/auth/spotify`}
+            href={`http://localhost:${BACKEND_PORT}/api/auth/spotify`}
             className="flex items-center justify-center w-full py-3 px-4 rounded-lg bg-green-500 hover:bg-green-600 text-white transition-colors duration-200"
           >
             <i className="fab fa-spotify mr-2"></i>
@@ -213,7 +213,7 @@ const LoginPage: React.FC = () => {
 
           <motion.a
             whileHover={{ scale: 1.02 }}
-            href={`https://localhost:${BACKEND_PORT}/api/auth/discord`}
+            href={`http://localhost:${BACKEND_PORT}/api/auth/discord`}
             className="flex items-center justify-center w-full py-3 px-4 rounded-lg bg-[#7289DA] hover:bg-[#6A7EC5] text-white transition-colors duration-200"
           >
             <i className="fab fa-discord mr-2"></i>
@@ -222,7 +222,7 @@ const LoginPage: React.FC = () => {
 
           <motion.a
             whileHover={{ scale: 1.02 }}
-            href={`https://localhost:${BACKEND_PORT}/api/auth/github`}
+            href={`http://localhost:${BACKEND_PORT}/api/auth/github`}
             className="flex items-center justify-center w-full py-3 px-4 rounded-lg bg-gray-900 hover:bg-gray-800 text-white transition-colors duration-200"
           >
             <i className="fab fa-github mr-2"></i>

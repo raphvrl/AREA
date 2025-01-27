@@ -31,7 +31,7 @@ const HomePage: React.FC = () => {
 
     const fetchAreas = async () => {
       try {
-        const response = await fetch(`https://localhost:${BACKEND_PORT}/api/areas`, {
+        const response = await fetch(`http://localhost:${BACKEND_PORT}/api/areas`, {
           credentials: 'include'
         });
         const data = await response.json();
@@ -74,7 +74,7 @@ const HomePage: React.FC = () => {
 
   const handleDeleteArea = async (areaId: string) => {
     try {
-      await fetch(`https://localhost:${BACKEND_PORT}/api/areas/${areaId}`, {
+      await fetch(`http://localhost:${BACKEND_PORT}/api/areas/${areaId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -87,7 +87,7 @@ const HomePage: React.FC = () => {
   const handleToggleArea = async (area: Area) => {
     try {
       const updatedArea = { ...area, isActive: !area.isActive };
-      await fetch(`https://localhost:${BACKEND_PORT}/api/areas/${area.id}`, {
+      await fetch(`http://localhost:${BACKEND_PORT}/api/areas/${area.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedArea),

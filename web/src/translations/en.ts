@@ -6,6 +6,7 @@ export const enTranslations = {
     'nav.logout': 'Logout',
     'nav.about': 'About',
     'nav.contact': 'Contact',
+    'nav.services': 'Services',
     
     // Login
     'login.title': 'Login',
@@ -117,5 +118,14 @@ export const enTranslations = {
     'landing.features.security.title': 'Advanced Security',
     'landing.features.security.description': 'Your data is protected with the highest security standards.',
     'landing.services.title': 'Available Services',
-    'landing.services.subtitle': 'Connect with your favorite platforms'
+    'landing.services.subtitle': 'Connect with your favorite platforms',
+
+    // Services
+    'services.title': 'Available Services',
+    'services.subtitle': 'Connect your favorite services to automate your tasks',
+    'services.github.description': 'Access your repositories and manage GitHub projects',
+    'services.spotify.description': 'Control your music and manage playlists',
+    'services.linkedin.description': 'Manage your professional network and connections',
+    'services.connect': 'Connect',
+    'services.disconnect': 'Disconnect'
 };

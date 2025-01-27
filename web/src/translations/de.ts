@@ -6,6 +6,7 @@ export const deTranslations = {
     'nav.logout': 'Abmelden',
     'nav.about': 'Über uns',
     'nav.contact': 'Kontakt',
+    'nav.services': 'Dienste',
     
     // Login
     'login.title': 'Anmeldung',
@@ -117,5 +118,14 @@ export const deTranslations = {
     'landing.features.security.title': 'Erweiterte Sicherheit',
     'landing.features.security.description': 'Ihre Daten werden mit höchsten Sicherheitsstandards geschützt.',
     'landing.services.title': 'Verfügbare Dienste',
-    'landing.services.subtitle': 'Verbinden Sie sich mit Ihren Lieblingsplattformen'
+    'landing.services.subtitle': 'Verbinden Sie sich mit Ihren Lieblingsplattformen',
+
+    // Services
+    'services.title': 'Verfügbare Dienste',
+    'services.subtitle': 'Verbinden Sie Ihre bevorzugten Dienste zur Automatisierung',
+    'services.github.description': 'Greifen Sie auf Ihre Repositories zu und verwalten Sie GitHub-Projekte',
+    'services.spotify.description': 'Steuern Sie Ihre Musik und verwalten Sie Playlists',
+    'services.linkedin.description': 'Verwalten Sie Ihr berufliches Netzwerk und Verbindungen',
+    'services.connect': 'Verbinden',
+    'services.disconnect': 'Trennen'
 };
