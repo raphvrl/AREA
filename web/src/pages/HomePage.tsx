@@ -17,65 +17,92 @@ const HomePage: React.FC = () => {
   const [selectedReaction, setSelectedReaction] = useState<Reaction | null>(null);
   const [areaName, setAreaName] = useState('');
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { isDarkMode } = useTheme();
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const fetchAreas = async () => {
+    if (!user?.email) return;
+    
+    try {
+      const response = await fetch(`http://localhost:${BACKEND_PORT}/api/get_area/${user.email}`, {
+        credentials: 'include'
+      });
+      const data = await response.json();
+      if (data.areas) {
+        const formattedAreas = data.areas.map((area: any) => ({
+          id: area.nom_area,
+          name: area.nom_area,
+          action: {
+            type: area.action,
+            service: area.action.split('_')[1],
+          },
+          reaction: {
+            type: area.reaction,
+            service: area.reaction.split('_')[1],
+          },
+          isActive: area.is_on === 'true'
+        }));
+        setAreas(formattedAreas);
+      }
+    } catch (error) {
+      console.error('Error fetching areas:', error);
+    }
+  };
 
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login');
       return;
     }
-
-    const fetchAreas = async () => {
-      try {
-        const response = await fetch(`http://localhost:${BACKEND_PORT}/api/areas`, {
-          credentials: 'include'
-        });
-        const data = await response.json();
-        setAreas(data);
-      } catch (error) {
-        console.error('Error fetching areas:', error);
-      }
-    };
-
     fetchAreas();
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, user?.email]);
 
   const handleCreateArea = async () => {
-    if (!selectedAction || !selectedReaction || !areaName) {
+    if (!selectedAction || !selectedReaction || !areaName || !user?.email) {
       alert(t('home.areas.fill_all_fields'));
       return;
     }
 
-    const tempId = Date.now().toString();
-    const tempArea = {
-      id: tempId,
-      name: areaName,
-      action: {
-        service: selectedAction.service,
-        type: selectedAction.type,
-        description: selectedAction.description
-      },
-      reaction: {
-        service: selectedReaction.service,
-        type: selectedReaction.type,
-        description: selectedReaction.description
-      },
-      isActive: true
-    };
+    try {
+      const response = await fetch(`http://localhost:${BACKEND_PORT}/api/set_area`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          email_user: user.email,
+          nom_area: areaName,
+          action: `${selectedAction.type}_${selectedAction.service}`,
+          reaction: `${selectedReaction.type}_${selectedReaction.service}`
+        })
+      });
 
-    setAreas(prevAreas => [...prevAreas, tempArea]);
-    setShowCreateModal(false);
-    resetForm();
+      if (response.ok) {
+        await fetchAreas();
+        setShowCreateModal(false);
+        resetForm();
+      } else {
+        const error = await response.json();
+        alert(error.message);
+      }
+    } catch (error) {
+      console.error('Error creating area:', error);
+    }
   };
 
   const handleDeleteArea = async (areaId: string) => {
+    if (!user?.email) return;
+
     try {
-      await fetch(`http://localhost:${BACKEND_PORT}/api/areas/${areaId}`, {
+      await fetch(`http://localhost:${BACKEND_PORT}/api/delete_area`, {
         method: 'DELETE',
-        credentials: 'include'
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          email: user.email,
+          nom_area: areaId
+        })
       });
       setAreas(areas.filter(area => area.id !== areaId));
     } catch (error) {

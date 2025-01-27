@@ -130,10 +130,6 @@ const SignupPage: React.FC = () => {
           };
         }) || [];
         setErrors(mappedErrors);
-      } else {
-        setErrors([{
-          message: t('signup.errors.general')
-        }]);
       }
     }
   };

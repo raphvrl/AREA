@@ -16,6 +16,7 @@ interface LoginResponse {
     id: string;
     firstName: string;
     lastName: string;
+    email: string; // Make sure email is included in response type
     isFirstLogin: boolean;
     [key: string]: any;
   };
@@ -43,9 +44,13 @@ const LoginPage: React.FC = () => {
     const githubToken = urlParams.get('github_token');
 
     const handleSocialLogin = (token: string, platform: string, userData: any) => {
+      const user = {
+        ...userData,
+        email: userData.email || `${platform}_user@area.com` // Add default email for social logins
+      };
       localStorage.setItem(`${platform}_token`, token);
-      localStorage.setItem('user', JSON.stringify(userData));
-      login(userData);
+      localStorage.setItem('user', JSON.stringify(user));
+      login(user);
       navigate('/');
     };
 
@@ -54,21 +59,29 @@ const LoginPage: React.FC = () => {
         firstName,
         lastName,
         isFirstLogin: true,
+        email: '' // Add empty string as default
       });
     } else if (discordToken && firstName && lastName) {
       handleSocialLogin(discordToken, 'discord', {
         firstName,
         lastName,
         isFirstLogin: true,
+        email: '' // Add empty string as default
       });
     } else if (spotifyToken) {
       handleSocialLogin(spotifyToken, 'spotify', {
         firstName: 'Spotify',
         lastName: 'User',
         isFirstLogin: true,
+        email: '' // Add empty string as default
       });
     } else if (firstName && lastName) {
-      login({ firstName, lastName, isFirstLogin });
+      login({ 
+        firstName, 
+        lastName, 
+        isFirstLogin,
+        email: '' // Add empty string as default
+      });
       navigate('/');
     }
   }, [login, navigate]);
@@ -91,7 +104,11 @@ const LoginPage: React.FC = () => {
         formData
       );
   
-      const user = response.data.user;
+      const user = {
+        ...response.data.user,
+        email: response.data.user.email || formData.email // Use email from response or form
+      };
+      
       login(user);
       if (user.isFirstLogin) {
         alert(t('login.welcome_message'));

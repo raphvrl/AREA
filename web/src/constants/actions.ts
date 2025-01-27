@@ -2,39 +2,30 @@ import { Action } from '../types/area';
 
 export const availableActions: Action[] = [
   {
-    id: 'spotify-track-playing',
-    service: 'Spotify', 
-    type: 'TRACK_PLAYING',
-    description: 'When a track starts playing on Spotify'
+    id: 'test-timer',
+    service: 'test',
+    type: 'time10_test', // Format: action_service
+    description: 'Test action: Wait for 10 seconds'
   },
   {
-    id: 'spotify-auth',
-    service: 'Spotify',
-    type: 'AUTH_STATUS',
-    description: 'When Spotify authentication status changes'
-  },
-  {
-    id: 'user-login',
-    service: 'Auth',
-    type: 'LOGIN',
-    description: 'When user logs in'
+    id: 'test-message',
+    service: 'test',
+    type: 'sendmessage_test', // Format: action_service 
+    description: 'Test action: Send message to terminal'
   }
 ];
 
 export const availableReactions: Action[] = [
   {
-    id: 'spotify-play',
-    service: 'Spotify',
-    type: 'PLAY_TRACK',
-    description: 'Play a track on Spotify',
-    config: {
-      timer: 30
-    }
+    id: 'test-timer-reaction',
+    service: 'test',
+    type: 'time10_test', // Format: action_service
+    description: 'Test reaction: Wait for 10 seconds'
   },
   {
-    id: 'spotify-save',
-    service: 'Spotify', 
-    type: 'SAVE_TRACK',
-    description: 'Save current track to Spotify favorites'
+    id: 'test-message-reaction', 
+    service: 'test',
+    type: 'sendmessage_test', // Format: action_service
+    description: 'Send message to terminal as reaction'
   }
 ];
