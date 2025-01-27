@@ -16,8 +16,6 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<{ firstName: string; lastName: string } | null>(null);
-
-  // Vérification du token au démarrage pour maintenir l'état de l'authentification
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -29,13 +27,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = (userData: { firstName: string; lastName: string; isFirstLogin: boolean}) => {
     setUser(userData);
     setIsAuthenticated(true);
-    localStorage.setItem('user', JSON.stringify(userData)); // Sauvegarder l'utilisateur dans le localStorage
+    localStorage.setItem('user', JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
-    localStorage.removeItem('user'); // Supprimer l'utilisateur du localStorage
+    localStorage.removeItem('user');
   };
 
   return (

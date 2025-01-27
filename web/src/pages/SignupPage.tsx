@@ -19,7 +19,6 @@ interface SignupResponse {
   };
 }
 
-// Error display component
 const ErrorMessage: React.FC<{ error?: AuthError }> = ({ error }) => {
   if (!error) return null;
   

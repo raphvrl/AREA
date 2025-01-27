@@ -16,7 +16,6 @@ const ContactPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Ajoutez ici la logique d'envoi du formulaire
     console.log('Form submitted:', formData);
   };
 

@@ -1,4 +1,3 @@
-// src/types/area.ts
 export interface Action {
   id: string;
   service: string;

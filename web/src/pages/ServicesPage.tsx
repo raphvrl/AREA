@@ -45,7 +45,6 @@ const ServicesPage: React.FC = () => {
   ]);
 
   useEffect(() => {
-    // Charger l'état des connexions au chargement de la page
     fetchServicesStatus();
   }, []);
 

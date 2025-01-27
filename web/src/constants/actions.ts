@@ -1,4 +1,3 @@
-// src/constants/actions.ts
 import { Action } from '../types/area';
 
 export const availableActions: Action[] = [

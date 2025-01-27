@@ -83,7 +83,7 @@ const LoginPage: React.FC = () => {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrors([]); // Clear previous errors
+    setErrors([]);
     
     try {
       const response = await axios.post<LoginResponse>(

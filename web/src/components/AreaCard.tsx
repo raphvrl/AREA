@@ -1,4 +1,3 @@
-// src/components/AreaCard.tsx
 import React from 'react';
 import { Area } from '../types/area';
 import { motion } from 'framer-motion';
@@ -26,7 +25,7 @@ export const AreaCard: React.FC<AreaCardProps> = ({
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">{area.name}</h3>
           <div className="flex space-x-3">
-            {/* Toggle Switch with improved styling */}
+            {/* Toggle Switch */}
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
@@ -46,7 +45,7 @@ export const AreaCard: React.FC<AreaCardProps> = ({
               </div>
             </label>
             
-            {/* Delete button with improved styling */}
+            {/* Delete button */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

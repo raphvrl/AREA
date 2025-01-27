@@ -28,10 +28,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const setTheme = (theme: string) => {
-    // Remove existing theme classes
     document.documentElement.classList.remove('dark', 'high-contrast-mode');
-    
-    // Apply new theme
     switch (theme) {
       case 'dark':
         setIsDarkMode(true);
