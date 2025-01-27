@@ -6,6 +6,7 @@ export const zhTranslations = {
     'nav.logout': '退出登录',
     'nav.about': '关于',
     'nav.contact': '联系我们',
+    'nav.services': '服务',
     
     // Login
     'login.title': '登录',
@@ -117,5 +118,14 @@ export const zhTranslations = {
     'landing.features.security.title': '高级安全',
     'landing.features.security.description': '您的数据受到最高安全标准的保护。',
     'landing.services.title': '可用服务',
-    'landing.services.subtitle': '与您喜爱的平台连接'
+    'landing.services.subtitle': '与您喜爱的平台连接',
+
+    // Services
+    'services.title': '可用服务',
+    'services.subtitle': '连接您喜爱的服务以实现自动化',
+    'services.github.description': '访问您的代码仓库并管理GitHub项目',
+    'services.spotify.description': '控制您的音乐并管理播放列表',
+    'services.linkedin.description': '管理您的职业网络和人脉',
+    'services.connect': '连接',
+    'services.disconnect': '断开连接'
 };

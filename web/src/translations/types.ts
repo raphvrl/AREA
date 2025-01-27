@@ -12,6 +12,7 @@ export type TranslationKey =
   | 'nav.logout'
   | 'nav.about'
   | 'nav.contact'
+  | 'nav.services'
   | 'login.title'
   | 'login.with_linkedin'
   | 'login.with_spotify'
@@ -109,4 +110,11 @@ export type TranslationKey =
   | 'landing.features.security.title'
   | 'landing.features.security.description'
   | 'landing.services.title'
-  | 'landing.services.subtitle';
+  | 'landing.services.subtitle'
+  | 'services.title'
+  | 'services.subtitle'
+  | 'services.github.description'
+  | 'services.spotify.description'
+  | 'services.linkedin.description'
+  | 'services.connect'
+  | 'services.disconnect';

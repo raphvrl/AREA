@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from '../context/TranslationContext';
 import { motion } from 'framer-motion';
-import { IoHome, IoPersonCircle, IoLanguage, IoSunny, IoMoon, IoLogOut } from 'react-icons/io5';
+import { IoHome, IoPersonCircle, IoLanguage, IoSunny, IoMoon, IoLogOut, IoApps } from 'react-icons/io5';
 
 const AuthenticatedNavbar: React.FC = () => {
   const { logout, user } = useAuth();
@@ -52,6 +52,19 @@ const AuthenticatedNavbar: React.FC = () => {
               >
                 <IoHome className="w-5 h-5" />
                 <span className="font-medium hidden md:block">{t('nav.home')}</span>
+              </motion.div>
+            </Link>
+
+            {/* Ajout du lien Services */}
+            <Link to="/services">
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                className={`flex items-center space-x-2 ${
+                  isDarkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <IoApps className="w-5 h-5" />
+                <span className="font-medium hidden md:block">{t('nav.services')}</span>
               </motion.div>
             </Link>
 

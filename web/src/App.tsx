@@ -7,6 +7,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { TranslationProvider } from './context/TranslationContext';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
+import ServicesPage from './pages/ServicesPage'; // Ajoutez l'import
 import AuthenticatedNavbar from './components/AuthenticatedNavbar';
 import LoginNavbar from './components/LoginNavbar';
 import Footer from './components/Footer';
@@ -52,6 +53,14 @@ const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute>
             <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route 
+        path="/services" 
+        element={
+          <ProtectedRoute>
+            <ServicesPage />
           </ProtectedRoute>
         }
       />
