@@ -104,6 +104,7 @@ const SignupPage: React.FC = () => {
     if (!validateForm()) return;
     
     try {
+      console.log(formData.firstName);
       const response = await axios.post<SignupResponse>(
         `http://localhost:${BACKEND_PORT}/api/sign_up`,
         {
@@ -113,7 +114,7 @@ const SignupPage: React.FC = () => {
           password: formData.password
         }
       );
-      
+      console.log(response.data);
       if (response.data.user) {
         login(response.data.user);
         navigate('/');

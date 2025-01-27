@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 // Création de la map contenant les actions
 const actionsMap = new Map<string, string>([
-    ['action1', 'sendEmail_test'],
+    ['action1', 'receiveEmail_test'],
 ]);
 
 // Fonction pour récupérer les actions
