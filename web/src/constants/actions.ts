@@ -3,28 +3,16 @@ import { Action } from '../types/area';
 
 export const availableActions: Action[] = [
   {
-    id: 'spotify-track-playing',
-    service: 'Spotify', 
-    type: 'TRACK_PLAYING',
-    description: 'When a track starts playing on Spotify'
-  },
-  {
-    id: 'spotify-auth',
-    service: 'Spotify',
-    type: 'AUTH_STATUS',
-    description: 'When Spotify authentication status changes'
-  },
-  {
     id: 'repoCreated_github',
     service: 'github',
     type: 'repoCreated',
     description: 'When a new repository is created on Github'
   },
   {
-    id: 'user-login',
-    service: 'Auth',
-    type: 'LOGIN',
-    description: 'When user logs in'
+    id: 'checkNewSong_spotify',
+    service: 'spotify',
+    type: 'checkNewSong',
+    description: 'When a song is added to the favorite playlist'
   }
 ];
 

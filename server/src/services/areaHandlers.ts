@@ -2,6 +2,7 @@ import { time10_seconde, sendmessage_terminal } from './fonction';
 import { nomAction_nomSerice } from './action/testFonction';
 import { repoCreated_github } from './action/githubAction';
 import { sendMessage_telegram } from './reaction/telegramReaction';
+import { checkNewSong_spotify } from './action/checkNewSongSpotify'
 type Handler = (email: any, data?: any) => Promise<any>;
 
 const areaHandlers: { [key: string]: Handler } = {
@@ -30,6 +31,13 @@ const areaHandlers: { [key: string]: Handler } = {
     },
     sendMessage_telegram: async (email: String, actionResult?: any) => {
         const result = await sendMessage_telegram(email, actionResult);
+        return result;
+    },
+    checkNewSong_spotify: async (email?: string,) => {
+        if (!email) {
+            throw new Error('Email est requis.');
+        }
+        const result = await checkNewSong_spotify(email);
         return result;
     }
 };

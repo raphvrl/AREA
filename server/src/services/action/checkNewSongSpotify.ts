@@ -7,7 +7,7 @@ const spotifyApi = new SpotifyWebApi({
     redirectUri: `http://localhost:${process.env.BACKEND_PORT}/api/auth/spotify/callback`
   });
 
-export const checkNewSpotifyTrack = async (email: string): Promise<string> => {
+export const checkNewSong_spotify = async (email: string): Promise<string> => {
     try {
         // Récupérer l'utilisateur depuis la base de données
         const user = await UserModel.findOne({ email });
@@ -15,7 +15,12 @@ export const checkNewSpotifyTrack = async (email: string): Promise<string> => {
             throw new Error(`User with email "${email}" not found.`);
         }
 
-        // Récupérer le token d'accès et l'ID utilisateur Spotify
+        // Vérifier si Spotify est défini, sinon initialiser avec une structure par défaut
+        if (!user.spotify) {
+            user.spotify = { savedTracks: [] } as any; // Initialisation dynamique
+        }
+
+        // Accéder aux champs `apiKeys` et `idService`
         const apiKeysMap = user.apiKeys as Map<string, string>;
         const idServiceMap = user.idService as Map<string, string>;
 
@@ -36,7 +41,7 @@ export const checkNewSpotifyTrack = async (email: string): Promise<string> => {
         );
 
         // Récupérer les musiques sauvegardées dans la base de données
-        const savedTracksInDB = user.spotify?.savedTracks;
+        const savedTracksInDB = (user.spotify as any).savedTracks || [];
 
         // Comparer les musiques existantes avec les nouvelles
         const newTracks = spotifySavedTracks.filter(
@@ -45,13 +50,13 @@ export const checkNewSpotifyTrack = async (email: string): Promise<string> => {
 
         if (newTracks.length > 0) {
             // Mettre à jour la base de données avec les nouvelles musiques
-            user.spotify.savedTracks = spotifySavedTracks;
+            (user.spotify as any).savedTracks = spotifySavedTracks;
             await user.save();
 
             return 'Une nouvelle musique a été ajoutée à votre playlist Spotify !';
         }
 
-        return 'Aucune nouvelle musique trouvée dans votre playlist Spotify.';
+        return 'null';
     } catch (error: unknown) {
         if (error instanceof Error) {
             console.error('Error in checkNewSpotifyTrack:', error.message);

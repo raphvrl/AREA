@@ -19,7 +19,11 @@ export const authSpotify = (req: Request, res: Response) => {
     }
 
     // Scopes pour les permissions Spotify
-    const scopes = ['user-modify-playback-state',
+    const scopes = ['playlist-read-private',
+        'playlist-read-collaborative',
+        'playlist-modify-public',
+        'playlist-modify-private',
+        'user-modify-playback-state',
         'user-read-playback-state',
         'streaming',
         'app-remote-control',
