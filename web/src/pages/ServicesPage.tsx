@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from '../context/TranslationContext';
 import { motion } from 'framer-motion';
-import { IoLogoGithub, IoLogoDiscord } from 'react-icons/io5';
+import { IoLogoGithub } from 'react-icons/io5';
 import { SiSpotify, SiLinkedin } from 'react-icons/si';
 
 interface ServiceState {
