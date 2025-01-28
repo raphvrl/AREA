@@ -9,6 +9,7 @@ import { delete_area } from './api/delete_area';
 import { get_action } from './api/getAction';
 import { get_reaction } from './api/getReaction';
 import { authSpotify, authSpotifyCallback } from './api/spotifyAuth';
+import { authGithub, authGithubCallback } from './api/githubAuth';
 const router = Router();
 
 // Route pour sign_up
@@ -85,4 +86,6 @@ router.get('/get_action', get_action);
 router.get('/get_reaction', get_reaction);
 router.get('/auth/spotify', authSpotify);
 router.get('/auth/spotify/callback', authSpotifyCallback);
+router.get('/auth/github', authGithub);
+router.get('/auth/github/callback', authGithubCallback);
 export default router;

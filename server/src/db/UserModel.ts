@@ -14,9 +14,12 @@ const UserSchema: Schema = new Schema({
         of: new Schema({
             action: { type: String, required: true },
             reaction: { type: String, required: true },
-            is_on: {type: String, required: true},
+            is_on: { type: String, required: true },
         }),
         default: {},
+    },
+    spotify: {
+        savedTracks: { type: [String], default: [] }, // Stocker les IDs des musiques enregistrées
     },
 });
 
