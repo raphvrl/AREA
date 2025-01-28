@@ -37,6 +37,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "d1855607-a494-4456-b6b6-cf0041758dc4"
+      }
+    },
+    "owner": "rafvrl"
   }
 }

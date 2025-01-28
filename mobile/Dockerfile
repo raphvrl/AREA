@@ -1,12 +1,29 @@
-FROM ubuntu:20.04
+FROM reactnativecommunity/react-native-android:latest
 
-RUN apt-ger update && ap-get install -y \
-    curl \
-    git \
-    openjdk-11-jdk \
-    build-essential \
+RUN npm install -g eas-cli
 
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs
+WORKDIR /app
 
-RUN npm install -g expo
+COPY . .
+
+RUN git init
+
+RUN npm install
+
+ENV CI=1
+ENV EXPO_TOKEN=bG8O5cCIaACsIWQDzX8ul7ls_EunSAXrg1AZSPxN
+
+RUN npm install -g expo-doctor
+
+RUN npx expo-doctor
+
+RUN eas init --force --id d1855607-a494-4456-b6b6-cf0041758dc4
+RUN eas build --platform android --profile development --local --non-interactive
+
+RUN mkdir -p /apk
+RUN ls -la /app/android/app/build/outputs/apk || true
+
+# Copie avec wildcard et gestion d'erreur
+RUN find /app -name "*.apk" -exec cp {} /apk/ \; || echo "Aucun APK trouvé"
+
+VOLUME /apk
