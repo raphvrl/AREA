@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -7,10 +7,27 @@ import { motion } from 'framer-motion';
 import { IoHome, IoPersonCircle, IoLanguage, IoSunny, IoMoon, IoLogOut, IoApps } from 'react-icons/io5';
 
 const AuthenticatedNavbar: React.FC = () => {
-  const { logout, user } = useAuth();
+  const { logout, user, login } = useAuth();
   const { isDarkMode, toggleTheme } = useTheme();
   const { language, setLanguage, t } = useTranslation();
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const userPlatform = localStorage.getItem('userPlatform');
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    
+    if (userPlatform && isAuthenticated === 'true') {
+      const storedEmail = localStorage.getItem('userEmail');
+      if (storedEmail) {
+        login({
+          email: storedEmail,
+          firstName: userPlatform, // Use platform as firstName
+          lastName: 'User',       // Default lastName
+          platform: userPlatform  // Now valid with updated User interface
+        });
+      }
+    }
+  }, [login]);
 
   return (
     <motion.nav

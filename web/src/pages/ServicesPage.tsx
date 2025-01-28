@@ -14,6 +14,8 @@ interface ServiceState {
   isConnected: boolean;
 }
 
+const userEmail = localStorage.getItem('userEmail');
+
 const ServicesPage: React.FC = () => {
   const { isDarkMode } = useTheme();
   const { t } = useTranslation();
@@ -45,7 +47,6 @@ const ServicesPage: React.FC = () => {
   ]);
 
   useEffect(() => {
-    // Charger l'état des connexions au chargement de la page
     fetchServicesStatus();
   }, []);
 
@@ -67,9 +68,56 @@ const ServicesPage: React.FC = () => {
     }
   };
 
-  const handleConnect = async (serviceId: string) => {
+  const handleServiceConnection = async (serviceId: string) => {
     try {
-      window.location.href = `${process.env.REACT_APP_API_URL}/api/auth/${serviceId}`;
+      const userEmail = localStorage.getItem('userEmail');
+      if (!userEmail) {
+        console.error('No user email found');
+        return;
+      }
+  
+      const endpoints: { [key: string]: string } = {
+        github: `${process.env.REACT_APP_API_URL}/api/github/auth`,
+        spotify: `${process.env.REACT_APP_API_URL}/api/spotify/auth`,
+        linkedin: `${process.env.REACT_APP_API_URL}/api/linkedin/auth`
+      };
+  
+      const response = await fetch(endpoints[serviceId], {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ 
+          email: userEmail,
+          isAuthenticated: true
+        })
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to connect to ${serviceId}`);
+      }
+  
+      const data = await response.json();
+  
+      if (data.authUrl) {
+        // Store current service for after OAuth redirect
+        localStorage.setItem('pendingService', serviceId);
+        window.location.href = data.authUrl;
+      } else {
+        // Direct connection successful
+        localStorage.setItem('userPlatform', serviceId);
+        localStorage.setItem('isAuthenticated', 'true');
+        
+        setServices(prevServices =>
+          prevServices.map(service =>
+            service.id === serviceId
+              ? { ...service, isConnected: true }
+              : service
+          )
+        );
+      }
+  
     } catch (error) {
       console.error(`Error connecting to ${serviceId}:`, error);
     }
@@ -148,28 +196,10 @@ const ServicesPage: React.FC = () => {
               </p>
 
               <button
-                onClick={() => service.isConnected 
-                  ? handleDisconnect(service.id)
-                  : handleConnect(service.id)
-                }
-                className={`w-full py-2 px-4 rounded-md transition-all duration-200 ${
-                  service.isConnected
-                    ? `bg-red-500 hover:bg-red-600 text-white`
-                    : `${service.color} hover:opacity-90 text-white`
-                } focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                  isDarkMode 
-                    ? 'focus:ring-offset-gray-800' 
-                    : 'focus:ring-offset-white'
-                } ${
-                  service.isConnected 
-                    ? 'focus:ring-red-500' 
-                    : 'focus:ring-blue-500'
-                }`}
+                onClick={() => handleServiceConnection(service.id)}
+                className={`px-4 py-2 rounded-md text-white ${service.color}`}
               >
-                {service.isConnected 
-                  ? t('services.disconnect')
-                  : t('services.connect')
-                }
+                {service.isConnected ? t('services.disconnect') : t('services.connect')}
               </button>
             </motion.div>
           ))}

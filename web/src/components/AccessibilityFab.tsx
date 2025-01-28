@@ -172,7 +172,6 @@ export const AccessibilityFab: React.FC = () => {
           case 'c': toggleContrast(); break;
           case 'f': setIsOpen(prev => !prev); break;
           case 'm': toggleReducedMotion(); break;
-          // etc
         }
       }
     };

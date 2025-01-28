@@ -7,7 +7,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { TranslationProvider } from './context/TranslationContext';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
-import ServicesPage from './pages/ServicesPage'; // Ajoutez l'import
+import ServicesPage from './pages/ServicesPage';
 import AuthenticatedNavbar from './components/AuthenticatedNavbar';
 import LoginNavbar from './components/LoginNavbar';
 import Footer from './components/Footer';
@@ -31,7 +31,6 @@ const NavigationBar: React.FC = () => {
   return isAuthenticated ? <AuthenticatedNavbar /> : null;
 };
 
-// Create a separate component for the routes
 const AppRoutes: React.FC = () => {
   const { isAuthenticated } = useAuth();
   

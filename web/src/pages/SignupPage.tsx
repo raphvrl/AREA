@@ -19,7 +19,6 @@ interface SignupResponse {
   };
 }
 
-// Error display component
 const ErrorMessage: React.FC<{ error?: AuthError }> = ({ error }) => {
   if (!error) return null;
   
@@ -132,10 +131,6 @@ const SignupPage: React.FC = () => {
           };
         }) || [];
         setErrors(mappedErrors);
-      } else {
-        setErrors([{
-          message: t('signup.errors.general')
-        }]);
       }
     }
   };

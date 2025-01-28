@@ -16,6 +16,7 @@ interface LoginResponse {
     id: string;
     firstName: string;
     lastName: string;
+    email: string;
     isFirstLogin: boolean;
     [key: string]: any;
   };
@@ -43,10 +44,22 @@ const LoginPage: React.FC = () => {
     const githubToken = urlParams.get('github_token');
 
     const handleSocialLogin = (token: string, platform: string, userData: any) => {
+      const user = {
+        ...userData,
+        email: userData.email || `${platform}_user@area.com`
+      };
+      
+      // Store authentication data
       localStorage.setItem(`${platform}_token`, token);
-      localStorage.setItem('user', JSON.stringify(userData));
-      login(userData);
-      navigate('/');
+      localStorage.setItem('userEmail', user.email);
+      localStorage.setItem('userPlatform', platform);
+      localStorage.setItem('isAuthenticated', 'true');
+      
+      // Log the user in
+      login(user);
+      
+      // Navigate to services page instead of login
+      navigate('/services');
     };
 
     if (githubToken && firstName && lastName) {
@@ -54,21 +67,29 @@ const LoginPage: React.FC = () => {
         firstName,
         lastName,
         isFirstLogin: true,
+        email: '' // Add empty string as default
       });
     } else if (discordToken && firstName && lastName) {
       handleSocialLogin(discordToken, 'discord', {
         firstName,
         lastName,
         isFirstLogin: true,
+        email: '' // Add empty string as default
       });
     } else if (spotifyToken) {
       handleSocialLogin(spotifyToken, 'spotify', {
         firstName: 'Spotify',
         lastName: 'User',
         isFirstLogin: true,
+        email: '' // Add empty string as default
       });
     } else if (firstName && lastName) {
-      login({ firstName, lastName, isFirstLogin });
+      login({ 
+        firstName, 
+        lastName, 
+        isFirstLogin,
+        email: '' // Add empty string as default
+      });
       navigate('/');
     }
   }, [login, navigate]);
@@ -83,7 +104,7 @@ const LoginPage: React.FC = () => {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrors([]); // Clear previous errors
+    setErrors([]);
     
     try {
       const response = await axios.post<LoginResponse>(
@@ -91,12 +112,12 @@ const LoginPage: React.FC = () => {
         formData
       );
   
-      const user = response.data.user;
-      login(user);
-      if (user.isFirstLogin) {
-        alert(t('login.welcome_message'));
+      if (response.data.user) {
+        // Store email in localStorage before login
+        localStorage.setItem('userEmail', formData.email);
+        login(response.data.user);
+        navigate('/');
       }
-      navigate('/');
   
     } catch (error: any) {
       console.error('Login error:', error);

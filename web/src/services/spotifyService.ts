@@ -7,7 +7,6 @@ export const playTrack = async (token: string) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          // Vous pouvez spécifier l'URI d'une piste Spotify
           uris: ["spotify:track:votre_track_id"]
         })
       });

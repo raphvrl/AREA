@@ -1,4 +1,3 @@
-// src/components/LoginNavbar.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';

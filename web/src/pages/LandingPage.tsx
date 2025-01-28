@@ -21,7 +21,6 @@ const LandingPage: React.FC = () => {
     <>
       <LoginNavbar />
       <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
-        {/* Hero Section */}
         <div className="relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
             <motion.div

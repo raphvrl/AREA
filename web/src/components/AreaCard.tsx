@@ -1,4 +1,3 @@
-// src/components/AreaCard.tsx
 import React from 'react';
 import { Area } from '../types/area';
 import { motion } from 'framer-motion';
@@ -26,27 +25,38 @@ export const AreaCard: React.FC<AreaCardProps> = ({
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">{area.name}</h3>
           <div className="flex space-x-3">
-            {/* Toggle Switch with improved styling */}
+            {/* Toggle Switch */}
             <label className="relative inline-flex items-center cursor-pointer">
               <input
-                type="checkbox"
-                className="sr-only peer"
-                checked={area.isActive}
-                onChange={() => onToggle(area)}
+              type="checkbox"
+              className="sr-only peer"
+              checked={area.isActive}
+              onChange={async () => {
+                try {
+                await onToggle({
+                  ...area,
+                  isActive: !area.isActive // Invert current state
+                });
+                // The parent component should handle the API call and state update
+                } catch (error) {
+                console.error('Failed to toggle area:', error);
+                // Optionally add error handling UI feedback here
+                }
+              }}
               />
               <div className={`w-12 h-6 bg-gray-200 rounded-full peer 
-                peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 
-                ${area.isActive ? 'peer-checked:bg-blue-600' : 'dark:bg-gray-700'} 
-                transition-all duration-200 
-                after:content-[''] after:absolute after:top-2 after:left-[2px] 
-                after:bg-white after:rounded-full after:h-5 after:w-5 
-                after:shadow-sm after:transition-all
-                peer-checked:after:translate-x-6 peer-checked:after:border-white
-                dark:border-gray-600`}>
+              peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 
+              ${area.isActive ? 'peer-checked:bg-blue-600' : 'dark:bg-gray-700'} 
+              transition-all duration-200 
+              after:content-[''] after:absolute after:top-2 after:left-[2px] 
+              after:bg-white after:rounded-full after:h-5 after:w-5 
+              after:shadow-sm after:transition-all
+              peer-checked:after:translate-x-6 peer-checked:after:border-white
+              dark:border-gray-600`}>
               </div>
             </label>
             
-            {/* Delete button with improved styling */}
+            {/* Delete button */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

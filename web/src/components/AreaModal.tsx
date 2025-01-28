@@ -1,4 +1,3 @@
-// src/components/AreaModal.tsx
 import React from 'react';
 import { Action, Reaction } from '../types/area';
 
