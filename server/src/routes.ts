@@ -3,10 +3,11 @@ import { body, param } from 'express-validator';
 import { sign_in, sign_up } from './api/login';
 import { set_area } from './api/setArea';
 import { get_area } from './api/getArea';
-import { getLoginService } from './api/getLoginService'; // Import de la fonction getLoginService
-import { logout_service } from './api/logoutService'; // Import de la fonction logout_service
+import { getLoginService } from './api/getLoginService';
+import { logout_service } from './api/logoutService';
 import { delete_area } from './api/delete_area';
-
+import { get_action } from './api/getAction';
+import { get_reaction } from './api/getReaction';
 const router = Router();
 
 // Route pour sign_up
@@ -79,13 +80,6 @@ router.delete(
     delete_area // Utilisation de la fonction définie séparément
 );
 
-router.delete(
-    '/delete_area',
-    [
-        body('email').isEmail().withMessage('Invalid email address.'),
-        body('nom_area').notEmpty().withMessage('Area name is required.')
-    ],
-    delete_area // Lien vers la fonction API `delete_area`
-);
-
+router.get('/get_action', get_action);
+router.get('/get_reaction', get_reaction);
 export default router;
