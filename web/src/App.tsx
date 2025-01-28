@@ -14,6 +14,7 @@ import Footer from './components/Footer';
 import { AccessibilityFab } from './components/AccessibilityFab';
 import LandingPage from './pages/LandingPage';
 import { AccessibilityProvider } from './context/AccessibilityContext';
+import APKDownload from './components/APKDownload';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -47,6 +48,10 @@ const AppRoutes: React.FC = () => {
       } />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
+      <Route path="/client.apk" element={
+        // This component will trigger the download
+        <APKDownload />
+      } />
       <Route
         path="/profile"
         element={
