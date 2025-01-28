@@ -67,17 +67,14 @@ The project includes three main services configured via `docker-compose`:
    git clone git@github.com:EpitechPromo2027/B-DEV-500-BDX-5-2-area-thomas.gaboriaud.git
    cd B-DEV-500-BDX-5-2-area-thomas.gaboriaud
 
-2. **Run Server:** *```in /server```*
+2. **Run docker:**
 
-    ```npm install && nodemon server.js```
-
-3. **Run web:** *```in /web```*
-
-    ```npm install && npm run dev```
+    ```bash
+    docker-compose up
 
 ## 📖 Documentation
 
-For detailed information about the project, please visit the [Documentation](docs/). 📚
+For detailed information about the project, please visit the [Documentation](doc/). 📚
 
 ---
 
