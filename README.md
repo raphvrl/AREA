@@ -44,8 +44,7 @@ This project uses the following technologies:
 - **ReactJS** for the web front-end <img alt="React Logo" src="https://img.shields.io/badge/ReactJS-61DAFB?logo=react&amp;logoColor=white">
 - **Expo** for the mobile front-end <img alt="Expo Logo" src="https://img.shields.io/badge/Expo-000020?logo=expo&amp;logoColor=white">
 - **Docker** for containerization <img alt="Docker Logo" src="https://img.shields.io/badge/Docker-2496ED?logo=docker&amp;logoColor=white">
-- **GitHub Actions** for continuous integration
-<img alt="GitHub Actions Logo" src="https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&amp;logoColor=white">
+- **GitHub Actions** for continuous integration <img alt="GitHub Actions Logo" src="https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&amp;logoColor=white">
 
 ## 🐳️ Setup with Docker Compose
 
