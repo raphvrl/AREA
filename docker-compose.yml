@@ -1,42 +1,22 @@
 services:
-  server:
-    build:
-      context: ./server
-    ports:
-      - "8080:8080"
-    volumes:
-      - shared_volume:/app/shared
-    environment:
-    - BACKEND_PORT=8080
-    - FRONTEND_PORT=8081
-    - LINKEDIN_CLIENT_ID=78p5acp52ftpdr
-    - LINKEDIN_CLIENT_SECRET=WPL_AP1.20KBPvqvQwocsCSZ.J09t1A==
-    - JWT_SECRET=your_jwt_secret
-    - CALLBACK_URL=http://localhost:8081/api/auth/linkedin/callback
-    - FRONTEND_URL=http://localhost:8081/
-
-    - GOOGLE_client_id=650219705682-620vqkun1fdddg3jjflrkb2ad0fimp5r.apps.googleusercontent.com
-    - GOOGLE_client_secret=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
-
-    - SPOTIFY_CLIENT_ID=ee544cd5bf52482b9886ca89976ce7b4
-    - SPOTIFY_CLIENT_SECRET=0fc9c8f26ff64c80a095349f279b921b
-    - REACT_APP_AUDD_API_KEY=45e3b46b52b840a8b672c697da7a2748
-
-    - TELEGRAM_BOT_TOKEN=7955059039:AAFr49gY2K2r1GEkv9o8XudbFPjFbxIACO4
-    - TELEGRAM_CHAT_ID=-4706491323
-
-    - DISCORD_CLIENT_ID=1330217070016725084
-    - DISCORD_CLIENT_SECRET=SWna0VJk99a9EdGcHAI0jABkbFqb9uQE
-
-    - GITHUB_CLIENT_ID=Iv23liu9vVv1yNmne9e8
-    - GITHUB_CLIENT_SECRET=cae8cb05c55b125e7ae1f5e26dccb4620a9e09da
-    - DISCORD_WEBHOOK_URL=https://discordapp.com/api/webhooks/1330509189663166464/dI8mYNp8svZtjAueV07C9nWu-QcIn9SnOr-1AtClLiZE3NJ2Nx2L3Ynf05BRy0VnADpU
+  # server:
+  #   build:
+  #     context: ./server
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - shared_volume:/app/shared
+  #   environment:
+  #   - BACKEND_PORT=8080
+  #   - FRONTEND_PORT=8081
 
   # client_mobile:
   #   build:
   #     context: ./mobile
   #   volumes:
   #     - shared_volume:/apk
+  #   depends_on:
+  #     - server
 
   client_web:
     build:
