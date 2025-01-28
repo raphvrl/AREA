@@ -8,6 +8,7 @@ import { availableActions, availableReactions } from '../constants/actions';
 import { AreaModal } from '../components/AreaModal';
 import { AreaCard } from '../components/AreaCard';
 
+const userEmail = localStorage.getItem('userEmail');
 const BACKEND_PORT = process.env.BACKEND_PORT || 8080;
 
 const HomePage: React.FC = () => {
@@ -110,16 +111,42 @@ const HomePage: React.FC = () => {
     }
   };
 
-  const handleToggleArea = async (area: Area) => {
+  const handleToggle = async (area: Area) => {
+    if (!user?.email) {
+      console.error('User email not found');
+      return;
+    }
+  
     try {
-      const updatedArea = { ...area, isActive: !area.isActive };
-      await fetch(`http://localhost:${BACKEND_PORT}/api/areas/${area.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedArea),
-        credentials: 'include'
+      console.log('Current state:', area.isActive); // Debug log
+      
+      const response = await fetch(`http://localhost:${BACKEND_PORT}/api/set_area`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          email_user: user.email,
+          nom_area: area.id,
+          action: area.action.type, // Supprimez le _service
+          reaction: area.reaction.type, // Supprimez le _service
+          is_on: !area.isActive ? 'true' : 'false' // Inversez la logique ici
+        })
       });
-      setAreas(areas.map(a => (a.id === area.id ? updatedArea : a)));
+  
+      if (!response.ok) {
+        throw new Error('Failed to update area state');
+      }
+
+      console.log('New state:', !area.isActive); // Debug log
+  
+      setAreas(areas.map(a => 
+        a.id === area.id 
+          ? {...a, isActive: !a.isActive}
+          : a
+      ));
+  
     } catch (error) {
       console.error('Error toggling area:', error);
     }
@@ -171,7 +198,7 @@ const HomePage: React.FC = () => {
             <AreaCard
               key={area.id}
               area={area}
-              onToggle={handleToggleArea}
+              onToggle={handleToggle}
               onDelete={handleDeleteArea}
               isDarkMode={isDarkMode}
             />

@@ -5,6 +5,7 @@ interface User {
   lastName: string;
   email: string;
   isFirstLogin?: boolean;
+  platform?: string;  // Add platform as optional property
 }
 
 interface AuthContextProps {

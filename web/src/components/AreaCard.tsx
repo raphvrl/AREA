@@ -28,20 +28,31 @@ export const AreaCard: React.FC<AreaCardProps> = ({
             {/* Toggle Switch */}
             <label className="relative inline-flex items-center cursor-pointer">
               <input
-                type="checkbox"
-                className="sr-only peer"
-                checked={area.isActive}
-                onChange={() => onToggle(area)}
+              type="checkbox"
+              className="sr-only peer"
+              checked={area.isActive}
+              onChange={async () => {
+                try {
+                await onToggle({
+                  ...area,
+                  isActive: !area.isActive // Invert current state
+                });
+                // The parent component should handle the API call and state update
+                } catch (error) {
+                console.error('Failed to toggle area:', error);
+                // Optionally add error handling UI feedback here
+                }
+              }}
               />
               <div className={`w-12 h-6 bg-gray-200 rounded-full peer 
-                peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 
-                ${area.isActive ? 'peer-checked:bg-blue-600' : 'dark:bg-gray-700'} 
-                transition-all duration-200 
-                after:content-[''] after:absolute after:top-2 after:left-[2px] 
-                after:bg-white after:rounded-full after:h-5 after:w-5 
-                after:shadow-sm after:transition-all
-                peer-checked:after:translate-x-6 peer-checked:after:border-white
-                dark:border-gray-600`}>
+              peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 
+              ${area.isActive ? 'peer-checked:bg-blue-600' : 'dark:bg-gray-700'} 
+              transition-all duration-200 
+              after:content-[''] after:absolute after:top-2 after:left-[2px] 
+              after:bg-white after:rounded-full after:h-5 after:w-5 
+              after:shadow-sm after:transition-all
+              peer-checked:after:translate-x-6 peer-checked:after:border-white
+              dark:border-gray-600`}>
               </div>
             </label>
             

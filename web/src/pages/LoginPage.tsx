@@ -16,7 +16,7 @@ interface LoginResponse {
     id: string;
     firstName: string;
     lastName: string;
-    email: string; // Make sure email is included in response type
+    email: string;
     isFirstLogin: boolean;
     [key: string]: any;
   };
@@ -46,12 +46,20 @@ const LoginPage: React.FC = () => {
     const handleSocialLogin = (token: string, platform: string, userData: any) => {
       const user = {
         ...userData,
-        email: userData.email || `${platform}_user@area.com` // Add default email for social logins
+        email: userData.email || `${platform}_user@area.com`
       };
+      
+      // Store authentication data
       localStorage.setItem(`${platform}_token`, token);
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('userEmail', user.email);
+      localStorage.setItem('userPlatform', platform);
+      localStorage.setItem('isAuthenticated', 'true');
+      
+      // Log the user in
       login(user);
-      navigate('/');
+      
+      // Navigate to services page instead of login
+      navigate('/services');
     };
 
     if (githubToken && firstName && lastName) {
@@ -104,16 +112,12 @@ const LoginPage: React.FC = () => {
         formData
       );
   
-      const user = {
-        ...response.data.user,
-        email: response.data.user.email || formData.email // Use email from response or form
-      };
-      
-      login(user);
-      if (user.isFirstLogin) {
-        alert(t('login.welcome_message'));
+      if (response.data.user) {
+        // Store email in localStorage before login
+        localStorage.setItem('userEmail', formData.email);
+        login(response.data.user);
+        navigate('/');
       }
-      navigate('/');
   
     } catch (error: any) {
       console.error('Login error:', error);
