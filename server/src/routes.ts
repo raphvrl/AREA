@@ -8,6 +8,7 @@ import { logout_service } from './api/logoutService';
 import { delete_area } from './api/delete_area';
 import { get_action } from './api/getAction';
 import { get_reaction } from './api/getReaction';
+import { authSpotify, authSpotifyCallback } from './api/spotifyAuth';
 const router = Router();
 
 // Route pour sign_up
@@ -82,4 +83,6 @@ router.delete(
 
 router.get('/get_action', get_action);
 router.get('/get_reaction', get_reaction);
+router.get('/auth/spotify', authSpotify);
+router.get('/auth/spotify/callback', authSpotifyCallback);
 export default router;
