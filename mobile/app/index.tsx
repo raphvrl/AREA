@@ -10,7 +10,7 @@ export default function Index() {
 
   const handleSubmit = async () => {
     if (ipAddress) {
-      await AsyncStorage.setItem("API_URL", `http://$${ipAddress}:8080`);
+      await AsyncStorage.setItem("API_URL", `http://${ipAddress}:8080`);
       router.push("/login");
     }
   };

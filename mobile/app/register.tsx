@@ -21,18 +21,19 @@ export default function Register() {
   const handleRegister = async () => {
     try {
       const apiUrl = await AsyncStorage.getItem("API_URL");
+      const userData = {
+        "firstName": firstName,
+        "lastName": lastName,
+        "email": email,
+        "password": password
+      }
 
-      const response = await fetch(`${apiUrl}/auth/register`, {
+      const response = await fetch(`${apiUrl}/auth/sign_up`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ 
-          firstName,
-          lastName,
-          email,
-          password
-        }),
+        body: JSON.stringify(userData)
       });
 
       const data = await response.json();
@@ -61,8 +62,8 @@ export default function Register() {
 <TextInput
         style={baseStyles.input}
         placeholder="Nom"
-        value={firstName}
-        onChangeText={setFirstName}
+        value={lastName}
+        onChangeText={setLastName}
       />
 
       <TextInput
