@@ -39,56 +39,13 @@ const LoginPage: React.FC = () => {
     const firstName = urlParams.get('firstName');
     const lastName = urlParams.get('lastName');
     const isFirstLogin = urlParams.get('isFirstLogin') === 'true';
-    const spotifyToken = urlParams.get('spotify_token');
-    const discordToken = urlParams.get('discord_token');
-    const githubToken = urlParams.get('github_token');
 
-    const handleSocialLogin = (token: string, platform: string, userData: any) => {
-      const user = {
-        ...userData,
-        email: userData.email || `${platform}_user@area.com`
-      };
-      
-      // Store authentication data
-      localStorage.setItem(`${platform}_token`, token);
-      localStorage.setItem('userEmail', user.email);
-      localStorage.setItem('userPlatform', platform);
-      localStorage.setItem('isAuthenticated', 'true');
-      
-      // Log the user in
-      login(user);
-      
-      // Navigate to services page instead of login
-      navigate('/services');
-    };
-
-    if (githubToken && firstName && lastName) {
-      handleSocialLogin(githubToken, 'github', {
-        firstName,
-        lastName,
-        isFirstLogin: true,
-        email: '' // Add empty string as default
-      });
-    } else if (discordToken && firstName && lastName) {
-      handleSocialLogin(discordToken, 'discord', {
-        firstName,
-        lastName,
-        isFirstLogin: true,
-        email: '' // Add empty string as default
-      });
-    } else if (spotifyToken) {
-      handleSocialLogin(spotifyToken, 'spotify', {
-        firstName: 'Spotify',
-        lastName: 'User',
-        isFirstLogin: true,
-        email: '' // Add empty string as default
-      });
-    } else if (firstName && lastName) {
+    if (firstName && lastName) {
       login({ 
-        firstName, 
-        lastName, 
-        isFirstLogin,
-        email: '' // Add empty string as default
+        firstName: firstName, 
+        lastName: lastName, 
+        isFirstLogin: isFirstLogin,
+        email: '' 
       });
       navigate('/');
     }
@@ -200,56 +157,6 @@ const LoginPage: React.FC = () => {
             {t('login.sign_in')}
           </button>
         </form>
-
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className={`px-2 ${isDarkMode ? 'bg-gray-800 text-gray-400' : 'bg-white text-gray-500'}`}>
-              {t('login.or')}
-            </span>
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          {/* Social login buttons with hover effects and icons */}
-          <motion.a
-            whileHover={{ scale: 1.02 }}
-            href={`http://localhost:${BACKEND_PORT}/api/auth/linkedin`}
-            className="flex items-center justify-center w-full py-3 px-4 rounded-lg bg-[#0077B5] hover:bg-[#006699] text-white transition-colors duration-200"
-          >
-            <i className="fab fa-linkedin mr-2"></i>
-            {t('login.with_linkedin')}
-          </motion.a>
-
-          <motion.a
-            whileHover={{ scale: 1.02 }}
-            href={`http://localhost:${BACKEND_PORT}/api/auth/spotify`}
-            className="flex items-center justify-center w-full py-3 px-4 rounded-lg bg-green-500 hover:bg-green-600 text-white transition-colors duration-200"
-          >
-            <i className="fab fa-spotify mr-2"></i>
-            {t('login.with_spotify')}
-          </motion.a>
-
-          <motion.a
-            whileHover={{ scale: 1.02 }}
-            href={`http://localhost:${BACKEND_PORT}/api/auth/discord`}
-            className="flex items-center justify-center w-full py-3 px-4 rounded-lg bg-[#7289DA] hover:bg-[#6A7EC5] text-white transition-colors duration-200"
-          >
-            <i className="fab fa-discord mr-2"></i>
-            {t('login.with_discord')}
-          </motion.a>
-
-          <motion.a
-            whileHover={{ scale: 1.02 }}
-            href={`http://localhost:${BACKEND_PORT}/api/auth/github`}
-            className="flex items-center justify-center w-full py-3 px-4 rounded-lg bg-gray-900 hover:bg-gray-800 text-white transition-colors duration-200"
-          >
-            <i className="fab fa-github mr-2"></i>
-            {t('login.with_github')}
-          </motion.a>
-        </div>
 
         <div className="text-center mt-6">
           <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
