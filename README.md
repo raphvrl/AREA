@@ -56,6 +56,8 @@ This project uses the following technologies:
 - **Docker** for containerization <img alt="Docker Logo" src="https://img.shields.io/badge/Docker-2496ED?logo=docker&amp;logoColor=white">
 - **GitHub Actions** for continuous integration <img alt="GitHub Actions Logo" src="https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&amp;logoColor=white">
 
+📊 **Want a detailed comparison?** Check out the [Comparative Study](doc/ComparativeStudy.md) for an in-depth analysis of these technologies.
+
 ## 🐳️ Setup with Docker Compose
 
 The project includes three main services configured via `docker-compose`:
