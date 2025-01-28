@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from '../context/TranslationContext';
 import { motion } from 'framer-motion';
-import { IoLogoGithub } from 'react-icons/io5';
+import { IoLogoGithub, IoLogoDiscord } from 'react-icons/io5';
 import { SiSpotify, SiLinkedin } from 'react-icons/si';
 
 interface ServiceState {
@@ -76,47 +76,24 @@ const ServicesPage: React.FC = () => {
         return;
       }
   
+      // Define base URL and endpoints for each service
+      const BACKEND_PORT = process.env.REACT_APP_BACKEND_PORT || 8080;
+      const FRONTEND_PORT = process.env.REACT_APP_FRONTEND_PORT || 8081;
+      
       const endpoints: { [key: string]: string } = {
-        github: `${process.env.REACT_APP_API_URL}/api/github/auth`,
-        spotify: `${process.env.REACT_APP_API_URL}/api/spotify/auth`,
-        linkedin: `${process.env.REACT_APP_API_URL}/api/linkedin/auth`
+        github: `http://localhost:8080/api/auth/github`,
+        spotify: `http://localhost:8080/api/auth/spotify`,
+        linkedin: `http://localhost:8080/api/auth/linkedin`
       };
   
-      const response = await fetch(endpoints[serviceId], {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ 
-          email: userEmail,
-          isAuthenticated: true
-        })
-      });
+      // Construct redirect URI for the frontend callback
+      const redirect_uri = `http://localhost:8081`;
   
-      if (!response.ok) {
-        throw new Error(`Failed to connect to ${serviceId}`);
-      }
+      // Build the complete auth URL with query parameters
+      const authUrl = `${endpoints[serviceId]}?email=${encodeURIComponent(userEmail)}&redirect_uri=${encodeURIComponent(redirect_uri)}`;
   
-      const data = await response.json();
-  
-      if (data.authUrl) {
-        // Store current service for after OAuth redirect
-        localStorage.setItem('pendingService', serviceId);
-        window.location.href = data.authUrl;
-      } else {
-        // Direct connection successful
-        localStorage.setItem('userPlatform', serviceId);
-        localStorage.setItem('isAuthenticated', 'true');
-        
-        setServices(prevServices =>
-          prevServices.map(service =>
-            service.id === serviceId
-              ? { ...service, isConnected: true }
-              : service
-          )
-        );
-      }
+      // Redirect to the authentication endpoint
+      window.location.href = authUrl;
   
     } catch (error) {
       console.error(`Error connecting to ${serviceId}:`, error);
