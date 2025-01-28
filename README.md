@@ -58,7 +58,7 @@ The project includes three main services configured via `docker-compose`:
 
 ### Prerequisites
 - **Docker** and **Docker Compose** installed on your machine.
-- `.env` file containing API keys and OAuth2 secrets.
+- `.env` file containing API keys and OAuth2 secrets like [this](doc/EnvFormat.md).
 
 ### Steps
 
