@@ -3,7 +3,8 @@ import { Request, Response } from 'express';
 // Création de la map contenant les actions
 const actionsMap = new Map<string, string>([
     ['action1', 'receiveEmail_test'],
-    ['github_repo_created', 'repoCreated_github'],
+    ['action2', 'repoCreated_github'],
+    ['action3', 'checkNewSong_spotify']
 ]);
 
 // Fonction pour récupérer les actions

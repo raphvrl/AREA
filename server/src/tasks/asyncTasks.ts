@@ -28,12 +28,11 @@ export const executeAreas = async () => {
                                     // Exécuter l'action
                                     console.log(user.email)
                                     const actionResult = await actionFunction(user.email);
-
-                                    // Exécuter la réaction avec le résultat de l'action
-                                    const reactionResult = await reactionFunction(user.email, actionResult);
-
-                                    console.log(`Action "${area.action}" completed with result:`, actionResult);
-                                    console.log(`Reaction "${area.reaction}" completed with result:`, reactionResult);
+                                    if (actionResult != null) {
+                                        const reactionResult = await reactionFunction(user.email, actionResult);
+                                        console.log(`Action "${area.action}" completed with result:`, actionResult);
+                                        console.log(`Reaction "${area.reaction}" completed with result:`, reactionResult);
+                                    }
                                 } catch (error) {
                                     console.error(
                                         `Error executing area "${key}" for user "${user.firstName} ${user.lastName}":`,
