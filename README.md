@@ -75,11 +75,11 @@ The project includes three main services configured via `docker-compose`:
 
 2. **Run Server:** *```in /server```*
 
-    ```npm install && nodemon server.js"```
+    ```npm install && nodemon server.js```
 
-3. **Run web:** *```in /web```*:
+3. **Run web:** *```in /web```*
 
-    ```npm install && npm run dev"```
+    ```npm install && npm run dev```
 
 ## 📖 Documentation
 
