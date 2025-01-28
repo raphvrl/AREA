@@ -1,6 +1,6 @@
 # AREA
 
-![AREA Banner](doc/assets/AREA.webp)
+![AREA Banner](doc/assets/AREA.png)
 
 ##  📂 Project Concept
 
