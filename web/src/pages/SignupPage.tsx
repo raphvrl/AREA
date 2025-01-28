@@ -20,7 +20,7 @@ interface SignupResponse {
 }
 
 const ErrorMessage: React.FC<{ error?: AuthError }> = ({ error }) => {
-  if (!error) return null;
+  if (!error?.field?.includes('password')) return null;
   
   return (
     <div className="text-red-500 text-sm mt-1">
@@ -48,27 +48,6 @@ const SignupPage: React.FC = () => {
   const validateForm = () => {
     const formErrors: AuthError[] = [];
     
-    if (!formData.firstName) {
-      formErrors.push({
-        field: 'firstName',
-        message: t('signup.errors.firstname')
-      });
-    }
-    
-    if (!formData.lastName) {
-      formErrors.push({
-        field: 'lastName', 
-        message: t('signup.errors.lastname')
-      });
-    }
-    
-    if (!formData.email) {
-      formErrors.push({
-        field: 'email',
-        message: t('signup.errors.email') 
-      });
-    }
-    
     if (!formData.password) {
       formErrors.push({
         field: 'password',
@@ -78,7 +57,7 @@ const SignupPage: React.FC = () => {
     
     if (formData.password !== formData.confirmPassword) {
       formErrors.push({
-        field: 'confirmPassword',
+        field: 'confirmPassword', 
         message: t('signup.errors.passwords_match')
       });
     }
@@ -103,7 +82,7 @@ const SignupPage: React.FC = () => {
     if (!validateForm()) return;
     
     try {
-      const response = await axios.post<SignupResponse>(
+      const signupResponse = await axios.post<SignupResponse>(
         `http://localhost:${BACKEND_PORT}/api/sign_up`,
         {
           firstName: formData.firstName,
@@ -113,8 +92,27 @@ const SignupPage: React.FC = () => {
         }
       );
       
-      if (response.data.user) {
-        login(response.data.user);
+      // After successful signup, perform login
+      interface LoginResponse {
+        user: {
+          firstName: string;
+          lastName: string;
+          email: string;
+          isFirstLogin: boolean;
+        };
+      }
+
+      const loginResponse = await axios.post<LoginResponse>(
+        `http://localhost:${BACKEND_PORT}/api/sign_in`,
+        {
+          email: formData.email,
+          password: formData.password
+        }
+      );
+      
+      if (loginResponse.data.user) {
+        localStorage.setItem('userEmail', formData.email);
+        login(loginResponse.data.user);
         navigate('/');
       }
     } catch (error: any) {
@@ -130,6 +128,10 @@ const SignupPage: React.FC = () => {
           };
         }) || [];
         setErrors(mappedErrors);
+      } else {
+        setErrors([{
+          message: t('signup.errors.general')
+        }]);
       }
     }
   };
@@ -225,7 +227,7 @@ const SignupPage: React.FC = () => {
           </div>
           <div>
             <input
-              type="password"
+              type="password" 
               name="confirmPassword"
               placeholder={t('signup.confirm_password')}
               value={formData.confirmPassword}
@@ -234,8 +236,8 @@ const SignupPage: React.FC = () => {
                 errors.find(e => e.field === 'confirmPassword') ? 'border-red-500' : ''
               } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
             />
-            <ErrorMessage 
-              error={errors.find(e => e.field === 'confirmPassword')}
+            <ErrorMessage
+              error={errors.find(e => e.field === 'confirmPassword')} 
             />
           </div>
           <button
