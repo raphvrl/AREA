@@ -35,6 +35,16 @@ The REST API server manages all processes, while the web and mobile clients only
 - Creation of AREA zones linking actions to reactions.
 - Management of triggers to automate actions.
 
+## 🌍 Accessibility
+
+This project is designed to be **inclusive** and **accessible** to everyone.  
+It includes features to support users with:  
+- 👁️ **Visual impairments**  
+- 🎮 **Motor disabilities**  
+- 🧠 **Cognitive disabilities**  
+
+For more details, see the [Accessibility Guide](doc/Accessibility.md).  
+
 ## 🛠️ Technologies Used
 
 This project uses the following technologies:
