@@ -12,7 +12,7 @@ const spotifyApi = new SpotifyWebApi({
 
 export const authSpotify = (req: Request, res: Response) => {
     const { email, redirect_uri } = req.query;
-
+    console.log('ZIZI')
     // Vérifier que l'email et l'URL de redirection sont fournis
     if (!email || !redirect_uri) {
         return res.status(400).json({ message: 'Email and redirect_uri are required' });
@@ -54,15 +54,30 @@ export const authSpotifyCallback = async (req: Request, res: Response) => {
         // Échanger le code d'autorisation contre un token d'accès
         const data = await spotifyApi.authorizationCodeGrant(code.toString());
         const { access_token, refresh_token } = data.body;
+
+        // Configurer le token d'accès pour les appels suivants
+        spotifyApi.setAccessToken(access_token);
+
+        // Récupérer le profil utilisateur Spotify
+        const userProfile = await spotifyApi.getMe();
+        const spotifyUserId = userProfile.body.id; // ID utilisateur Spotify
+
         console.log(email);
         console.log(access_token);
+        console.log(spotifyUserId);
+
         // Mettre à jour l'utilisateur dans la base de données
         const user = await UserModel.findOne({ email });
         if (user) {
             const apiKeysMap = user.apiKeys as Map<string, string>;
             const serviceMap = user.service as Map<string, string>;
+            const idServiceMap = user.idService as Map<string, string>;
+
+            // Ajouter les informations Spotify
             apiKeysMap.set('spotify', access_token);
             serviceMap.set('spotify', 'true');
+            idServiceMap.set('spotify', spotifyUserId);
+
             await user.save();
         }
 
