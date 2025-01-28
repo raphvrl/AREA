@@ -39,17 +39,17 @@ The REST API server manages all processes, while the web and mobile clients only
 
 This project uses the following technologies:
 
-- **Node.js** for the back end 
+- **Node.js** for the back end
 <img alt="Node.js Logo" src="https://img.shields.io/badge/Node.js-339933?logo=node.js&amp;logoColor=white">
-- **MongoDB** for the database 
+- **MongoDB** for the database
 <img alt="MongoDB Logo" src="https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&amp;logoColor=white">
-- **ReactJS** for the web front-end 
+- **ReactJS** for the web front-end
 <img alt="React Logo" src="https://img.shields.io/badge/ReactJS-61DAFB?logo=react&amp;logoColor=white">
-- **Expo** for the mobile front-end 
+- **Expo** for the mobile front-end
 <img alt="Expo Logo" src="https://img.shields.io/badge/Expo-000020?logo=expo&amp;logoColor=white">
-- **Docker** for containerization 
+- **Docker** for containerization
 <img alt="Docker Logo" src="https://img.shields.io/badge/Docker-2496ED?logo=docker&amp;logoColor=white">
-- **GitHub Actions** for continuous integration 
+- **GitHub Actions** for continuous integration
 <img alt="GitHub Actions Logo" src="https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&amp;logoColor=white">
 
 ## 🐳️ Setup with Docker Compose
