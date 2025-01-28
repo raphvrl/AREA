@@ -9,18 +9,41 @@ export default function Profile() {
   const { fontSize, letterSpacing } = useSettings();
 
   return (
-    <View style={baseStyles.container}>
+    <View
+      style={baseStyles.container}
+      accessible={true}
+      accessibilityLabel="Page de profil"
+      accessibilityRole="header"
+    >
       <View style={styles.profileHeader}>
         <View style={styles.avatarContainer}>
           <Ionicons name="person-circle-outline" size={80} color={colors.text} />
         </View>
-        <Text style={[styles.username, { fontSize, letterSpacing }]}>John Doe</Text>
-        <Text style={[styles.email, { fontSize: fontSize - 2, letterSpacing }]}>john.doe@email.com</Text>
+        <Text
+          style={[styles.username, { fontSize, letterSpacing }]}
+          accessible={true}
+          accessibilityLabel="Nom d'utilisateur"
+          accessibilityRole="text"
+        >
+          John Doe
+        </Text>
+        <Text 
+          style={[styles.email, { fontSize: fontSize - 2, letterSpacing }]}
+          accessible={true}
+          accessibilityLabel="Adresse email"
+          accessibilityRole="text"
+        >
+          john.doe@email.com
+        </Text>
       </View>
 
       <TouchableOpacity 
         style={[baseStyles.button, styles.logoutButton]}
         onPress={() => router.replace("/login")}
+        accessible={true}
+        accessibilityLabel="Bouton de déconnexion"
+        accessibilityHint="Double tapez pour vous déconnecter"
+        accessibilityRole="button"
       >
         <Text style={[baseStyles.buttonText, { fontSize: fontSize - 2, letterSpacing }]}>Déconnexion</Text>
       </TouchableOpacity>

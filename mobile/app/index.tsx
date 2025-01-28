@@ -16,8 +16,18 @@ export default function Index() {
   };
 
   return (
-    <View style={baseStyles.container}>
-      <Text style={baseStyles.title}>AREA</Text>
+    <View
+      style={baseStyles.container}
+      accessible={true}
+      accessibilityLabel="Page de configuration AREA"
+      accessibilityRole="header"
+    >
+      <Text
+        style={baseStyles.title}
+        accessible={true}
+        accessibilityLabel="AREA"
+        accessibilityRole="header"
+      >AREA</Text>
 
       <TextInput
         style={styles.input}
@@ -26,12 +36,20 @@ export default function Index() {
         onChangeText={setIpAddress}
         keyboardType="numeric"
         autoCapitalize="none"
+        accessible={true}
+        accessibilityLabel="Champ adresse IP"
+        accessibilityHint="Entrez l'adresse IP de votre serveur"
+        accessibilityRole="text"
       />
 
 <TouchableOpacity
         style={[baseStyles.button, !ipAddress && styles.buttonDisabled]}
         onPress={handleSubmit}
         disabled={!ipAddress}
+        accessible={true}
+        accessibilityLabel="Bouton de validation"
+        accessibilityHint="Double tapez pour valider l'adresse IP"
+        accessibilityRole="button"
       >
         <Text style={styles.buttonText}>C'est partie!</Text>
       </TouchableOpacity>

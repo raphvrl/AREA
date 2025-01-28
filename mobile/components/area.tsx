@@ -26,21 +26,43 @@ export const Area = ({
     <View style={styles.container}>
       <View style={styles.card}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={onDelete}>
+          <TouchableOpacity
+            onPress={onDelete}
+            accessible={true}
+            accessibilityLabel="Supprimer cette AREA"
+            accessibilityHint="Double tapez pour supprimer"
+            accessibilityRole="button"
+          >
             <Ionicons name="trash-outline" size={24} color={colors.text} />
           </TouchableOpacity>
 
-          <Text style={[styles.title, { fontSize, letterSpacing }]}>{title}</Text>
+          <Text
+            style={[styles.title, { fontSize, letterSpacing }]}
+            accessible={true}
+            accessibilityRole="header"
+          >
+            {title}
+          </Text>
           
           <Switch
             value={isEnabled}
             onValueChange={setIsEnabled}
             trackColor={{ false: colors.text, true: colors.button }}
+            accessible={true}
+            accessibilityLabel="Activer ou désactiver cette AREA"
+            accessibilityRole="switch"
           />
         </View>
 
         <View style={styles.box}>
-          <Text style={[styles.text, { fontSize: fontSize - 2, letterSpacing }]}>{action}</Text>
+          <Text
+            style={[styles.text, { fontSize: fontSize - 2, letterSpacing }]}
+            accessible={true}
+            accessibilityRole="text"
+            accessibilityLabel={`Action: ${action}`}
+          >
+            {action}
+          </Text>
         </View>
         
         <Ionicons 
@@ -51,7 +73,12 @@ export const Area = ({
         />
         
         <View style={styles.box}>
-          <Text style={[styles.text, { fontSize: fontSize - 2, letterSpacing }]}>{reaction}</Text>
+          <Text
+            style={[styles.text, { fontSize: fontSize - 2, letterSpacing }]}
+            accessible={true}
+            accessibilityRole="text"
+            accessibilityLabel={`Réaction: ${reaction}`}
+          >{reaction}</Text>
         </View>
       </View>
     </View>

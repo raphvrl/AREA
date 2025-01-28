@@ -33,15 +33,35 @@ export default function Home() {
   };
 
   return (
-    <View style={baseStyles.container}>
-      <Text style={[baseStyles.title, { fontSize, letterSpacing }]}>AREA</Text>
-      <Text style={[baseStyles.subtitle, { fontSize: fontSize - 2, letterSpacing }]}>
+    <View 
+      style={baseStyles.container}
+      accessible={true}
+      accessibilityLabel="Page d'accueil AREA"
+    >
+      <Text
+        style={[baseStyles.title, { fontSize, letterSpacing }]}
+        accessible={true}
+        accessibilityLabel="AREA"
+        accessibilityRole="header"
+      >
+        AREA
+      </Text>
+      <Text
+        style={[baseStyles.subtitle, { fontSize: fontSize - 2, letterSpacing }]}
+        accessible={true}
+        accessibilityLabel="Gérez vos intégrations et automatisez vos tâches"
+        accessibilityRole="text"
+      >
         Gérez vos intégrations et automatisez vos tâches
       </Text>
       
       <TouchableOpacity 
         style={baseStyles.button}
         onPress={() => setModalVisible(true)}
+        accessible={true}
+        accessibilityLabel="Ajouter une nouvelle AREA"
+        accessibilityHint="Double tapez pour ajouter une nouvelle automatisation"
+        accessibilityRole="button"
       >
         <Text style={[baseStyles.buttonText, { fontSize: fontSize - 2, letterSpacing }]}>
           Créer une automatisation

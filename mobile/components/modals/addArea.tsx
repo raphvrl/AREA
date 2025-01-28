@@ -24,10 +24,29 @@ export const AddAreaModal = ({ visible, onClose, onAdd }: AddAreaModalProps) => 
   };
 
   return (
-    <Modal visible={visible} transparent animationType="slide">
-      <View style={styles.overlay}>
-        <View style={styles.modal}>
-          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+    <Modal
+      visible={visible} transparent animationType="slide"
+      accessible={true}
+      accessibilityLabel="Modale d'ajout d'AREA"
+      accessibilityRole="alert"
+    >
+      <View
+        style={styles.overlay}
+        accessible={true}
+        accessibilityRole="none"
+      >
+        <View
+          style={styles.modal}
+          accessible={true}
+          accessibilityRole="none"
+        >
+          <TouchableOpacity
+            onPress={onClose} style={styles.closeButton}
+            accessible={true}
+            accessibilityLabel="Fermer"
+            accessibilityHint="Double tapez pour fermer la modale"
+            accessibilityRole="button"
+          >
             <Ionicons name="close" size={24} color={colors.text} />
           </TouchableOpacity>
 
@@ -41,6 +60,10 @@ export const AddAreaModal = ({ visible, onClose, onAdd }: AddAreaModalProps) => 
             value={title}
             onChangeText={setTitle}
             placeholderTextColor={colors.text}
+            accessible={true}
+            accessibilityLabel="Titre de l'AREA"
+            accessibilityHint="Entrez un titre pour votre AREA"
+            accessibilityRole="none"
           />
 
           <View style={styles.section}>
@@ -50,6 +73,10 @@ export const AddAreaModal = ({ visible, onClose, onAdd }: AddAreaModalProps) => 
                 selectedValue={selectedAction}
                 onValueChange={setSelectedAction}
                 style={[{ color: colors.text, fontSize: fontSize - 2 }]}
+                accessible={true}
+                accessibilityLabel="Sélection de l'action"
+                accessibilityHint="Choisissez l'action déclencheur"
+                accessibilityRole="combobox"
               >
                 <Picker.Item label="GitHub" value="github" />
                 <Picker.Item label="Discord" value="discord" />
@@ -65,6 +92,10 @@ export const AddAreaModal = ({ visible, onClose, onAdd }: AddAreaModalProps) => 
                 selectedValue={selectedReaction}
                 onValueChange={setSelectedReaction}
                 style={[{ color: colors.text, fontSize: fontSize - 2 }]}
+                accessible={true}
+                accessibilityLabel="Sélection de la réaction"
+                accessibilityHint="Choisissez la réaction à déclencher"
+                accessibilityRole="combobox"
               >
                 <Picker.Item label="GitHub" value="github" />
                 <Picker.Item label="Discord" value="discord" />
@@ -73,7 +104,13 @@ export const AddAreaModal = ({ visible, onClose, onAdd }: AddAreaModalProps) => 
             </View>
           </View>
           
-          <TouchableOpacity style={baseStyles.button} onPress={handleAdd}>
+          <TouchableOpacity
+            style={baseStyles.button} onPress={handleAdd}
+            accessible={true}
+            accessibilityLabel="Ajouter l'AREA"
+            accessibilityHint="Double tapez pour créer l'AREA"
+            accessibilityRole="button"
+          >
             <Text style={[baseStyles.buttonText, { fontSize: fontSize - 2, letterSpacing }]}>
               Ajouter
             </Text>

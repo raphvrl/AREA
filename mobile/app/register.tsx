@@ -12,6 +12,13 @@ import { baseStyles } from "@/styles/base_styles";
 import { useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+interface UserData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+} 
+
 export default function Register() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -21,14 +28,15 @@ export default function Register() {
   const handleRegister = async () => {
     try {
       const apiUrl = await AsyncStorage.getItem("API_URL");
-      const userData = {
-        "firstName": firstName,
-        "lastName": lastName,
-        "email": email,
-        "password": password
-      }
 
-      const response = await fetch(`${apiUrl}/auth/sign_up`, {
+      const userData: UserData = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password
+      };
+
+      const response = await fetch(`${apiUrl}/api/sign_up`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,21 +57,40 @@ export default function Register() {
 };
 
   return (
-    <View style={baseStyles.container}>
-      <Text style={baseStyles.title}>AREA</Text>
+    <View
+      style={baseStyles.container}
+      accessible={true}
+      accessibilityLabel="Page d'inscription AREA"
+      accessibilityRole="header"
+    >
+      <Text
+        style={baseStyles.title}
+        accessible={true}
+        accessibilityLabel="AREA"
+        accessibilityRole="header"
+      >
+        AREA
+      </Text>
 
       <TextInput
         style={baseStyles.input}
         placeholder="Prenom"
         value={firstName}
         onChangeText={setFirstName}
+        accessible={true}
+        accessibilityLabel="Champ prénom"
+        accessibilityHint="Entrez votre prénom"
+        accessibilityRole="none"
       />
 
-<TextInput
+      <TextInput
         style={baseStyles.input}
         placeholder="Nom"
         value={lastName}
         onChangeText={setLastName}
+        accessibilityLabel="Champ nom"
+        accessibilityHint="Entrez votre nom"
+        accessibilityRole="text"
       />
 
       <TextInput
@@ -73,26 +100,45 @@ export default function Register() {
         autoCapitalize="none"
         value={email}
         onChangeText={setEmail}
+        accessible={true}
+        accessibilityLabel="Champ email"
+        accessibilityHint="Entrez votre adresse email"
+        accessibilityRole="text"
       />
 
       <TextInput
         style={baseStyles.input}
         placeholder="Mot de passe"
         secureTextEntry
+        autoCapitalize="none"
         value={password}
         onChangeText={setPassword}
+        accessible={true}
+        accessibilityLabel="Champ mot de passe"
+        accessibilityHint="Entrez votre mot de passe"
+        accessibilityRole="text"
       />
 
       <TouchableOpacity
         style={baseStyles.button}
         onPress={handleRegister}
+        accessible={true}
+        accessibilityLabel="Bouton s'inscrire"
+        accessibilityHint="Double tapez pour créer votre compte"
+        accessibilityRole="button"
       >
         <Text style={styles.buttonText}>S'inscrire</Text>
       </TouchableOpacity>
 
       <View style={styles.registerContainer}>
         <Text style={styles.registerText}>Déjà un compte?</Text>
-        <Link href="/login" style={styles.registerLink}>
+        <Link
+          href="/login" style={styles.registerLink}
+          accessible={true}
+          accessibilityLabel="Lien vers la connexion"
+          accessibilityHint="Double tapez pour aller à la page de connexion"
+          accessibilityRole="link"
+        >
           <Text style={styles.registerLinkText}>Se connecter</Text>
         </Link>
       </View>
