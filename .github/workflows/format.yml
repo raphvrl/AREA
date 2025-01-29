@@ -30,3 +30,11 @@ jobs:
       - name: Check code formatting with Prettier (Backend - Server)
         run: |
           cd server && npx prettier --check .
+
+      - name: Lint code with ESLint (Frontend - Web)
+        run: |
+          cd web && npx eslint . --ext .ts,.tsx
+  
+      - name: Lint code with ESLint (Backend - Server)
+        run: |
+          cd server && npx eslint . --ext .ts
