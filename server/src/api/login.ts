@@ -53,11 +53,9 @@ export const sign_in = async (req: Request, res: Response) => {
 
     // Vérifier si `password` existe et est une chaîne
     if (typeof user.password !== 'string') {
-      return res
-        .status(500)
-        .json({
-          message: 'User data is corrupted: password is missing or invalid',
-        });
+      return res.status(500).json({
+        message: 'User data is corrupted: password is missing or invalid',
+      });
     }
 
     // Comparer le mot de passe avec le hash

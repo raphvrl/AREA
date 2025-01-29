@@ -6,12 +6,10 @@ export const set_area = async (req: Request, res: Response) => {
     const { email_user, nom_area, action, reaction } = req.body;
 
     if (!email_user || !nom_area || !action || !reaction) {
-      return res
-        .status(400)
-        .json({
-          message:
-            'All fields are required: email_user, nom_area, action, reaction.',
-        });
+      return res.status(400).json({
+        message:
+          'All fields are required: email_user, nom_area, action, reaction.',
+      });
     }
 
     const user = await UserModel.findOne({ email: email_user });
@@ -34,11 +32,9 @@ export const set_area = async (req: Request, res: Response) => {
       !serviceMap.get(service_action) ||
       serviceMap.get(service_action) !== 'true'
     ) {
-      return res
-        .status(400)
-        .json({
-          message: `Service "${service_action}" is not connected for action.`,
-        });
+      return res.status(400).json({
+        message: `Service "${service_action}" is not connected for action.`,
+      });
     }
 
     if (service_reaction === 'telegram') {
@@ -57,11 +53,9 @@ export const set_area = async (req: Request, res: Response) => {
       !serviceMap.get(service_reaction) ||
       serviceMap.get(service_reaction) !== 'true'
     ) {
-      return res
-        .status(400)
-        .json({
-          message: `Service "${service_reaction}" is not connected for reaction.`,
-        });
+      return res.status(400).json({
+        message: `Service "${service_reaction}" is not connected for reaction.`,
+      });
     }
     const new_area = {
       action,
@@ -73,11 +67,9 @@ export const set_area = async (req: Request, res: Response) => {
 
     await user.save();
 
-    return res
-      .status(200)
-      .json({
-        message: `Area "${nom_area}" has been successfully added or updated.`,
-      });
+    return res.status(200).json({
+      message: `Area "${nom_area}" has been successfully added or updated.`,
+    });
   } catch (error) {
     console.error('Error in set_area:', error);
     return res.status(500).json({ message: 'Internal server error.' });
