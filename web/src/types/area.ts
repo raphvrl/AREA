@@ -16,7 +16,7 @@ export interface Reaction {
 
 export interface Area {
   id: string;
-  name: string; 
+  name: string;
   isActive: boolean;
   action: {
     service: string;
