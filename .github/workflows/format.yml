@@ -1,17 +1,14 @@
-name: Format Check
+name: Build Project
 
 on:
-  push:
-    branches:
-      - dev
-      - main
-  pull_request:
-    branches:
-      - dev
-      - main
+  workflow_run:
+    workflows: ["Format Check"]
+    types:
+      - completed
 
 jobs:
-  prettier-check:
+  build-project:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -23,10 +20,18 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Check code formatting with Prettier (Frontend - Web)
+      - name: Install dependencies (Frontend - Web)
         run: |
-          cd web && npx prettier --check .
+          cd web && npm install
 
-      - name: Check code formatting with Prettier (Backend - Server)
+      - name: Install dependencies (Backend - Server)
         run: |
-          cd server && npx prettier --check .
+          cd server && npm install
+
+      - name: Build frontend
+        run: |
+          cd web && npm run build
+
+      - name: Build backend
+        run: |
+          cd server && npm run build
