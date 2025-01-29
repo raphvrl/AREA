@@ -2,7 +2,8 @@ import { time10_seconde, sendmessage_terminal } from './fonction';
 import { nomAction_nomSerice } from './action/testFonction';
 import { repoCreated_github } from './action/githubAction';
 import { sendMessage_telegram } from './reaction/telegramReaction';
-import { checkNewSong_spotify } from './action/checkNewSongSpotify'
+import { checkNewSong_spotify } from './action/checkNewSongSpotify';
+import { sendMessage_discord } from './reaction/discordReaction';
 type Handler = (email: any, data?: any) => Promise<any>;
 
 const areaHandlers: { [key: string]: Handler } = {
@@ -39,7 +40,11 @@ const areaHandlers: { [key: string]: Handler } = {
         }
         const result = await checkNewSong_spotify(email);
         return result;
-    }
+    },
+    sendMessage_discord: async (email: String, actionResult?: any) => {
+        const result = await sendMessage_discord(email, actionResult);
+        return result;
+    },
 };
 
 export default areaHandlers;
