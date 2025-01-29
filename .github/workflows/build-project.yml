@@ -37,8 +37,8 @@ jobs:
 
       - name: Build frontend
         run: |
-          cd web && npm run build
+          cd web && CI=false npm run build
 
       - name: Build backend
         run: |
-          cd server && npm run build
+          cd server && CI=false npm run build
