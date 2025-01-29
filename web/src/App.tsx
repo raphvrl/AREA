@@ -1,5 +1,11 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+  useLocation,
+} from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -16,7 +22,9 @@ import LandingPage from './pages/LandingPage';
 import { AccessibilityProvider } from './context/AccessibilityContext';
 import APKDownload from './components/APKDownload';
 
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
 };
@@ -34,24 +42,30 @@ const NavigationBar: React.FC = () => {
 
 const AppRoutes: React.FC = () => {
   const { isAuthenticated } = useAuth();
-  
+
   return (
     <Routes>
-      <Route path="/" element={
-        isAuthenticated ? (
-          <ProtectedRoute>
-            <HomePage />
-          </ProtectedRoute>
-        ) : (
-          <LandingPage />
-        )
-      } />
+      <Route
+        path="/"
+        element={
+          isAuthenticated ? (
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          ) : (
+            <LandingPage />
+          )
+        }
+      />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
-      <Route path="/client.apk" element={
-        // This component will trigger the download
-        <APKDownload />
-      } />
+      <Route
+        path="/client.apk"
+        element={
+          // This component will trigger the download
+          <APKDownload />
+        }
+      />
       <Route
         path="/profile"
         element={
@@ -60,8 +74,8 @@ const AppRoutes: React.FC = () => {
           </ProtectedRoute>
         }
       />
-      <Route 
-        path="/services" 
+      <Route
+        path="/services"
         element={
           <ProtectedRoute>
             <ServicesPage />

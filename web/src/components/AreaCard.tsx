@@ -14,7 +14,7 @@ export const AreaCard: React.FC<AreaCardProps> = ({
   area,
   onToggle,
   onDelete,
-  isDarkMode
+  isDarkMode,
 }) => {
   return (
     <div
@@ -29,23 +29,24 @@ export const AreaCard: React.FC<AreaCardProps> = ({
             {/* Toggle Switch */}
             <label className="relative inline-flex items-center cursor-pointer">
               <input
-              type="checkbox"
-              className="sr-only peer"
-              checked={area.isActive}
-              onChange={async () => {
-                try {
-                await onToggle({
-                  ...area,
-                  isActive: !area.isActive // Invert current state
-                });
-                // The parent component should handle the API call and state update
-                } catch (error) {
-                console.error('Failed to toggle area:', error);
-                // Optionally add error handling UI feedback here
-                }
-              }}
+                type="checkbox"
+                className="sr-only peer"
+                checked={area.isActive}
+                onChange={async () => {
+                  try {
+                    await onToggle({
+                      ...area,
+                      isActive: !area.isActive, // Invert current state
+                    });
+                    // The parent component should handle the API call and state update
+                  } catch (error) {
+                    console.error('Failed to toggle area:', error);
+                    // Optionally add error handling UI feedback here
+                  }
+                }}
               />
-              <div className={`w-12 h-6 bg-gray-200 rounded-full peer 
+              <div
+                className={`w-12 h-6 bg-gray-200 rounded-full peer 
               peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 
               ${area.isActive ? 'peer-checked:bg-blue-600' : 'dark:bg-gray-700'} 
               transition-all duration-200 
@@ -53,10 +54,10 @@ export const AreaCard: React.FC<AreaCardProps> = ({
               after:bg-white after:rounded-full after:h-5 after:w-5 
               after:shadow-sm after:transition-all
               peer-checked:after:translate-x-6 peer-checked:after:border-white
-              dark:border-gray-600`}>
-              </div>
+              dark:border-gray-600`}
+              ></div>
             </label>
-            
+
             {/* Delete button */}
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -68,17 +69,17 @@ export const AreaCard: React.FC<AreaCardProps> = ({
                 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
               aria-label="Delete AREA"
             >
-              <svg 
-                className="w-5 h-5 transform transition-transform duration-200 hover:rotate-12" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                className="w-5 h-5 transform transition-transform duration-200 hover:rotate-12"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" 
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                 />
               </svg>
             </motion.button>
@@ -87,11 +88,13 @@ export const AreaCard: React.FC<AreaCardProps> = ({
         <div className="flex-1 text-sm">
           <p className="mb-1">
             <span className="font-medium">Action:</span>{' '}
-            {availableActions.find(a => a.id === area.action.type)?.description || area.action.type}
+            {availableActions.find((a) => a.id === area.action.type)
+              ?.description || area.action.type}
           </p>
           <p>
             <span className="font-medium">Reaction:</span>{' '}
-            {availableReactions.find(r => r.id === area.reaction.type)?.description || area.reaction.type}
+            {availableReactions.find((r) => r.id === area.reaction.type)
+              ?.description || area.reaction.type}
           </p>
           <>{console.log('Area:', area)}</>
         </div>

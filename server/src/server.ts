@@ -13,17 +13,19 @@ connectDB();
 
 app.use(express.json());
 console.log(FRONTEND_PORT);
-app.use(cors( {
+app.use(
+  cors({
     origin: `http://localhost:${FRONTEND_PORT}`,
-    credentials: true
-}));
+    credentials: true,
+  })
+);
 
 app.use('/api', routes);
 
 setInterval(() => {
-    executeAreas();
+  executeAreas();
 }, 10000);
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });

@@ -1,11 +1,17 @@
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import React, {
+  createContext,
+  useState,
+  useContext,
+  ReactNode,
+  useEffect,
+} from 'react';
 
 interface User {
   firstName: string;
   lastName: string;
   email: string;
   isFirstLogin?: boolean;
-  platform?: string;  // Add platform as optional property
+  platform?: string; // Add platform as optional property
 }
 
 interface AuthContextProps {

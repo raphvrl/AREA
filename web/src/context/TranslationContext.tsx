@@ -1,9 +1,18 @@
 import React, { createContext, useContext, useState } from 'react';
-import { translations, Language, TranslationKey, TranslationContextType } from '../translations';
+import {
+  translations,
+  Language,
+  TranslationKey,
+  TranslationContextType,
+} from '../translations';
 
-const TranslationContext = createContext<TranslationContextType | undefined>(undefined);
+const TranslationContext = createContext<TranslationContextType | undefined>(
+  undefined
+);
 
-export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [language, setLanguage] = useState<Language>('fr');
 
   const t = (key: TranslationKey): string => {

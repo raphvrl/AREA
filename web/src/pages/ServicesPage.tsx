@@ -26,15 +26,15 @@ const ServicesPage: React.FC = () => {
       description: t('services.github.description'),
       icon: IoLogoGithub,
       color: 'bg-gray-900',
-      isConnected: false
+      isConnected: false,
     },
     {
       id: 'spotify',
       name: 'Spotify',
       description: t('services.spotify.description'),
-      icon: SiSpotify, 
+      icon: SiSpotify,
       color: 'bg-green-600',
-      isConnected: false
+      isConnected: false,
     },
     {
       id: 'linkedin',
@@ -42,8 +42,8 @@ const ServicesPage: React.FC = () => {
       description: t('services.linkedin.description'),
       icon: SiLinkedin,
       color: 'bg-blue-600',
-      isConnected: false
-    }
+      isConnected: false,
+    },
   ]);
 
   useEffect(() => {
@@ -52,15 +52,18 @@ const ServicesPage: React.FC = () => {
 
   const fetchServicesStatus = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/services/status`, {
-        credentials: 'include'
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/services/status`,
+        {
+          credentials: 'include',
+        }
+      );
       const data = await response.json();
-      
-      setServices(prevServices => 
-        prevServices.map(service => ({
+
+      setServices((prevServices) =>
+        prevServices.map((service) => ({
           ...service,
-          isConnected: data[service.id] === true
+          isConnected: data[service.id] === true,
         }))
       );
     } catch (error) {
@@ -75,26 +78,25 @@ const ServicesPage: React.FC = () => {
         console.error('No user email found');
         return;
       }
-  
+
       // Define base URL and endpoints for each service
       const BACKEND_PORT = process.env.REACT_APP_BACKEND_PORT || 8080;
       const FRONTEND_PORT = process.env.REACT_APP_FRONTEND_PORT || 8081;
-      
+
       const endpoints: { [key: string]: string } = {
         github: `http://localhost:8080/api/auth/github`,
         spotify: `http://localhost:8080/api/auth/spotify`,
-        linkedin: `http://localhost:8080/api/auth/linkedin`
+        linkedin: `http://localhost:8080/api/auth/linkedin`,
       };
-  
+
       // Construct redirect URI for the frontend callback
       const redirect_uri = `http://localhost:8081`;
-  
+
       // Build the complete auth URL with query parameters
       const authUrl = `${endpoints[serviceId]}?email=${encodeURIComponent(userEmail)}&redirect_uri=${encodeURIComponent(redirect_uri)}`;
-  
+
       // Redirect to the authentication endpoint
       window.location.href = authUrl;
-  
     } catch (error) {
       console.error(`Error connecting to ${serviceId}:`, error);
     }
@@ -106,14 +108,14 @@ const ServicesPage: React.FC = () => {
         `${process.env.REACT_APP_API_URL}/api/services/${serviceId}/disconnect`,
         {
           method: 'POST',
-          credentials: 'include'
+          credentials: 'include',
         }
       );
 
       if (response.ok) {
-        setServices(prevServices =>
-          prevServices.map(service =>
-            service.id === serviceId 
+        setServices((prevServices) =>
+          prevServices.map((service) =>
+            service.id === serviceId
               ? { ...service, isConnected: false }
               : service
           )
@@ -125,21 +127,23 @@ const ServicesPage: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 transition-colors duration-200 ${
-      isDarkMode ? 'bg-gray-900' : 'bg-gray-50'
-    }`}>
+    <div
+      className={`min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 transition-colors duration-200 ${
+        isDarkMode ? 'bg-gray-900' : 'bg-gray-50'
+      }`}
+    >
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className={`text-4xl md:text-5xl font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+          <h1
+            className={`text-4xl md:text-5xl font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+          >
             {t('services.title')}
           </h1>
-          <p className={`${
-            isDarkMode ? 'text-gray-300' : 'text-gray-600'
-          }`}>
+          <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
             {t('services.subtitle')}
           </p>
         </motion.div>
@@ -150,8 +154,8 @@ const ServicesPage: React.FC = () => {
               key={service.id}
               whileHover={{ scale: 1.02 }}
               className={`rounded-lg shadow-lg p-6 ${
-                isDarkMode 
-                  ? 'bg-gray-800 hover:bg-gray-700' 
+                isDarkMode
+                  ? 'bg-gray-800 hover:bg-gray-700'
                   : 'bg-white hover:bg-gray-50'
               } transition-colors duration-200`}
             >
@@ -159,16 +163,20 @@ const ServicesPage: React.FC = () => {
                 <div className={`p-3 ${service.color} rounded-full`}>
                   <service.icon className="w-6 h-6 text-white" />
                 </div>
-                <h3 className={`ml-4 text-xl font-semibold ${
-                  isDarkMode ? 'text-white' : 'text-gray-900'
-                }`}>
+                <h3
+                  className={`ml-4 text-xl font-semibold ${
+                    isDarkMode ? 'text-white' : 'text-gray-900'
+                  }`}
+                >
                   {service.name}
                 </h3>
               </div>
-              
-              <p className={`mb-6 ${
-                isDarkMode ? 'text-gray-300' : 'text-gray-600'
-              }`}>
+
+              <p
+                className={`mb-6 ${
+                  isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                }`}
+              >
                 {service.description}
               </p>
 
@@ -176,7 +184,9 @@ const ServicesPage: React.FC = () => {
                 onClick={() => handleServiceConnection(service.id)}
                 className={`px-4 py-2 rounded-md text-white ${service.color}`}
               >
-                {service.isConnected ? t('services.disconnect') : t('services.connect')}
+                {service.isConnected
+                  ? t('services.disconnect')
+                  : t('services.connect')}
               </button>
             </motion.div>
           ))}

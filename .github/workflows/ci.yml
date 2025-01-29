@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+  pull_request:
+    branches:
+      - dev
+      - main
+
+jobs:
+  build-and-format-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20' # Remplacez par la version de Node.js que vous utilisez
+
+      - name: Install dependencies
+        run: |
+          cd server && npm install
+          cd ../web && npm install
+
+      - name: Check code formatting with Prettier
+        run: |
+          cd web && npx prettier --check .
+          cd ../server && npx prettier --check .
+
+      - name: Build frontend
+        run: |
+          cd web && npm run build
+
+      - name: Build backend
+        run: |
+          cd server && npm run build
