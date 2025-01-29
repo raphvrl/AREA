@@ -1,6 +1,7 @@
 import React from 'react';
 import { Area } from '../types/area';
 import { motion } from 'framer-motion';
+import { availableActions, availableReactions } from '../constants/actions';
 
 interface AreaCardProps {
   area: Area;
@@ -86,12 +87,13 @@ export const AreaCard: React.FC<AreaCardProps> = ({
         <div className="flex-1 text-sm">
           <p className="mb-1">
             <span className="font-medium">Action:</span>{' '}
-            {area.action?.description || area.action?.type || 'No description available'}
+            {availableActions.find(a => a.id === area.action.type)?.description || area.action.type}
           </p>
           <p>
             <span className="font-medium">Reaction:</span>{' '}
-            {area.reaction?.description || area.reaction?.type || 'No description available'}
+            {availableReactions.find(r => r.id === area.reaction.type)?.description || area.reaction.type}
           </p>
+          <>{console.log('Area:', area)}</>
         </div>
       </div>
     </div>
