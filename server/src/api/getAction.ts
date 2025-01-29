@@ -15,4 +15,4 @@ export const get_action = async (req: Request, res: Response) => {
     console.error('Error fetching actions:', error);
     res.status(500).json({ message: 'Internal server error.' });
   }
-}; 
+};
