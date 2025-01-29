@@ -5,45 +5,32 @@ dotenv.config();
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
-interface ActionResult {
-    message?: string;
-    imageUrl?: string;
-    name?: string;  // Ajout de la propriété name
+interface TelegramMessage {
+    message: string;
 }
 
-interface ActionResult {
-    name?: string;
-    html_url?: string;  // Ajout de l'URL du repo
-}
-
-export const sendMessage_telegram = async (email: String, actionResult: ActionResult | null): Promise<boolean> => {
-    const user_email = email;
+export const sendMessage_telegram = async (email: String, actionResult: TelegramMessage | null): Promise<boolean> => {
     try {
         if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
             throw new Error('Missing Telegram configuration');
         }
 
-        // Si actionResult est null, ne rien faire
-        if (!actionResult) {
-            console.log('Pas de nouveau repository, aucun message envoyé');
+        if (!actionResult || !actionResult.message) {
+            console.log('Pas de message à envoyer');
             return true;
         }
 
-        // Construire le message avec le nom du repo et son URL
-        const message = `🎉 Nouveau repository GitHub créé:\nNom: ${actionResult.name}\nURL: ${actionResult.html_url}`;
-
-        // Envoyer un message texte simple
         const response = await axios.post(
             `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
             {
                 chat_id: TELEGRAM_CHAT_ID,
-                text: message,
+                text: actionResult.message,
                 parse_mode: 'HTML'
             }
         );
 
         console.log('Telegram API response:', response.data);
-        console.log('Message sent for user:', user_email);
+        console.log('Message sent for user:', email);
         return response.data.ok;
 
     } catch (error) {
@@ -51,7 +38,7 @@ export const sendMessage_telegram = async (email: String, actionResult: ActionRe
             console.error('Error in sendMessage_telegram:', error.message);
             throw new Error(error.message);
         } else {
-            console.error('An unknown error occurred in sendMessage_telegram');
+            console.error('An unknown error occurred');
             throw new Error('An unknown error occurred');
         }
     }

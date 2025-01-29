@@ -2,13 +2,15 @@ import axios from 'axios';
 import UserModel from '../../db/UserModel';
 
 interface GithubRepo {
-  id: number;
-  name: string;
-  created_at: string;
+    id: number;
+    name: string;
+    html_url: string;
+    created_at: string;
+    message?: string;
 }
 
-// Variable pour stocker le dernier ID de repo connu
 let lastKnownRepoId = 0;
+let isInitialized = false;
 
 export const repoCreated_github = async (email: string): Promise<GithubRepo | null> => {
     try {
@@ -18,14 +20,12 @@ export const repoCreated_github = async (email: string): Promise<GithubRepo | nu
             throw new Error(`User with email "${email}" not found.`);
         }
 
-        // Récupérer le token GitHub
         const apiKeysMap = user.apiKeys as Map<string, string>;
         const githubToken = apiKeysMap.get(serviceKey);
         if (!githubToken) {
             throw new Error('GitHub token not found');
         }
 
-        // Faire une requête à l'API GitHub pour obtenir les repos
         const response = await axios.get('https://api.github.com/user/repos', {
             headers: {
                 'Authorization': `Bearer ${githubToken}`,
@@ -40,7 +40,13 @@ export const repoCreated_github = async (email: string): Promise<GithubRepo | nu
 
         const latestRepo = response.data[0] as GithubRepo;
         
-        // Vérifier si c'est un nouveau repo
+        if (!isInitialized) {
+            lastKnownRepoId = latestRepo.id;
+            isInitialized = true;
+            console.log('Initialisation: sauvegarde du dernier repo');
+            return null;
+        }
+
         if (latestRepo && latestRepo.id > lastKnownRepoId) {
             lastKnownRepoId = latestRepo.id;
             console.log('Nouveau repository détecté:', {
@@ -48,10 +54,12 @@ export const repoCreated_github = async (email: string): Promise<GithubRepo | nu
                 id: latestRepo.id,
                 created_at: latestRepo.created_at
             });
+
+            latestRepo.message = `🎉 Nouveau repository GitHub créé:\nNom: ${latestRepo.name}\nURL: ${latestRepo.html_url}`;
             return latestRepo;
         }
 
-        return null; // Aucun nouveau repo détecté
+        return null;
 
     } catch (error) {
         if (error instanceof Error) {

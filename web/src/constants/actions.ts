@@ -12,20 +12,11 @@ export const availableActions: Action[] = [
     id: 'checkNewSong_spotify',
     service: 'spotify',
     type: 'checkNewSong',
-    description: 'When a song is added to the favorite playlist'
+    description: 'When a song is played'
   }
 ];
 
 export const availableReactions: Action[] = [
-  {
-    id: 'spotify-play',
-    service: 'Spotify',
-    type: 'PLAY_TRACK',
-    description: 'Play a track on Spotify',
-    config: {
-      timer: 30
-    }
-  },
   {
     id: 'sendMessage_telegram',
     service: 'telegram',
@@ -33,9 +24,9 @@ export const availableReactions: Action[] = [
     description: 'Send a message on Telegram',
   },
   {
-    id: 'spotify-save',
-    service: 'Spotify', 
-    type: 'SAVE_TRACK',
-    description: 'Save current track to Spotify favorites'
+    id: 'sendMessage_discord',
+    service: 'discord',
+    type: 'sendMessage',
+    description: 'Send a message on Discord',
   }
 ];
