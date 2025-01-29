@@ -5,6 +5,7 @@ import routes from './routes';
 import connectDB from './db/db';
 import { executeAreas } from './tasks/asyncTasks';
 const app = express();
+const path = require('path');
 dotenv.config();
 
 const PORT = process.env.BACKEND_PORT;
@@ -17,6 +18,8 @@ app.use(cors( {
     origin: `http://localhost:${FRONTEND_PORT}`,
     credentials: true
 }));
+
+app.use('/apk', express.static(path.join(__dirname, 'apk')));
 
 app.use('/api', routes);
 
