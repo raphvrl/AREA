@@ -73,13 +73,17 @@ export const AreaModal: React.FC<AreaModalProps> = ({
           <div className="flex justify-end space-x-2">
             <button
               onClick={onClose}
-              className="px-4 py-2 border rounded"
+              className={`px-4 py-2 rounded transition-colors duration-200
+                ${isDarkMode 
+                  ? 'bg-gray-700 text-white hover:bg-gray-600 border-2 border-gray-500 hover:border-gray-400' 
+                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300 border-2 border-gray-300 hover:border-gray-400'
+                } font-medium shadow-md hover:shadow-lg`}
             >
               Cancel
             </button>
             <button
               onClick={onSubmit}
-              className="px-4 py-2 bg-blue-500 text-white rounded"
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
               disabled={!selectedAction || !selectedReaction || !areaName}
             >
               Create
