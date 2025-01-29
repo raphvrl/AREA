@@ -9,13 +9,13 @@ services:
     - FRONTEND_PORT=8081
     command: ["npm", "start"]
 
-  # client_mobile:
-  #   build:
-  #     context: ./mobile
-  #   volumes:
-  #     - shared_volume:/apk
-  #   depends_on:
-  #     - server
+  client_mobile:
+    build:
+      context: ./mobile
+    volumes:
+      - shared_volume:/apk
+    depends_on:
+      - server
 
   client_web:
     build:
@@ -26,6 +26,7 @@ services:
       - shared_volume:/apk
     depends_on:
       - server
+      - client_mobile
     environment:
       - PORT=8081
       - BACKEND_PORT=8080
