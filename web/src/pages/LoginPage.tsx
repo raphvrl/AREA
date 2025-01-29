@@ -30,7 +30,7 @@ const LoginPage: React.FC = () => {
 
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
   });
   const [errors, setErrors] = useState<AuthError[]>([]);
 
@@ -43,21 +43,25 @@ const LoginPage: React.FC = () => {
     const discordToken = urlParams.get('discord_token');
     const githubToken = urlParams.get('github_token');
 
-    const handleSocialLogin = (token: string, platform: string, userData: any) => {
+    const handleSocialLogin = (
+      token: string,
+      platform: string,
+      userData: any
+    ) => {
       const user = {
         ...userData,
-        email: userData.email || `${platform}_user@area.com`
+        email: userData.email || `${platform}_user@area.com`,
       };
-      
+
       // Store authentication data
       localStorage.setItem(`${platform}_token`, token);
       localStorage.setItem('userEmail', user.email);
       localStorage.setItem('userPlatform', platform);
       localStorage.setItem('isAuthenticated', 'true');
-      
+
       // Log the user in
       login(user);
-      
+
       // Navigate to services page instead of login
       navigate('/services');
     };
@@ -67,28 +71,28 @@ const LoginPage: React.FC = () => {
         firstName,
         lastName,
         isFirstLogin: true,
-        email: '' // Add empty string as default
+        email: '', // Add empty string as default
       });
     } else if (discordToken && firstName && lastName) {
       handleSocialLogin(discordToken, 'discord', {
         firstName,
         lastName,
         isFirstLogin: true,
-        email: '' // Add empty string as default
+        email: '', // Add empty string as default
       });
     } else if (spotifyToken) {
       handleSocialLogin(spotifyToken, 'spotify', {
         firstName: 'Spotify',
         lastName: 'User',
         isFirstLogin: true,
-        email: '' // Add empty string as default
+        email: '', // Add empty string as default
       });
     } else if (firstName && lastName) {
-      login({ 
-        firstName, 
-        lastName, 
+      login({
+        firstName,
+        lastName,
         isFirstLogin,
-        email: '' // Add empty string as default
+        email: '', // Add empty string as default
       });
       navigate('/');
     }
@@ -105,49 +109,58 @@ const LoginPage: React.FC = () => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors([]);
-    
+
     try {
       const response = await axios.post<LoginResponse>(
-        `http://localhost:${BACKEND_PORT}/api/sign_in`, 
+        `http://localhost:${BACKEND_PORT}/api/sign_in`,
         formData
       );
-  
+
       if (response.data.user) {
         // Store email in localStorage before login
         localStorage.setItem('userEmail', formData.email);
         login(response.data.user);
         navigate('/');
       }
-  
     } catch (error: any) {
       console.error('Login error:', error);
-      
+
       if (error.response?.data?.errors) {
         const apiErrors = error.response.data as ApiValidationError;
-        const mappedErrors = apiErrors.errors?.map(err => {
-          const translationKey = `login.errors.${err.param}` as TranslationKey;
-          return {
-            field: err.param,
-            message: t(translationKey) || err.msg
-          };
-        }) || [];
+        const mappedErrors =
+          apiErrors.errors?.map((err) => {
+            const translationKey =
+              `login.errors.${err.param}` as TranslationKey;
+            return {
+              field: err.param,
+              message: t(translationKey) || err.msg,
+            };
+          }) || [];
         setErrors(mappedErrors);
       } else if (error.response?.status === 401) {
-        setErrors([{
-          message: t('login.errors.invalid_credentials')
-        }]);
+        setErrors([
+          {
+            message: t('login.errors.invalid_credentials'),
+          },
+        ]);
       } else {
-        setErrors([{
-          message: t('login.errors.general')
-        }]);
+        setErrors([
+          {
+            message: t('login.errors.general'),
+          },
+        ]);
       }
     }
   };
 
   return (
-    <div className={`min-h-screen flex items-center justify-center ${
-      isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50 to-indigo-100'
-    } transition-colors duration-200`}>
+    <div
+      className={`min-h-screen flex items-center justify-center ${
+        isDarkMode
+          ? 'bg-gray-900'
+          : 'bg-gradient-to-br from-blue-50 to-indigo-100'
+      } transition-colors duration-200`}
+    >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -157,10 +170,14 @@ const LoginPage: React.FC = () => {
         } rounded-2xl shadow-2xl space-y-6`}
       >
         <div className="text-center">
-          <h2 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+          <h2
+            className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+          >
             {t('login.title')}
           </h2>
-          <p className={`mt-2 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p
+            className={`mt-2 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}
+          >
             {t('login.welcome_back')}
           </p>
         </div>
@@ -206,7 +223,9 @@ const LoginPage: React.FC = () => {
             <div className="w-full border-t border-gray-300"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className={`px-2 ${isDarkMode ? 'bg-gray-800 text-gray-400' : 'bg-white text-gray-500'}`}>
+            <span
+              className={`px-2 ${isDarkMode ? 'bg-gray-800 text-gray-400' : 'bg-white text-gray-500'}`}
+            >
               {t('login.or')}
             </span>
           </div>
@@ -252,7 +271,9 @@ const LoginPage: React.FC = () => {
         </div>
 
         <div className="text-center mt-6">
-          <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p
+            className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}
+          >
             {t('login.no_account')}{' '}
             <Link
               to="/signup"

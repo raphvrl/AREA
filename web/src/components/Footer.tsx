@@ -3,24 +3,26 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from '../context/TranslationContext';
 import { motion } from 'framer-motion';
-import { 
-  IoLogoGithub, 
-  IoLogoLinkedin, 
-  IoLogoTwitter, 
-  IoMail, 
-  IoHome, 
-  IoInformationCircle, 
-  IoCall 
+import {
+  IoLogoGithub,
+  IoLogoLinkedin,
+  IoLogoTwitter,
+  IoMail,
+  IoHome,
+  IoInformationCircle,
+  IoCall,
 } from 'react-icons/io5';
 
 const Footer: React.FC = () => {
   const { isDarkMode } = useTheme();
   const { t } = useTranslation();
-  
+
   return (
-    <footer className={`${
-      isDarkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-600'
-    } pt-12 pb-6 transition-colors duration-200`}>
+    <footer
+      className={`${
+        isDarkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-600'
+      } pt-12 pb-6 transition-colors duration-200`}
+    >
       <div className="container mx-auto px-4">
         {/* Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
@@ -29,9 +31,7 @@ const Footer: React.FC = () => {
             <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">
               AREA
             </h3>
-            <p className="text-sm">
-              {t('footer.description')}
-            </p>
+            <p className="text-sm">{t('footer.description')}</p>
           </div>
 
           {/* Quick Links */}
@@ -39,19 +39,28 @@ const Footer: React.FC = () => {
             <h4 className="font-semibold mb-4">{t('footer.quick_links')}</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="flex items-center space-x-2 hover:text-blue-500 transition-colors">
+                <Link
+                  to="/"
+                  className="flex items-center space-x-2 hover:text-blue-500 transition-colors"
+                >
                   <IoHome className="w-4 h-4" />
                   <span>{t('footer.home')}</span>
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="flex items-center space-x-2 hover:text-blue-500 transition-colors">
+                <Link
+                  to="/about"
+                  className="flex items-center space-x-2 hover:text-blue-500 transition-colors"
+                >
                   <IoInformationCircle className="w-4 h-4" />
                   <span>{t('footer.about')}</span>
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="flex items-center space-x-2 hover:text-blue-500 transition-colors">
+                <Link
+                  to="/contact"
+                  className="flex items-center space-x-2 hover:text-blue-500 transition-colors"
+                >
                   <IoCall className="w-4 h-4" />
                   <span>{t('footer.contact')}</span>
                 </Link>
@@ -109,19 +118,27 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Divider */}
-        <div className={`border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} pt-6`}>
+        <div
+          className={`border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} pt-6`}
+        >
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             {/* Copyright */}
             <p className="text-sm">
               &copy; {new Date().getFullYear()} AREA. {t('footer.rights')}
             </p>
-            
+
             {/* Legal Links */}
             <div className="flex space-x-4 text-sm">
-              <Link to="/privacy" className="hover:text-blue-500 transition-colors">
+              <Link
+                to="/privacy"
+                className="hover:text-blue-500 transition-colors"
+              >
                 {t('footer.privacy')}
               </Link>
-              <Link to="/terms" className="hover:text-blue-500 transition-colors">
+              <Link
+                to="/terms"
+                className="hover:text-blue-500 transition-colors"
+              >
                 {t('footer.terms')}
               </Link>
             </div>

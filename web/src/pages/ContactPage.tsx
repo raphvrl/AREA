@@ -11,7 +11,7 @@ const ContactPage: React.FC = () => {
     name: '',
     email: '',
     subject: '',
-    message: ''
+    message: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -19,16 +19,20 @@ const ContactPage: React.FC = () => {
     console.log('Form submitted:', formData);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-100'} pt-20 px-4 pb-8 transition-colors duration-200`}>
+    <div
+      className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-100'} pt-20 px-4 pb-8 transition-colors duration-200`}
+    >
       <div className="max-w-6xl mx-auto">
         {/* Hero Section */}
         <motion.div
@@ -36,10 +40,14 @@ const ContactPage: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className={`text-4xl md:text-5xl font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+          <h1
+            className={`text-4xl md:text-5xl font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+          >
             {t('contact.title')}
           </h1>
-          <p className={`text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+          <p
+            className={`text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
+          >
             {t('contact.description')}
           </p>
         </motion.div>
@@ -55,8 +63,16 @@ const ContactPage: React.FC = () => {
                 <IoMail className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Email</h3>
-                <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>thomas.gaboriaud@epitech.eu</p>
+                <h3
+                  className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+                >
+                  Email
+                </h3>
+                <p
+                  className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}
+                >
+                  thomas.gaboriaud@epitech.eu
+                </p>
               </div>
             </div>
           </motion.div>
@@ -70,8 +86,16 @@ const ContactPage: React.FC = () => {
                 <IoCall className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{t('contact.phone')}</h3>
-                <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>+33 7 68 05 09 51</p>
+                <h3
+                  className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+                >
+                  {t('contact.phone')}
+                </h3>
+                <p
+                  className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}
+                >
+                  +33 7 68 05 09 51
+                </p>
               </div>
             </div>
           </motion.div>
@@ -85,8 +109,16 @@ const ContactPage: React.FC = () => {
                 <IoLocation className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{t('contact.address')}</h3>
-                <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Bordeaux, France</p>
+                <h3
+                  className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+                >
+                  {t('contact.address')}
+                </h3>
+                <p
+                  className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}
+                >
+                  Bordeaux, France
+                </p>
               </div>
             </div>
           </motion.div>
@@ -102,7 +134,9 @@ const ContactPage: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                <label
+                  className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
+                >
                   {t('contact.form.name')}
                 </label>
                 <input
@@ -111,13 +145,17 @@ const ContactPage: React.FC = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   className={`w-full px-4 py-2 rounded-lg border ${
-                    isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
+                    isDarkMode
+                      ? 'bg-gray-700 border-gray-600 text-white'
+                      : 'bg-white border-gray-300'
                   } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
                   required
                 />
               </div>
               <div>
-                <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                <label
+                  className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
+                >
                   {t('contact.form.email')}
                 </label>
                 <input
@@ -126,15 +164,19 @@ const ContactPage: React.FC = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   className={`w-full px-4 py-2 rounded-lg border ${
-                    isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
+                    isDarkMode
+                      ? 'bg-gray-700 border-gray-600 text-white'
+                      : 'bg-white border-gray-300'
                   } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
                   required
                 />
               </div>
             </div>
-            
+
             <div>
-              <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              <label
+                className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
+              >
                 {t('contact.form.subject')}
               </label>
               <input
@@ -143,14 +185,18 @@ const ContactPage: React.FC = () => {
                 value={formData.subject}
                 onChange={handleInputChange}
                 className={`w-full px-4 py-2 rounded-lg border ${
-                  isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
+                  isDarkMode
+                    ? 'bg-gray-700 border-gray-600 text-white'
+                    : 'bg-white border-gray-300'
                 } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
                 required
               />
             </div>
 
             <div>
-              <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              <label
+                className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
+              >
                 {t('contact.form.message')}
               </label>
               <textarea
@@ -159,7 +205,9 @@ const ContactPage: React.FC = () => {
                 onChange={handleInputChange}
                 rows={4}
                 className={`w-full px-4 py-2 rounded-lg border ${
-                  isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
+                  isDarkMode
+                    ? 'bg-gray-700 border-gray-600 text-white'
+                    : 'bg-white border-gray-300'
                 } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
                 required
               />

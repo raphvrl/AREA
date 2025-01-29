@@ -4,7 +4,15 @@ import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from '../context/TranslationContext';
 import { motion } from 'framer-motion';
-import { IoHome, IoPersonCircle, IoLanguage, IoSunny, IoMoon, IoLogOut, IoApps } from 'react-icons/io5';
+import {
+  IoHome,
+  IoPersonCircle,
+  IoLanguage,
+  IoSunny,
+  IoMoon,
+  IoLogOut,
+  IoApps,
+} from 'react-icons/io5';
 
 const AuthenticatedNavbar: React.FC = () => {
   const { logout, user, login } = useAuth();
@@ -15,15 +23,15 @@ const AuthenticatedNavbar: React.FC = () => {
   useEffect(() => {
     const userPlatform = localStorage.getItem('userPlatform');
     const isAuthenticated = localStorage.getItem('isAuthenticated');
-    
+
     if (userPlatform && isAuthenticated === 'true') {
       const storedEmail = localStorage.getItem('userEmail');
       if (storedEmail) {
         login({
           email: storedEmail,
           firstName: userPlatform, // Use platform as firstName
-          lastName: 'User',       // Default lastName
-          platform: userPlatform  // Now valid with updated User interface
+          lastName: 'User', // Default lastName
+          platform: userPlatform, // Now valid with updated User interface
         });
       }
     }
@@ -34,8 +42,8 @@ const AuthenticatedNavbar: React.FC = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed w-full top-0 z-50 ${
-        isDarkMode 
-          ? 'bg-gray-900/95 backdrop-blur-md border-b border-gray-800' 
+        isDarkMode
+          ? 'bg-gray-900/95 backdrop-blur-md border-b border-gray-800'
           : 'bg-white/95 backdrop-blur-md border-b border-gray-200'
       } transition-all duration-200`}
     >
@@ -47,11 +55,13 @@ const AuthenticatedNavbar: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               className="flex items-center space-x-2"
             >
-              <div className={`text-3xl font-black bg-gradient-to-r ${
-                isDarkMode 
-                  ? 'from-blue-400 to-purple-500' 
-                  : 'from-blue-500 to-purple-600'
-              } text-transparent bg-clip-text`}>
+              <div
+                className={`text-3xl font-black bg-gradient-to-r ${
+                  isDarkMode
+                    ? 'from-blue-400 to-purple-500'
+                    : 'from-blue-500 to-purple-600'
+                } text-transparent bg-clip-text`}
+              >
                 AREA
               </div>
             </motion.div>
@@ -64,11 +74,15 @@ const AuthenticatedNavbar: React.FC = () => {
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 className={`flex items-center space-x-2 ${
-                  isDarkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                  isDarkMode
+                    ? 'text-gray-300 hover:text-white'
+                    : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
                 <IoHome className="w-5 h-5" />
-                <span className="font-medium hidden md:block">{t('nav.home')}</span>
+                <span className="font-medium hidden md:block">
+                  {t('nav.home')}
+                </span>
               </motion.div>
             </Link>
 
@@ -77,11 +91,15 @@ const AuthenticatedNavbar: React.FC = () => {
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 className={`flex items-center space-x-2 ${
-                  isDarkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                  isDarkMode
+                    ? 'text-gray-300 hover:text-white'
+                    : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
                 <IoApps className="w-5 h-5" />
-                <span className="font-medium hidden md:block">{t('nav.services')}</span>
+                <span className="font-medium hidden md:block">
+                  {t('nav.services')}
+                </span>
               </motion.div>
             </Link>
 
@@ -89,11 +107,15 @@ const AuthenticatedNavbar: React.FC = () => {
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 className={`flex items-center space-x-2 ${
-                  isDarkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                  isDarkMode
+                    ? 'text-gray-300 hover:text-white'
+                    : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
                 <IoPersonCircle className="w-5 h-5" />
-                <span className="font-medium hidden md:block">{t('nav.profile')}</span>
+                <span className="font-medium hidden md:block">
+                  {t('nav.profile')}
+                </span>
               </motion.div>
             </Link>
 
@@ -103,11 +125,15 @@ const AuthenticatedNavbar: React.FC = () => {
                 whileHover={{ scale: 1.1 }}
                 onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
                 className={`flex items-center space-x-2 ${
-                  isDarkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                  isDarkMode
+                    ? 'text-gray-300 hover:text-white'
+                    : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
                 <IoLanguage className="w-5 h-5" />
-                <span className="font-medium hidden md:block">{language.toUpperCase()}</span>
+                <span className="font-medium hidden md:block">
+                  {language.toUpperCase()}
+                </span>
               </motion.button>
 
               {isLangMenuOpen && (
@@ -126,8 +152,8 @@ const AuthenticatedNavbar: React.FC = () => {
                         setIsLangMenuOpen(false);
                       }}
                       className={`block w-full text-left px-4 py-2 text-sm ${
-                        isDarkMode 
-                          ? 'text-gray-300 hover:bg-gray-700' 
+                        isDarkMode
+                          ? 'text-gray-300 hover:bg-gray-700'
                           : 'text-gray-700 hover:bg-gray-100'
                       }`}
                     >
@@ -144,12 +170,16 @@ const AuthenticatedNavbar: React.FC = () => {
               whileTap={{ scale: 0.95 }}
               onClick={toggleTheme}
               className={`p-2 rounded-full ${
-                isDarkMode 
-                  ? 'bg-gray-800 text-yellow-400 hover:bg-gray-700' 
+                isDarkMode
+                  ? 'bg-gray-800 text-yellow-400 hover:bg-gray-700'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
-              {isDarkMode ? <IoSunny className="w-5 h-5" /> : <IoMoon className="w-5 h-5" />}
+              {isDarkMode ? (
+                <IoSunny className="w-5 h-5" />
+              ) : (
+                <IoMoon className="w-5 h-5" />
+              )}
             </motion.button>
 
             {/* Logout Button */}
@@ -158,13 +188,15 @@ const AuthenticatedNavbar: React.FC = () => {
               whileTap={{ scale: 0.95 }}
               onClick={logout}
               className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${
-                isDarkMode 
-                  ? 'bg-red-500 hover:bg-red-600' 
+                isDarkMode
+                  ? 'bg-red-500 hover:bg-red-600'
                   : 'bg-red-500 hover:bg-red-600'
               } text-white`}
             >
               <IoLogOut className="w-5 h-5" />
-              <span className="font-medium hidden md:block">{t('nav.logout')}</span>
+              <span className="font-medium hidden md:block">
+                {t('nav.logout')}
+              </span>
             </motion.button>
           </div>
         </div>

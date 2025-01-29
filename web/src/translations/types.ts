@@ -6,7 +6,7 @@ export interface TranslationContextType {
   t: (key: TranslationKey) => string;
 }
 
-export type TranslationKey = 
+export type TranslationKey =
   | 'nav.home'
   | 'nav.profile'
   | 'nav.logout'
@@ -40,7 +40,7 @@ export type TranslationKey =
   | 'login.password_placeholder'
   | 'login.sign_in'
   | 'login.no_account'
-  | 'login.create_account' 
+  | 'login.create_account'
   | 'signup.errors.required_firstname'
   | 'signup.errors.required_lastname'
   | 'signup.errors.required_email'
