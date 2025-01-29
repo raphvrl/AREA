@@ -16,8 +16,8 @@ export interface Reaction {
 
 export interface Area {
   id: string;
-  name: string; // Add this line
-  isActive: boolean; // Maps to is_on in DB
+  name: string; 
+  isActive: boolean;
   action: {
     service: string;
     type: string;

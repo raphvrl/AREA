@@ -1,5 +1,4 @@
 import { time10_seconde, sendmessage_terminal } from './fonction';
-import { nomAction_nomSerice } from './action/testFonction';
 import { repoCreated_github } from './action/githubAction';
 import { sendMessage_telegram } from './reaction/telegramReaction';
 import { checkNewSong_spotify } from './action/checkNewSongSpotify';
@@ -15,13 +14,6 @@ const areaHandlers: { [key: string]: Handler } = {
     sendmessage_terminal: async () => {
         await sendmessage_terminal();
         return "Message sent to terminal";
-    },
-    nomAction_nomSerice: async (email?: string) => {
-        if (!email) {
-            throw new Error('Email est requis.');
-        }
-        const result = await nomAction_nomSerice(email);
-        return result;
     },
     repoCreated_github: async (email?: string) => {
         if (!email) {

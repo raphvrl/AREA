@@ -84,8 +84,14 @@ export const AreaCard: React.FC<AreaCardProps> = ({
           </div>
         </div>
         <div className="flex-1 text-sm">
-          <p className="mb-1"><span className="font-medium">Action:</span> {area.action.description}</p>
-          <p><span className="font-medium">Reaction:</span> {area.reaction.description}</p>
+          <p className="mb-1">
+            <span className="font-medium">Action:</span>{' '}
+            {area.action?.description || area.action?.type || 'No description available'}
+          </p>
+          <p>
+            <span className="font-medium">Reaction:</span>{' '}
+            {area.reaction?.description || area.reaction?.type || 'No description available'}
+          </p>
         </div>
       </div>
     </div>
