@@ -7,8 +7,17 @@ module.exports = {
       '@typescript-eslint/naming-convention': [
         'error',
         {
-          selector: 'variableLike',
+          selector: 'variable',
           format: ['camelCase'],
+        },
+        {
+          selector: 'variable',
+          modifiers: ['const'],
+          format: ['UPPER_CASE', 'camelCase'],
+        },
+        {
+          selector: 'interface',
+          format: ['PascalCase', 'camelCase'],
         },
       ],
     },
@@ -19,8 +28,17 @@ module.exports = {
           '@typescript-eslint/naming-convention': [
             'error',
             {
-              selector: 'variableLike',
+              selector: 'variable',
               format: ['camelCase'],
+            },
+            {
+              selector: 'variable',
+              modifiers: ['const'],
+              format: ['UPPER_CASE', 'camelCase'],
+            },
+            {
+              selector: 'interface',
+              format: ['PascalCase', 'camelCase'],
             },
           ],
         },
