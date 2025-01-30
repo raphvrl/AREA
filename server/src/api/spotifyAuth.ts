@@ -13,8 +13,7 @@ const spotifyApi = new SpotifyWebApi({
 
 export const authSpotify = (req: Request, res: Response) => {
     const { email, redirect_uri } = req.query;
-
-    // Vérification des paramètres requis
+    const service = "/api/auth/spotify/callback";
     if (!email || !redirect_uri) {
         return res.status(400).json({ message: 'Email and redirect_uri are required' });
     }
@@ -39,7 +38,7 @@ export const authSpotify = (req: Request, res: Response) => {
         'user-library-read'
     ];
 
-    const state = JSON.stringify({ email, redirect_uri });
+    const state = JSON.stringify({ service });
 
     // Création de l'URL d'autorisation
     const authorizeURL = spotifyApi.createAuthorizeURL(scopes, state);
@@ -49,14 +48,13 @@ export const authSpotify = (req: Request, res: Response) => {
 };
 
 export const authSpotifyCallback = async (req: Request, res: Response) => {
-    const { code, state } = req.query;
+    const { code, email } = req.query;
 
-    if (!code || !state) {
+    if (!code || !email) {
         return res.status(400).json({ message: 'Code and state are required' });
     }
 
     try {
-        const { email, redirect_uri } = JSON.parse(state.toString());
 
         const data = await spotifyApi.authorizationCodeGrant(code.toString());
         const { access_token, refresh_token } = data.body;
