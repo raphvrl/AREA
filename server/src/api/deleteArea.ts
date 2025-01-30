@@ -1,19 +1,19 @@
 import { Request, Response } from 'express';
-import UserModel from '../db/UserModel';
+import userModel from '../db/userModel';
 
-export const delete_area = async (req: Request, res: Response) => {
+export const deleteArea = async (req: Request, res: Response) => {
   try {
-    const { nom_area, email } = req.body;
+    const { nomArea, email } = req.body;
 
     // Validation des champs obligatoires
-    if (!nom_area || !email) {
+    if (!nomArea || !email) {
       return res
         .status(400)
-        .json({ message: 'Both "nom_area" and "email" fields are required.' });
+        .json({ message: 'Both "nomArea" and "email" fields are required.' });
     }
 
     // Récupérer l'utilisateur par email
-    const user = await UserModel.findOne({ email });
+    const user = await userModel.findOne({ email });
     if (!user) {
       return res
         .status(404)
@@ -25,23 +25,23 @@ export const delete_area = async (req: Request, res: Response) => {
       | Map<string, { action: string; reaction: string; is_on: string }>
       | undefined;
 
-    if (!areaMap || !areaMap.has(nom_area)) {
+    if (!areaMap || !areaMap.has(nomArea)) {
       return res
         .status(404)
-        .json({ message: `Area "${nom_area}" not found for user "${email}".` });
+        .json({ message: `Area "${nomArea}" not found for user "${email}".` });
     }
 
     // Supprimer l'area spécifiée
-    areaMap.delete(nom_area);
+    areaMap.delete(nomArea);
 
     // Sauvegarder les modifications dans la base de données
     await user.save();
 
     return res
       .status(200)
-      .json({ message: `Area "${nom_area}" has been successfully deleted.` });
+      .json({ message: `Area "${nomArea}" has been successfully deleted.` });
   } catch (error) {
-    console.error('Error in delete_area:', error);
+    console.error('Error in deleteArea:', error);
     return res.status(500).json({ message: 'Internal server error.' });
   }
 };

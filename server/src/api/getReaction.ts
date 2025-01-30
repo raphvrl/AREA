@@ -5,7 +5,7 @@ const reactionsMap = new Map<string, string>([
   ['reaction2', 'test'],
 ]);
 
-export const get_reaction = async (req: Request, res: Response) => {
+export const getReaction = async (req: Request, res: Response) => {
   try {
     const reactionsArray = Array.from(reactionsMap.values());
 

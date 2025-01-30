@@ -1,5 +1,5 @@
 import axios from 'axios';
-import UserModel from '../../db/UserModel';
+import userModel from '../../db/userModel';
 
 interface GithubRepo {
   id: number;
@@ -12,12 +12,12 @@ interface GithubRepo {
 let lastKnownRepoId = 0;
 let isInitialized = false;
 
-export const repoCreated_github = async (
+export const repoCreatedGithub = async (
   email: string
 ): Promise<GithubRepo | null> => {
   try {
     const serviceKey = 'github';
-    const user = await UserModel.findOne({ email });
+    const user = await userModel.findOne({ email });
     if (!user) {
       throw new Error(`User with email "${email}" not found.`);
     }

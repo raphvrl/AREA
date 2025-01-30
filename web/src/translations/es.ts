@@ -17,7 +17,7 @@ export const esTranslations = {
   'login.welcome_back': '¡Bienvenido de nuevo!',
   'login.identifier_placeholder': 'Identificador',
   'login.password_placeholder': 'Contraseña',
-  'login.sign_in': 'Iniciar sesión',
+  'login.signIn': 'Iniciar sesión',
   'login.no_account': '¿No tienes cuenta?',
   'login.create_account': 'Crear una cuenta',
   'login.email': 'Correo electrónico',
@@ -29,7 +29,7 @@ export const esTranslations = {
   'login.errors.password': 'Contraseña inválida',
 
   // Signup
-  'signup.sign_in': 'Iniciar sesión',
+  'signup.signIn': 'Iniciar sesión',
   'signup.already_have_account': '¿Ya tienes una cuenta?',
   'signup.lastname': 'Apellido',
   'signup.firstname': 'Nombre',

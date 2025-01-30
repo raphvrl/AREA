@@ -1,10 +1,10 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
-import UserModel from '../db/UserModel'; // On part du principe que tu as un modèle utilisateur
+import userModel from '../db/userModel'; // On part du principe que tu as un modèle utilisateur
 
-// Fonction sign_in
-export const sign_up = async (req: Request, res: Response) => {
+// Fonction signIn
+export const signUp = async (req: Request, res: Response) => {
   try {
     // Validation des champs
     const errors = validationResult(req);
@@ -15,7 +15,7 @@ export const sign_up = async (req: Request, res: Response) => {
     const { firstName, lastName, email, password } = req.body;
 
     // Vérifier si l'utilisateur existe déjà
-    const existingUser = await UserModel.findOne({ email });
+    const existingUser = await userModel.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'Email already in use' });
     }
@@ -24,7 +24,7 @@ export const sign_up = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Création d'un nouvel utilisateur
-    const newUser = new UserModel({
+    const newUser = new userModel({
       firstName,
       lastName,
       email,
@@ -40,12 +40,12 @@ export const sign_up = async (req: Request, res: Response) => {
 };
 
 // Fonction login
-export const sign_in = async (req: Request, res: Response) => {
+export const signIn = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
     // Rechercher l'utilisateur par email
-    const user = await UserModel.findOne({ email });
+    const user = await userModel.findOne({ email });
 
     if (!user) {
       return res.status(404).json({ message: 'Invalid email or password' });

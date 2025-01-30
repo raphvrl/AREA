@@ -17,7 +17,7 @@ export const zhTranslations = {
   'login.welcome_back': '欢迎回来！',
   'login.identifier_placeholder': '标识符',
   'login.password_placeholder': '密码',
-  'login.sign_in': '登录',
+  'login.signIn': '登录',
   'login.no_account': '没有账户？',
   'login.create_account': '创建账户',
   'login.email': '电子邮箱',
@@ -28,7 +28,7 @@ export const zhTranslations = {
   'login.errors.password': '密码无效',
 
   // Signup
-  'signup.sign_in': '登录',
+  'signup.signIn': '登录',
   'signup.already_have_account': '已经有账户？',
   'signup.lastname': '姓',
   'signup.firstname': '名',

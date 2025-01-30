@@ -1,17 +1,17 @@
 import { Request, Response } from 'express';
-import UserModel from '../db/UserModel';
+import userModel from '../db/userModel';
 
-export const logout_service = async (req: Request, res: Response) => {
+export const logoutService = async (req: Request, res: Response) => {
   try {
-    const { name_service, email } = req.body;
+    const { nameService, email } = req.body;
 
-    if (!name_service || !email) {
+    if (!nameService || !email) {
       return res.status(400).json({
-        message: 'Both "name_service" and "email" fields are required.',
+        message: 'Both "nameService" and "email" fields are required.',
       });
     }
 
-    const user = await UserModel.findOne({ email });
+    const user = await userModel.findOne({ email });
     if (!user) {
       return res
         .status(404)
@@ -19,22 +19,22 @@ export const logout_service = async (req: Request, res: Response) => {
     }
 
     const serviceMap = user.service as Map<string, string>;
-    console.log(serviceMap.get(name_service));
-    if (!serviceMap || serviceMap.get(name_service) === undefined) {
+    console.log(serviceMap.get(nameService));
+    if (!serviceMap || serviceMap.get(nameService) === undefined) {
       return res.status(404).json({
-        message: `Service "${name_service}" not found for user "${email}".`,
+        message: `Service "${nameService}" not found for user "${email}".`,
       });
     }
 
-    serviceMap.set(name_service, 'false');
+    serviceMap.set(nameService, 'false');
 
     await user.save();
 
     return res.status(200).json({
-      message: `Service "${name_service}" has been successfully logged out.`,
+      message: `Service "${nameService}" has been successfully logged out.`,
     });
   } catch (error) {
-    console.error('Error in logout_service:', error);
+    console.error('Error in logoutService:', error);
     return res.status(500).json({ message: 'Internal server error.' });
   }
 };

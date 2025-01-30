@@ -3,4 +3,4 @@ export * from './setArea';
 export * from './getArea';
 export * from './logoutService';
 export * from './getLoginService';
-export * from './delete_area';
+export * from './deleteArea';

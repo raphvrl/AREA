@@ -7,8 +7,9 @@
     "start": "ts-node src/server.ts",
     "dev": "nodemon src/server.ts",
     "build": "tsc",
-    "prettier:check": "prettier --check .",
-    "prettier:write": "prettier --write ."
+    "prettier:check": "prettier --check 'src/**/*.ts'",
+    "prettier:write": "prettier --write 'src/**/*.ts'",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
@@ -26,6 +27,7 @@
     "express-session": "^1.18.1",
     "express-validator": "^7.2.1",
     "https": "^1.0.0",
+    "lint": "^0.8.19",
     "nodemon": "^3.1.7",
     "oauth": "^0.10.0",
     "passport": "^0.7.0",
@@ -43,6 +45,8 @@
     "@types/node": "^18.19.71",
     "@types/passport": "^1.0.17",
     "@types/passport-linkedin-oauth2": "^1.5.6",
+    "@typescript-eslint/eslint-plugin": "^8.22.0",
+    "eslint": "^8.57.1",
     "typescript": "^5.7.2"
   }
 }

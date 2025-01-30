@@ -17,7 +17,7 @@ export const frTranslations = {
   'login.welcome_back': 'Bienvenue de retour !',
   'login.identifier_placeholder': 'Identifiant',
   'login.password_placeholder': 'Mot de passe',
-  'login.sign_in': 'Se connecter',
+  'login.signIn': 'Se connecter',
   'login.no_account': 'Pas de compte ?',
   'login.create_account': 'Créer un compte',
   'login.email': 'Email',
@@ -28,7 +28,7 @@ export const frTranslations = {
   'login.errors.password': 'Mot de passe invalide',
 
   // Signup
-  'signup.sign_in': 'Se connecter',
+  'signup.signIn': 'Se connecter',
   'signup.already_have_account': 'Vous avez déjà un compte ?',
   'signup.lastname': 'Nom',
   'signup.firstname': 'Prénom',

@@ -1,22 +1,22 @@
 import { Request, Response } from 'express';
-import UserModel from '../db/UserModel';
+import userModel from '../db/userModel';
 
-export const set_area = async (req: Request, res: Response) => {
+export const setArea = async (req: Request, res: Response) => {
   try {
-    const { email_user, nom_area, action, reaction } = req.body;
+    const { emailUser, nomArea, action, reaction } = req.body;
 
-    if (!email_user || !nom_area || !action || !reaction) {
+    if (!emailUser || !nomArea || !action || !reaction) {
       return res.status(400).json({
         message:
-          'All fields are required: email_user, nom_area, action, reaction.',
+          'All fields are required: emailUser, nomArea, action, reaction.',
       });
     }
 
-    const user = await UserModel.findOne({ email: email_user });
+    const user = await userModel.findOne({ email: emailUser });
     if (!user) {
       return res
         .status(404)
-        .json({ message: `User with email "${email_user}" not found.` });
+        .json({ message: `User with email "${emailUser}" not found.` });
     }
 
     const serviceMap = user.service as Map<string, string>;
@@ -25,53 +25,53 @@ export const set_area = async (req: Request, res: Response) => {
       { action: string; reaction: string; is_on: string }
     >;
 
-    const service_action = action.split('_')[1];
-    const service_reaction = reaction.split('_')[1];
+    const serviceAction = action.split('_')[1];
+    const serviceReaction = reaction.split('_')[1];
 
     if (
-      !serviceMap.get(service_action) ||
-      serviceMap.get(service_action) !== 'true'
+      !serviceMap.get(serviceAction) ||
+      serviceMap.get(serviceAction) !== 'true'
     ) {
       return res.status(400).json({
-        message: `Service "${service_action}" is not connected for action.`,
+        message: `Service "${serviceAction}" is not connected for action.`,
       });
     }
 
-    if (service_reaction === 'telegram') {
+    if (serviceReaction === 'telegram') {
       if (!process.env.TELEGRAM_BOT_TOKEN || !process.env.TELEGRAM_CHAT_ID) {
         return res
           .status(400)
           .json({ message: 'Telegram configuration is missing' });
       }
-    } else if (service_reaction === 'discord') {
+    } else if (serviceReaction === 'discord') {
       if (!process.env.DISCORD_WEBHOOK_URL) {
         return res
           .status(400)
           .json({ message: 'Discord webhook URL is missing' });
       }
     } else if (
-      !serviceMap.get(service_reaction) ||
-      serviceMap.get(service_reaction) !== 'true'
+      !serviceMap.get(serviceReaction) ||
+      serviceMap.get(serviceReaction) !== 'true'
     ) {
       return res.status(400).json({
-        message: `Service "${service_reaction}" is not connected for reaction.`,
+        message: `Service "${serviceReaction}" is not connected for reaction.`,
       });
     }
-    const new_area = {
+    const newArea = {
       action,
       reaction,
       is_on: 'true',
     };
 
-    areaMap.set(nom_area, new_area);
+    areaMap.set(nomArea, newArea);
 
     await user.save();
 
     return res.status(200).json({
-      message: `Area "${nom_area}" has been successfully added or updated.`,
+      message: `Area "${nomArea}" has been successfully added or updated.`,
     });
   } catch (error) {
-    console.error('Error in set_area:', error);
+    console.error('Error in setArea:', error);
     return res.status(500).json({ message: 'Internal server error.' });
   }
 };

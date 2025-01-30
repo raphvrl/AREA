@@ -17,7 +17,7 @@ export const jaTranslations = {
   'login.or': 'または',
   'login.identifier_placeholder': '識別子',
   'login.password_placeholder': 'パスワード',
-  'login.sign_in': 'ログイン',
+  'login.signIn': 'ログイン',
   'login.no_account': 'アカウントがありませんか？',
   'login.create_account': 'アカウントを作成',
   'login.email': 'メールアドレス',
@@ -29,7 +29,7 @@ export const jaTranslations = {
   'login.errors.password': 'パスワードが無効です',
 
   // Signup
-  'signup.sign_in': 'ログイン',
+  'signup.signIn': 'ログイン',
   'signup.already_have_account': 'すでにアカウントをお持ちですか？',
   'signup.lastname': '姓',
   'signup.firstname': '名',

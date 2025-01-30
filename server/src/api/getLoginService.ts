@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import UserModel from '../db/UserModel';
+import userModel from '../db/userModel';
 
 export const getLoginService = async (req: Request, res: Response) => {
   try {
@@ -11,7 +11,7 @@ export const getLoginService = async (req: Request, res: Response) => {
         .json({ message: 'The "email" field is required.' });
     }
 
-    const user = await UserModel.findOne({ email });
+    const user = await userModel.findOne({ email });
     if (!user) {
       return res
         .status(404)

@@ -1,4 +1,4 @@
-import UserModel from '../../db/UserModel';
+import userModel from '../../db/userModel';
 import SpotifyWebApi from 'spotify-web-api-node';
 
 const spotifyApi = new SpotifyWebApi({
@@ -25,11 +25,11 @@ interface SpotifyCurrentTrack {
 
 let lastPlayingTrackId: string | null = null;
 
-export const checkNewSong_spotify = async (
+export const checkNewSongSpotify = async (
   email: string
 ): Promise<SpotifyCurrentTrack | null> => {
   try {
-    const user = await UserModel.findOne({ email });
+    const user = await userModel.findOne({ email });
     if (!user) {
       throw new Error(`User with email "${email}" not found.`);
     }
@@ -75,7 +75,7 @@ export const checkNewSong_spotify = async (
     };
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error in checkNewSong_spotify:', error.message);
+      console.error('Error in checkNewSongSpotify:', error.message);
       throw new Error(error.message);
     } else {
       console.error('An unknown error occurred');

@@ -1,20 +1,27 @@
-import { Modal, View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { colors } from '@/styles/colors';
-import { baseStyles } from '@/styles/baseStyles';
-import { useState } from 'react';
-import { Picker } from '@react-native-picker/picker';
-import { useSettings } from '@/contexts/settingsContext';
+import {
+  Modal,
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  StyleSheet,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/styles/colors";
+import { baseStyles } from "@/styles/baseStyles";
+import { useState } from "react";
+import { Picker } from "@react-native-picker/picker";
+import { useSettings } from "@/contexts/settingsContext";
 
 const actionsMap = {
-  "repoCreated_github": "lors de la création d'un dépôt GitHub",
-  "checkNewSong_spotify": "quand une nouvelle chanson est ajoutée"
+  repoCreatedGithub: "lors de la création d'un dépôt GitHub",
+  checkNewSongSpotify: "quand une nouvelle chanson est ajoutée",
 };
 
 const reactionMap = {
-  "sendMessage_telegram": "envoyer un message sur Telegram",
-  "sendMessage_discord": "envoyer un message sur Discord"
-}
+  sendMessageTelegram: "envoyer un message sur Telegram",
+  sendMessageDiscord: "envoyer un message sur Discord",
+};
 
 interface AddAreaModalProps {
   visible: boolean;
@@ -22,10 +29,14 @@ interface AddAreaModalProps {
   onAdd: (title: string, action: string, reaction: string) => void;
 }
 
-export const AddAreaModal = ({ visible, onClose, onAdd }: AddAreaModalProps) => {
-  const [selectedAction, setSelectedAction] = useState('discord');
-  const [selectedReaction, setSelectedReaction] = useState('github');
-  const [title, setTitle] = useState('');
+export const AddAreaModal = ({
+  visible,
+  onClose,
+  onAdd,
+}: AddAreaModalProps) => {
+  const [selectedAction, setSelectedAction] = useState("discord");
+  const [selectedReaction, setSelectedReaction] = useState("github");
+  const [title, setTitle] = useState("");
   const { fontSize, letterSpacing } = useSettings();
 
   const handleAdd = () => {
@@ -35,23 +46,18 @@ export const AddAreaModal = ({ visible, onClose, onAdd }: AddAreaModalProps) => 
 
   return (
     <Modal
-      visible={visible} transparent animationType="slide"
+      visible={visible}
+      transparent
+      animationType="slide"
       accessible={true}
       accessibilityLabel="Modale d'ajout d'AREA"
       accessibilityRole="alert"
     >
-      <View
-        style={styles.overlay}
-        accessible={true}
-        accessibilityRole="none"
-      >
-        <View
-          style={styles.modal}
-          accessible={true}
-          accessibilityRole="none"
-        >
+      <View style={styles.overlay} accessible={true} accessibilityRole="none">
+        <View style={styles.modal} accessible={true} accessibilityRole="none">
           <TouchableOpacity
-            onPress={onClose} style={styles.closeButton}
+            onPress={onClose}
+            style={styles.closeButton}
             accessible={true}
             accessibilityLabel="Fermer"
             accessibilityHint="Double tapez pour fermer la modale"
@@ -60,7 +66,13 @@ export const AddAreaModal = ({ visible, onClose, onAdd }: AddAreaModalProps) => 
             <Ionicons name="close" size={24} color={colors.text} />
           </TouchableOpacity>
 
-          <Text style={[baseStyles.title, styles.modalTitle, { fontSize, letterSpacing }]}>
+          <Text
+            style={[
+              baseStyles.title,
+              styles.modalTitle,
+              { fontSize, letterSpacing },
+            ]}
+          >
             Ajouter un AREA
           </Text>
 
@@ -77,7 +89,11 @@ export const AddAreaModal = ({ visible, onClose, onAdd }: AddAreaModalProps) => 
           />
 
           <View style={styles.section}>
-            <Text style={[styles.label, { fontSize: fontSize - 2, letterSpacing }]}>Action</Text>
+            <Text
+              style={[styles.label, { fontSize: fontSize - 2, letterSpacing }]}
+            >
+              Action
+            </Text>
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={selectedAction}
@@ -96,7 +112,11 @@ export const AddAreaModal = ({ visible, onClose, onAdd }: AddAreaModalProps) => 
           </View>
 
           <View style={styles.section}>
-            <Text style={[styles.label, { fontSize: fontSize - 2, letterSpacing }]}>Réaction</Text>
+            <Text
+              style={[styles.label, { fontSize: fontSize - 2, letterSpacing }]}
+            >
+              Réaction
+            </Text>
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={selectedReaction}
@@ -113,15 +133,21 @@ export const AddAreaModal = ({ visible, onClose, onAdd }: AddAreaModalProps) => 
               </Picker>
             </View>
           </View>
-          
+
           <TouchableOpacity
-            style={baseStyles.button} onPress={handleAdd}
+            style={baseStyles.button}
+            onPress={handleAdd}
             accessible={true}
             accessibilityLabel="Ajouter l'AREA"
             accessibilityHint="Double tapez pour créer l'AREA"
             accessibilityRole="button"
           >
-            <Text style={[baseStyles.buttonText, { fontSize: fontSize - 2, letterSpacing }]}>
+            <Text
+              style={[
+                baseStyles.buttonText,
+                { fontSize: fontSize - 2, letterSpacing },
+              ]}
+            >
               Ajouter
             </Text>
           </TouchableOpacity>
@@ -134,18 +160,18 @@ export const AddAreaModal = ({ visible, onClose, onAdd }: AddAreaModalProps) => 
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modal: {
-    width: '80%',
+    width: "80%",
     backgroundColor: colors.background,
     padding: 20,
     borderRadius: 12,
   },
   closeButton: {
-    position: 'absolute',
+    position: "absolute",
     top: 10,
     right: 10,
   },

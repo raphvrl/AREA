@@ -17,7 +17,7 @@ export const enTranslations = {
   'login.welcome_back': 'Welcome back!',
   'login.identifier_placeholder': 'Identifier',
   'login.password_placeholder': 'Password',
-  'login.sign_in': 'Sign in',
+  'login.signIn': 'Sign in',
   'login.no_account': 'No account?',
   'login.create_account': 'Create an account',
   'login.email': 'Email',
@@ -28,7 +28,7 @@ export const enTranslations = {
   'login.errors.password': 'Invalid password',
 
   // Signup
-  'signup.sign_in': 'Sign in',
+  'signup.signIn': 'Sign in',
   'signup.already_have_account': 'Already have an account?',
   'signup.lastname': 'Last Name',
   'signup.firstname': 'First Name',
