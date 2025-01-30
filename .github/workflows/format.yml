@@ -3,9 +3,9 @@ name: Format Check
 on:
   push:
     branches:
+      - mathieu/ci
       - dev
       - main
-      - mathieu/ci
   pull_request:
     branches:
       - dev
