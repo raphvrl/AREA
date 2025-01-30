@@ -17,6 +17,14 @@ interface UserData {
   password: string;
 }
 
+interface UserResponse {
+  user: {
+    email: string;
+    firstName: string;
+    lastName: string;
+  };
+}
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,6 +49,12 @@ export default function Login() {
       const data = await response.json();
 
       if (response.ok) {
+        await Promise.all([
+          AsyncStorage.setItem("USER_EMAIL", data.user.email),
+          AsyncStorage.setItem("USER_FIRST_NAME", data.user.firstName),
+          AsyncStorage.setItem("USER_LAST_NAME", data.user.lastName),
+        ]);
+
         router.push('/(app)/home');
       } else {
         Alert.alert("Erreur", data.message);

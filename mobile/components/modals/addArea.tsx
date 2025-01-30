@@ -6,6 +6,16 @@ import { useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import { useSettings } from '@/contexts/settingsContext';
 
+const actionsMap = {
+  "repoCreated_github": "lors de la création d'un dépôt GitHub",
+  "checkNewSong_spotify": "quand une nouvelle chanson est ajoutée"
+};
+
+const reactionMap = {
+  "sendMessage_telegram": "envoyer un message sur Telegram",
+  "sendMessage_discord": "envoyer un message sur Discord"
+}
+
 interface AddAreaModalProps {
   visible: boolean;
   onClose: () => void;
@@ -71,16 +81,16 @@ export const AddAreaModal = ({ visible, onClose, onAdd }: AddAreaModalProps) => 
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={selectedAction}
-                onValueChange={setSelectedAction}
+                onValueChange={(value) => setSelectedAction(value)}
                 style={[{ color: colors.text, fontSize: fontSize - 2 }]}
                 accessible={true}
                 accessibilityLabel="Sélection de l'action"
                 accessibilityHint="Choisissez l'action déclencheur"
                 accessibilityRole="combobox"
               >
-                <Picker.Item label="GitHub" value="github" />
-                <Picker.Item label="Discord" value="discord" />
-                <Picker.Item label="Telegram" value="telegram" />
+                {Object.entries(actionsMap).map(([value, label]) => (
+                  <Picker.Item key={value} label={label} value={value} />
+                ))}
               </Picker>
             </View>
           </View>
@@ -90,16 +100,16 @@ export const AddAreaModal = ({ visible, onClose, onAdd }: AddAreaModalProps) => 
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={selectedReaction}
-                onValueChange={setSelectedReaction}
+                onValueChange={(value) => setSelectedReaction(value)}
                 style={[{ color: colors.text, fontSize: fontSize - 2 }]}
                 accessible={true}
                 accessibilityLabel="Sélection de la réaction"
                 accessibilityHint="Choisissez la réaction à déclencher"
                 accessibilityRole="combobox"
               >
-                <Picker.Item label="GitHub" value="github" />
-                <Picker.Item label="Discord" value="discord" />
-                <Picker.Item label="Telegram" value="telegram" />
+                {Object.entries(reactionMap).map(([value, label]) => (
+                  <Picker.Item key={value} label={label} value={value} />
+                ))}
               </Picker>
             </View>
           </View>
