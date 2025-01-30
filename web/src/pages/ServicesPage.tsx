@@ -89,11 +89,12 @@ const ServicesPage: React.FC = () => {
         linkedin: `http://localhost:8080/api/auth/linkedin`,
       };
 
+      
       // Construct redirect URI for the frontend callback
       const redirectUri = `http://localhost:8081`;
 
       // Build the complete auth URL with query parameters
-      const authUrl = `${endpoints[serviceId]}?email=${encodeURIComponent(userEmail)}&redirectUri=${encodeURIComponent(redirectUri)}`;
+      const authUrl = `${endpoints[serviceId]}?email=${encodeURIComponent(userEmail)}&redirect_uri=${encodeURIComponent(redirectUri)}`;
 
       // Redirect to the authentication endpoint
       window.location.href = authUrl;
