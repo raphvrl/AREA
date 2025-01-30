@@ -90,10 +90,10 @@ const ServicesPage: React.FC = () => {
       };
 
       // Construct redirect URI for the frontend callback
-      const redirect_uri = `http://localhost:8081`;
+      const redirectUri = `http://localhost:8081`;
 
       // Build the complete auth URL with query parameters
-      const authUrl = `${endpoints[serviceId]}?email=${encodeURIComponent(userEmail)}&redirect_uri=${encodeURIComponent(redirect_uri)}`;
+      const authUrl = `${endpoints[serviceId]}?email=${encodeURIComponent(userEmail)}&redirectUri=${encodeURIComponent(redirectUri)}`;
 
       // Redirect to the authentication endpoint
       window.location.href = authUrl;
