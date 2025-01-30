@@ -1,40 +1,40 @@
-import { time10_seconde, sendmessage_terminal } from './fonction';
-import { repoCreated_github } from './action/githubAction';
-import { sendMessage_telegram } from './reaction/telegramReaction';
-import { checkNewSong_spotify } from './action/checkNewSongSpotify';
-import { sendMessage_discord } from './reaction/discordReaction';
+import { time10Seconde, sendmessageTerminal } from './fonction';
+import { repoCreatedGithub } from './action/githubAction';
+import { sendMessageTelegram } from './reaction/telegramReaction';
+import { checkNewSongSpotify } from './action/checkNewSongSpotify';
+import { sendMessageDiscord } from './reaction/discordReaction';
 type Handler = (email: any, data?: any) => Promise<any>;
 
 const areaHandlers: { [key: string]: Handler } = {
-  time10_seconde: async () => {
-    const result = await time10_seconde();
+  time10Seconde: async () => {
+    const result = await time10Seconde();
     console.log('Timer terminÃ© :', result);
     return result;
   },
-  sendmessage_terminal: async () => {
-    await sendmessage_terminal();
+  sendmessageTerminal: async () => {
+    await sendmessageTerminal();
     return 'Message sent to terminal';
   },
-  repoCreated_github: async (email?: string) => {
+  repoCreatedGithub: async (email?: string) => {
     if (!email) {
       throw new Error('Email est requis.');
     }
-    const result = await repoCreated_github(email);
+    const result = await repoCreatedGithub(email);
     return result;
   },
-  sendMessage_telegram: async (email: String, actionResult?: any) => {
-    const result = await sendMessage_telegram(email, actionResult);
+  sendMessageTelegram: async (email: String, actionResult?: any) => {
+    const result = await sendMessageTelegram(email, actionResult);
     return result;
   },
-  checkNewSong_spotify: async (email?: string) => {
+  checkNewSongSpotify: async (email?: string) => {
     if (!email) {
       throw new Error('Email est requis.');
     }
-    const result = await checkNewSong_spotify(email);
+    const result = await checkNewSongSpotify(email);
     return result;
   },
-  sendMessage_discord: async (email: String, actionResult?: any) => {
-    const result = await sendMessage_discord(email, actionResult);
+  sendMessageDiscord: async (email: String, actionResult?: any) => {
+    const result = await sendMessageDiscord(email, actionResult);
     return result;
   },
 };

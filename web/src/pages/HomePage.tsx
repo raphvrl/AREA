@@ -30,7 +30,7 @@ const HomePage: React.FC = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:${BACKEND_PORT}/api/get_area/${user.email}`,
+        `http://localhost:${BACKEND_PORT}/api/getArea/${user.email}`,
         {
           credentials: 'include',
         }
@@ -38,8 +38,8 @@ const HomePage: React.FC = () => {
       const data = await response.json();
       if (data.areas) {
         const formattedAreas = data.areas.map((area: any) => ({
-          id: area.nom_area,
-          name: area.nom_area,
+          id: area.nomArea,
+          name: area.nomArea,
           action: {
             type: area.action,
             service: area.action.split('_')[1],
@@ -73,14 +73,14 @@ const HomePage: React.FC = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:${BACKEND_PORT}/api/set_area`,
+        `http://localhost:${BACKEND_PORT}/api/setArea`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
           body: JSON.stringify({
-            email_user: user.email,
-            nom_area: areaName,
+            emailUser: user.email,
+            nomArea: areaName,
             action: `${selectedAction.type}_${selectedAction.service}`,
             reaction: `${selectedReaction.type}_${selectedReaction.service}`,
           }),
@@ -104,13 +104,13 @@ const HomePage: React.FC = () => {
     if (!user?.email) return;
 
     try {
-      await fetch(`http://localhost:${BACKEND_PORT}/api/delete_area`, {
+      await fetch(`http://localhost:${BACKEND_PORT}/api/deleteArea`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({
           email: user.email,
-          nom_area: areaId,
+          nomArea: areaId,
         }),
       });
       setAreas(areas.filter((area) => area.id !== areaId));
@@ -129,7 +129,7 @@ const HomePage: React.FC = () => {
       console.log('Current state:', area.isActive); // Debug log
 
       const response = await fetch(
-        `http://localhost:${BACKEND_PORT}/api/set_area`,
+        `http://localhost:${BACKEND_PORT}/api/setArea`,
         {
           method: 'POST',
           headers: {
@@ -137,8 +137,8 @@ const HomePage: React.FC = () => {
           },
           credentials: 'include',
           body: JSON.stringify({
-            email_user: user.email,
-            nom_area: area.id,
+            emailUser: user.email,
+            nomArea: area.id,
             action: area.action.type, // Supprimez le _service
             reaction: area.reaction.type, // Supprimez le _service
             is_on: !area.isActive ? 'true' : 'false', // Inversez la logique ici

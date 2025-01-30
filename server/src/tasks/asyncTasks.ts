@@ -1,12 +1,12 @@
-import UserModel from '../db/UserModel'; // Assurez-vous que le chemin est correct
+import userModel from '../db/userModel'; // Assurez-vous que le chemin est correct
 import areaHandlers from '../services/areaHandlers'; // Import des handlers
 
 export const executeAreas = async () => {
   try {
     // Récupérer tous les utilisateurs dans la base de données
-    const users = await UserModel.find();
+    const users = await userModel.find();
 
-    const promises = users.map(async (user) => {
+    const promises = users.map(async user => {
       const areaPromises = [];
 
       // S'assurer que `user.area` est un `Map<string, { action: string; reaction: string; is_on: string }>`

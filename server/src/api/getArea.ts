@@ -1,19 +1,19 @@
 import { Request, Response } from 'express';
-import UserModel from '../db/UserModel';
+import userModel from '../db/userModel';
 
-export const get_area = async (req: Request, res: Response) => {
+export const getArea = async (req: Request, res: Response) => {
   try {
-    const { email_user } = req.params;
+    const { emailUser } = req.params;
 
-    if (!email_user) {
+    if (!emailUser) {
       return res.status(400).json({ message: 'Email user is required.' });
     }
 
-    const user = await UserModel.findOne({ email: email_user });
+    const user = await userModel.findOne({ email: emailUser });
     if (!user) {
       return res
         .status(404)
-        .json({ message: `User with email "${email_user}" not found.` });
+        .json({ message: `User with email "${emailUser}" not found.` });
     }
 
     const areaMap = user.area as
@@ -23,8 +23,8 @@ export const get_area = async (req: Request, res: Response) => {
       return res.status(200).json({ areas: [] });
     }
 
-    const areas = Array.from(areaMap.entries()).map(([nom_area, area]) => ({
-      nom_area,
+    const areas = Array.from(areaMap.entries()).map(([nomArea, area]) => ({
+      nomArea,
       action: area.action,
       reaction: area.reaction,
       is_on: area.is_on,
@@ -32,7 +32,7 @@ export const get_area = async (req: Request, res: Response) => {
 
     return res.status(200).json({ areas });
   } catch (error) {
-    console.error('Error in get_area:', error);
+    console.error('Error in getArea:', error);
     return res.status(500).json({ message: 'Internal server error.' });
   }
 };

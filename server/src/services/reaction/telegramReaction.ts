@@ -9,7 +9,7 @@ interface TelegramMessage {
   message: string;
 }
 
-export const sendMessage_telegram = async (
+export const sendMessageTelegram = async (
   email: String,
   actionResult: TelegramMessage | null
 ): Promise<boolean> => {
@@ -37,7 +37,7 @@ export const sendMessage_telegram = async (
     return response.data.ok;
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error in sendMessage_telegram:', error.message);
+      console.error('Error in sendMessageTelegram:', error.message);
       throw new Error(error.message);
     } else {
       console.error('An unknown error occurred');

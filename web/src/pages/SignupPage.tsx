@@ -79,7 +79,7 @@ const SignupPage: React.FC = () => {
 
     try {
       const signupResponse = await axios.post<SignupResponse>(
-        `http://localhost:${BACKEND_PORT}/api/sign_up`,
+        `http://localhost:${BACKEND_PORT}/api/signUp`,
         {
           firstName: formData.firstName,
           lastName: formData.lastName,
@@ -99,7 +99,7 @@ const SignupPage: React.FC = () => {
       }
 
       const loginResponse = await axios.post<LoginResponse>(
-        `http://localhost:${BACKEND_PORT}/api/sign_in`,
+        `http://localhost:${BACKEND_PORT}/api/signIn`,
         {
           email: formData.email,
           password: formData.password,
@@ -265,7 +265,7 @@ const SignupPage: React.FC = () => {
               to="/login"
               className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200"
             >
-              {t('signup.sign_in')}
+              {t('signup.signIn')}
             </Link>
           </p>
         </div>

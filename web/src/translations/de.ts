@@ -17,7 +17,7 @@ export const deTranslations = {
   'login.welcome_back': 'Willkommen zurück!',
   'login.identifier_placeholder': 'Benutzername',
   'login.password_placeholder': 'Passwort',
-  'login.sign_in': 'Anmelden',
+  'login.signIn': 'Anmelden',
   'login.no_account': 'Kein Konto?',
   'login.create_account': 'Konto erstellen',
   'login.email': 'E-Mail',
@@ -28,7 +28,7 @@ export const deTranslations = {
   'login.errors.password': 'Ungültiges Passwort',
 
   // Signup
-  'signup.sign_in': 'Anmelden',
+  'signup.signIn': 'Anmelden',
   'signup.already_have_account': 'Haben Sie bereits ein Konto?',
   'signup.lastname': 'Nachname',
   'signup.firstname': 'Vorname',

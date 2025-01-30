@@ -8,7 +8,7 @@ interface DiscordMessage {
   message: string;
 }
 
-export const sendMessage_discord = async (
+export const sendMessageDiscord = async (
   email: String,
   actionResult: DiscordMessage | null
 ): Promise<boolean> => {
@@ -33,7 +33,7 @@ export const sendMessage_discord = async (
     return response.status === 204;
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error in sendMessage_discord:', error.message);
+      console.error('Error in sendMessageDiscord:', error.message);
       throw new Error(error.message);
     } else {
       console.error('An unknown error occurred');

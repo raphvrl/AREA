@@ -1,87 +1,121 @@
 import { Router } from 'express';
 import { body, param } from 'express-validator';
-import { sign_in, sign_up } from './api/login';
-import { set_area } from './api/setArea';
-import { get_area } from './api/getArea';
+import { signIn, signUp } from './api/login';
+import { setArea } from './api/setArea';
+import { getArea } from './api/getArea';
 import { getLoginService } from './api/getLoginService';
-import { logout_service } from './api/logoutService';
-import { delete_area } from './api/delete_area';
-import { get_action } from './api/getAction';
-import { get_reaction } from './api/getReaction';
+import { logoutService } from './api/logoutService';
+import { deleteArea } from './api/deleteArea';
+import { getAction } from './api/getAction';
+import { getReaction } from './api/getReaction';
 import { authSpotify, authSpotifyCallback } from './api/spotifyAuth';
 import { authGithub, authGithubCallback } from './api/githubAuth';
 const router = Router();
 
-// Route pour sign_up
+// Route pour signUp
 router.post(
-  '/sign_up',
+  '/signUp',
   [
-    body('firstName').notEmpty().withMessage('First name is required'),
-    body('lastName').notEmpty().withMessage('Last name is required'),
-    body('email').isEmail().withMessage('Invalid email address'),
+    body('firstName')
+      .notEmpty()
+      .withMessage('First name is required'),
+    body('lastName')
+      .notEmpty()
+      .withMessage('Last name is required'),
+    body('email')
+      .isEmail()
+      .withMessage('Invalid email address'),
     body('password')
       .isLength({ min: 6 })
       .withMessage('Password must be at least 6 characters long'),
   ],
-  sign_up
+  signUp
 );
 
-// Route pour sign_in
+// Route pour signIn
 router.post(
-  '/sign_in',
+  '/signIn',
   [
-    body('email').isEmail().withMessage('Invalid email address'),
-    body('password').notEmpty().withMessage('Password is required'),
+    body('email')
+      .isEmail()
+      .withMessage('Invalid email address'),
+    body('password')
+      .notEmpty()
+      .withMessage('Password is required'),
   ],
-  sign_in
+  signIn
 );
 
-// Route pour set_area
+// Route pour setArea
 router.post(
-  '/set_area',
+  '/setArea',
   [
-    body('email_user').isEmail().withMessage('Invalid email address.'),
-    body('nom_area').notEmpty().withMessage('Area name is required.'),
-    body('action').notEmpty().withMessage('Action is required.'),
-    body('reaction').notEmpty().withMessage('Reaction is required.'),
+    body('emailUser')
+      .isEmail()
+      .withMessage('Invalid email address.'),
+    body('nomArea')
+      .notEmpty()
+      .withMessage('Area name is required.'),
+    body('action')
+      .notEmpty()
+      .withMessage('Action is required.'),
+    body('reaction')
+      .notEmpty()
+      .withMessage('Reaction is required.'),
   ],
-  set_area
+  setArea
 );
 
-// Route pour get_area
+// Route pour getArea
 router.get(
-  '/get_area/:email_user',
-  [param('email_user').isEmail().withMessage('Invalid email address')],
-  get_area
+  '/getArea/:emailUser',
+  [
+    param('emailUser')
+      .isEmail()
+      .withMessage('Invalid email address'),
+  ],
+  getArea
 );
 
 // Route pour getLoginService
 router.post(
   '/get_login_service',
-  [body('email').isEmail().withMessage('Invalid email address.')],
+  [
+    body('email')
+      .isEmail()
+      .withMessage('Invalid email address.'),
+  ],
   getLoginService
 );
 
-// Route pour logout_service
+// Route pour logoutService
 router.post(
-  '/logout_service',
+  '/logoutService',
   [
-    body('name_service').notEmpty().withMessage('Service name is required.'),
-    body('email').isEmail().withMessage('Invalid email address.'),
+    body('nameService')
+      .notEmpty()
+      .withMessage('Service name is required.'),
+    body('email')
+      .isEmail()
+      .withMessage('Invalid email address.'),
   ],
-  logout_service
+  logoutService
 );
 router.delete(
-  '/delete_area',
+  '/deleteArea',
   [
-    body('email').isEmail().withMessage('Invalid email address.'),
-    body('nom_area').notEmpty().withMessage('Area name is required.'),
+    body('email')
+      .isEmail()
+      .withMessage('Invalid email address.'),
+    body('nomArea')
+      .notEmpty()
+      .withMessage('Area name is required.'),
   ],
-  delete_area // Utilisation de la fonction définie séparément
+  deleteArea // Utilisation de la fonction définie séparément
 );
 
-router.get('/get_action', get_action);
-router.get('/get_reaction', get_reaction);
+router.get('/getAction', getAction);
+router.get('/getReaction', getReaction);
 router.get('/auth/spotify', authSpotify);
 router.get('/auth/spotify/callback', authSpotifyCallback);
 router.get('/auth/github', authGithub);

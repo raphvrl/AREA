@@ -2,11 +2,11 @@ import { Request, Response } from 'express';
 
 const actionsMap = new Map<string, string>([
   ['action1', 'receiveEmail_test'],
-  ['action2', 'repoCreated_github'],
-  ['action3', 'checkNewSong_spotify'],
+  ['action2', 'repoCreatedGithub'],
+  ['action3', 'checkNewSongSpotify'],
 ]);
 
-export const get_action = async (req: Request, res: Response) => {
+export const getAction = async (req: Request, res: Response) => {
   try {
     const actionsArray = Array.from(actionsMap.values());
 

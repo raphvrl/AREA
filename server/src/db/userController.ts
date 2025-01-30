@@ -1,4 +1,4 @@
-import User from './UserModel';
+import User from './userModel';
 
 export const createUser = async (userData: {
   firstName: string;
