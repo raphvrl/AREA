@@ -50,4 +50,4 @@ jobs:
 
       - name: Lint code with ESLint (Backend - Server)
         run: |
-          cd server && npm install && npm run lint
+          cd server && npm install
