@@ -1,8 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
   darkMode: 'class',
   theme: {
     extend: {
@@ -15,7 +13,7 @@ module.exports = {
         maximum: {
           light: '#ffffff',
           dark: '#000000',
-        }
+        },
       },
       backgroundColor: {
         high: {
@@ -25,7 +23,7 @@ module.exports = {
         maximum: {
           light: '#000000',
           dark: '#ffffff',
-        }
+        },
       },
       colors: {
         contrast: {
@@ -36,10 +34,10 @@ module.exports = {
           maximum: {
             light: '#ffffff',
             dark: '#000000',
-          }
-        }
-      }
+          },
+        },
+      },
     },
   },
   plugins: [],
-}
+};

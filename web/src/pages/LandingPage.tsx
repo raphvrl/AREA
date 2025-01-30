@@ -4,12 +4,12 @@ import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from '../context/TranslationContext';
 import { motion } from 'framer-motion';
 import LoginNavbar from '../components/LoginNavbar';
-import { 
-  IoFlash, 
-  IoGitNetwork, 
-  IoShieldCheckmark, 
+import {
+  IoFlash,
+  IoGitNetwork,
+  IoShieldCheckmark,
   IoLogoGithub,
-  IoLogoDiscord
+  IoLogoDiscord,
 } from 'react-icons/io5';
 import { SiSpotify } from 'react-icons/si';
 
@@ -20,7 +20,9 @@ const LandingPage: React.FC = () => {
   return (
     <>
       <LoginNavbar />
-      <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+      <div
+        className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}
+      >
         <div className="relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
             <motion.div
@@ -28,14 +30,18 @@ const LandingPage: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               className="text-center"
             >
-              <h1 className={`text-4xl md:text-6xl font-bold mb-6 ${
-                isDarkMode ? 'text-white' : 'text-gray-900'
-              }`}>
+              <h1
+                className={`text-4xl md:text-6xl font-bold mb-6 ${
+                  isDarkMode ? 'text-white' : 'text-gray-900'
+                }`}
+              >
                 {t('landing.hero.title')}
               </h1>
-              <p className={`text-xl md:text-2xl mb-8 ${
-                isDarkMode ? 'text-gray-300' : 'text-gray-600'
-              }`}>
+              <p
+                className={`text-xl md:text-2xl mb-8 ${
+                  isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                }`}
+              >
                 {t('landing.hero.subtitle')}
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -54,9 +60,10 @@ const LandingPage: React.FC = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className={`w-full sm:w-auto px-8 py-3 rounded-lg font-semibold
-                      ${isDarkMode ? 
-                        'bg-gray-800 text-white hover:bg-gray-700' : 
-                        'bg-white text-gray-900 hover:bg-gray-100'
+                      ${
+                        isDarkMode
+                          ? 'bg-gray-800 text-white hover:bg-gray-700'
+                          : 'bg-white text-gray-900 hover:bg-gray-100'
                       } transition-colors`}
                   >
                     {t('landing.hero.login_button')}
@@ -79,13 +86,17 @@ const LandingPage: React.FC = () => {
               >
                 <div className="flex items-center mb-4">
                   <IoFlash className="w-8 h-8 text-blue-500" />
-                  <h3 className={`ml-3 text-xl font-semibold ${
-                    isDarkMode ? 'text-white' : 'text-gray-900'
-                  }`}>
+                  <h3
+                    className={`ml-3 text-xl font-semibold ${
+                      isDarkMode ? 'text-white' : 'text-gray-900'
+                    }`}
+                  >
                     {t('landing.features.automation.title')}
                   </h3>
                 </div>
-                <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <p
+                  className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
+                >
                   {t('landing.features.automation.description')}
                 </p>
               </motion.div>
@@ -98,13 +109,17 @@ const LandingPage: React.FC = () => {
               >
                 <div className="flex items-center mb-4">
                   <IoGitNetwork className="w-8 h-8 text-green-500" />
-                  <h3 className={`ml-3 text-xl font-semibold ${
-                    isDarkMode ? 'text-white' : 'text-gray-900'
-                  }`}>
+                  <h3
+                    className={`ml-3 text-xl font-semibold ${
+                      isDarkMode ? 'text-white' : 'text-gray-900'
+                    }`}
+                  >
                     {t('landing.features.services.title')}
                   </h3>
                 </div>
-                <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <p
+                  className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
+                >
                   {t('landing.features.services.description')}
                 </p>
               </motion.div>
@@ -117,13 +132,17 @@ const LandingPage: React.FC = () => {
               >
                 <div className="flex items-center mb-4">
                   <IoShieldCheckmark className="w-8 h-8 text-purple-500" />
-                  <h3 className={`ml-3 text-xl font-semibold ${
-                    isDarkMode ? 'text-white' : 'text-gray-900'
-                  }`}>
+                  <h3
+                    className={`ml-3 text-xl font-semibold ${
+                      isDarkMode ? 'text-white' : 'text-gray-900'
+                    }`}
+                  >
                     {t('landing.features.security.title')}
                   </h3>
                 </div>
-                <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <p
+                  className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
+                >
                   {t('landing.features.security.description')}
                 </p>
               </motion.div>
@@ -139,12 +158,16 @@ const LandingPage: React.FC = () => {
               whileInView={{ opacity: 1 }}
               className="text-center mb-12"
             >
-              <h2 className={`text-3xl font-bold mb-4 ${
-                isDarkMode ? 'text-white' : 'text-gray-900'
-              }`}>
+              <h2
+                className={`text-3xl font-bold mb-4 ${
+                  isDarkMode ? 'text-white' : 'text-gray-900'
+                }`}
+              >
                 {t('landing.services.title')}
               </h2>
-              <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p
+                className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
+              >
                 {t('landing.services.subtitle')}
               </p>
             </motion.div>
@@ -152,8 +175,12 @@ const LandingPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 { icon: IoLogoGithub, name: 'GitHub', color: 'bg-gray-900' },
-                { icon: IoLogoDiscord, name: 'Discord', color: 'bg-indigo-600' },
-                { icon: SiSpotify, name: 'Spotify', color: 'bg-green-600' }
+                {
+                  icon: IoLogoDiscord,
+                  name: 'Discord',
+                  color: 'bg-indigo-600',
+                },
+                { icon: SiSpotify, name: 'Spotify', color: 'bg-green-600' },
               ].map((service, index) => (
                 <motion.div
                   key={index}
@@ -164,9 +191,11 @@ const LandingPage: React.FC = () => {
                   <div className={`p-3 ${service.color} rounded-full`}>
                     <service.icon className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className={`text-xl font-semibold ${
-                    isDarkMode ? 'text-white' : 'text-gray-900'
-                  }`}>
+                  <h3
+                    className={`text-xl font-semibold ${
+                      isDarkMode ? 'text-white' : 'text-gray-900'
+                    }`}
+                  >
                     {service.name}
                   </h3>
                 </motion.div>

@@ -7,7 +7,12 @@ interface ColumnProps {
   onButtonClick: () => void;
 }
 
-const Column: React.FC<ColumnProps> = ({ logo, description, buttonText, onButtonClick }) => {
+const Column: React.FC<ColumnProps> = ({
+  logo,
+  description,
+  buttonText,
+  onButtonClick,
+}) => {
   return (
     <div className="flex flex-col items-center p-4 border rounded shadow-md">
       <img src={logo} alt="Logo" className="w-16 h-16 mb-4" />
