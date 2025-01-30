@@ -1,0 +1,53 @@
+name: Format Check
+
+on:
+  push:
+    branches:
+      - mathieu/ci
+      - dev
+      - main
+  pull_request:
+    branches:
+      - dev
+      - main
+
+jobs:
+  format-check-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Check code formatting with Prettier (Frontend - Web)
+        run: |
+          cd web && npx prettier --check .
+
+      - name: Lint code with ESLint (Frontend - Web)
+        run: |
+          cd web && npm install && npm run lint
+
+  format-check-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Check code formatting with Prettier (Backend - Server)
+        run: |
+          cd server && npx prettier --check .
+
+      - name: Lint code with ESLint (Backend - Server)
+        run: |
+          cd server && npm install
