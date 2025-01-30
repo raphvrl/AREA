@@ -33,8 +33,8 @@ jobs:
 
       - name: Lint code with ESLint (Frontend - Web)
         run: |
-          cd web && npx eslint .
+          cd web && npm install && npm run lint
   
       - name: Lint code with ESLint (Backend - Server)
         run: |
-          cd server && npx eslint .
+          cd server && npm install && npm run lint
