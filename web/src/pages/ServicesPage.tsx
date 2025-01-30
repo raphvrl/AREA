@@ -89,7 +89,6 @@ const ServicesPage: React.FC = () => {
         linkedin: `http://localhost:8080/api/auth/linkedin`,
       };
 
-      
       // Construct redirect URI for the frontend callback
       const redirectUri = `http://localhost:8081`;
 
