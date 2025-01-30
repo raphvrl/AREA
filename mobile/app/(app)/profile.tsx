@@ -1,11 +1,12 @@
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView, Alert, Linking } from "react-native";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { baseStyles } from "@/styles/base_styles";
+import { baseStyles } from "@/styles/baseStyles";
 import { colors } from "@/styles/colors";
 import { useSettings } from "@/contexts/settingsContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
+import { FontAwesome } from '@expo/vector-icons';
 
 const serviceColors = {
   github: "#333",
@@ -36,12 +37,27 @@ export default function Profile() {
     const apiUrl = await AsyncStorage.getItem("API_URL");
 
     const redirect_uri = "area-app://profile";
-    const githubUrl = `http://${apiUrl}:8080/api/auth/github?email=${encodeURIComponent(userEmail)}&redirect_uri=${encodeURIComponent(redirect_uri)}`
+    // const githubUrl = `${apiUrl}/api/auth/github?email=${encodeURIComponent(userEmail)}&redirect_uri=${encodeURIComponent(redirect_uri)}`
 
     try {
-      await Linking.openURL(githubUrl);
+      await Linking.openURL(`${apiUrl}/redirect`);
     } catch (error) {
       Alert.alert("Erreur", "Impossible de se connecter à GitHub");
+    }
+  };
+
+  const handleSpotifyAuth = async () => {
+    const apiUrl = await AsyncStorage.getItem("API_URL");
+
+    const redirect_uri = "https://youtube.com";
+    const spotifyUrl = `${apiUrl}/api/auth/spotify?email=${encodeURIComponent(userEmail)}&redirect_uri=${encodeURIComponent(redirect_uri)}`
+
+    console.log(spotifyUrl);
+
+    try {
+      await Linking.openURL(spotifyUrl);
+    } catch (error) {
+      Alert.alert("Erreur", "Impossible de se connecter à Spotify");
     }
   };
 
@@ -86,6 +102,20 @@ export default function Profile() {
             <Ionicons name="logo-github" size={24} color="white" style={styles.buttonIcon} />
             <Text style={[baseStyles.buttonText, { fontSize }]}>
               Connecter GitHub
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={[baseStyles.button, styles.serviceButton, { backgroundColor: serviceColors.spotify }]}
+          onPress={() => {handleSpotifyAuth()}}
+          accessible={true}
+          accessibilityLabel="Connexion Spotify"
+          accessibilityRole="button"
+        >
+          <View style={styles.buttonContent}>
+            <FontAwesome name="spotify" size={24} color="white" style={styles.buttonIcon} />
+            <Text style={[baseStyles.buttonText, { fontSize }]}>
+              Connecter Spotify
             </Text>
           </View>
         </TouchableOpacity>

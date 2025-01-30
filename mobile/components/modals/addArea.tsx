@@ -1,7 +1,7 @@
 import { Modal, View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/styles/colors';
-import { baseStyles } from '@/styles/base_styles';
+import { baseStyles } from '@/styles/baseStyles';
 import { useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import { useSettings } from '@/contexts/settingsContext';

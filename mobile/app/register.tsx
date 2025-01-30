@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 import { Link, router } from "expo-router";
-import { baseStyles } from "@/styles/base_styles";
+import { baseStyles } from "@/styles/baseStyles";
 import { useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
