@@ -61,7 +61,10 @@ export const authSpotifyCallback = async (req: Request, res: Response) => {
     const { email, redirectUri } = JSON.parse(state.toString());
 
     const data = await spotifyApi.authorizationCodeGrant(code.toString());
-    const { access_token: accessToken, refresh_token: refreshToken } = data.body;
+    const {
+      access_token: accessToken,
+      refresh_token: refreshToken,
+    } = data.body;
 
     spotifyApi.setAccessToken(accessToken);
 
