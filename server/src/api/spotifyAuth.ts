@@ -1,16 +1,18 @@
 import { Request, Response } from 'express';
 import SpotifyWebApi from 'spotify-web-api-node';
 import UserModel from '../db/UserModel';
+import { getServerIp } from '../utils/giveIp';
 import dotenv from 'dotenv';
 dotenv.config();
 
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  redirectUri: `http://localhost:${process.env.BACKEND_PORT}/api/auth/spotify/callback`
+  redirectUri: `http://localhost:${getServerIp()}/api/auth/spotify/callback`
 });
 
 export const authSpotify = (req: Request, res: Response) => {
+    console.log(getServerIp());
     const { email, redirect_uri } = req.query;
     if (!email || !redirect_uri) {
         return res.status(400).json({ message: 'Email and redirect_uri are required' });

@@ -4,7 +4,7 @@ import areaHandlers from '../services/areaHandlers'; // Import des handlers
 export const executeAreas = async () => {
     try {
         // Récupérer tous les utilisateurs dans la base de données
-        const users = await UserModel.find();
+        const users = await UserModel.find().lean();
 
         const promises = users.map(async (user) => {
             const areaPromises = [];
