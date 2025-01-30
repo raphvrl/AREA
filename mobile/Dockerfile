@@ -23,7 +23,6 @@ RUN eas build --platform android --profile development --local --non-interactive
 RUN mkdir -p /apk
 RUN ls -la /app/android/app/build/outputs/apk || true
 
-# Copie avec wildcard et gestion d'erreur
 RUN find /app -name "*.apk" -exec cp {} /apk/ \; || echo "Aucun APK trouvé"
 
 VOLUME /apk

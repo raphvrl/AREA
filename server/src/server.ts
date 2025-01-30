@@ -14,7 +14,11 @@ connectDB();
 app.use(express.json());
 console.log(FRONTEND_PORT);
 app.use(cors( {
-    origin: `http://localhost:${FRONTEND_PORT}`,
+    origin: [`http://localhost:${FRONTEND_PORT}`, 'area-app://',
+        'exp://*',
+        'http://*',
+        'https://*'
+    ],
     credentials: true
 }));
 

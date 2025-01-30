@@ -1,6 +1,6 @@
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { useState } from "react";
-import { baseStyles } from "@/styles/base_styles";
+import { baseStyles } from "@/styles/baseStyles";
 import { AddAreaModal } from "@/components/modals/addArea";
 import { Area } from "@/components/area";
 import { useSettings } from "@/contexts/settingsContext";

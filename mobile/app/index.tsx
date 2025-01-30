@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet, TouchableOpacity, TextInput } from "react-native";
-import { baseStyles } from "../styles/base_styles";
+import { baseStyles } from "../styles/baseStyles";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { colors } from "@/styles/colors";

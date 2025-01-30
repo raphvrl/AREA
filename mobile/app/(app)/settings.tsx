@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet } from "react-native";
-import { baseStyles } from "@/styles/base_styles";
+import { baseStyles } from "@/styles/baseStyles";
 import { colors } from "@/styles/colors";
 import Slider from '@react-native-community/slider';
 import { useSettings } from '@/contexts/settingsContext';
