@@ -4,6 +4,7 @@ on:
     workflows: ["Format Check"]
     types:
       - completed
+      - failure
 
 jobs:
   build-frontend:
