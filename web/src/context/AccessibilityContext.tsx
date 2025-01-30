@@ -14,17 +14,21 @@ const AccessibilityContext = createContext<{
   setSettings: (settings: AccessibilityState) => void;
 }>(null!);
 
-export const AccessibilityProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
+export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [settings, setSettings] = useState<AccessibilityState>(() => {
     const saved = localStorage.getItem('accessibilitySettings');
-    return saved ? JSON.parse(saved) : {
-      fontSize: 100,
-      contrast: 'normal',
-      reducedMotion: false,
-      simplifiedUI: false,
-      lineSpacing: 1.5,
-      dyslexicFont: false
-    };
+    return saved
+      ? JSON.parse(saved)
+      : {
+          fontSize: 100,
+          contrast: 'normal',
+          reducedMotion: false,
+          simplifiedUI: false,
+          lineSpacing: 1.5,
+          dyslexicFont: false,
+        };
   });
 
   useEffect(() => {

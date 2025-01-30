@@ -15,7 +15,9 @@ const HomePage: React.FC = () => {
   const [areas, setAreas] = useState<Area[]>([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedAction, setSelectedAction] = useState<Action | null>(null);
-  const [selectedReaction, setSelectedReaction] = useState<Reaction | null>(null);
+  const [selectedReaction, setSelectedReaction] = useState<Reaction | null>(
+    null
+  );
   const [areaName, setAreaName] = useState('');
 
   const { isAuthenticated, user } = useAuth();
@@ -25,11 +27,14 @@ const HomePage: React.FC = () => {
 
   const fetchAreas = async () => {
     if (!user?.email) return;
-    
+
     try {
-      const response = await fetch(`http://localhost:${BACKEND_PORT}/api/get_area/${user.email}`, {
-        credentials: 'include'
-      });
+      const response = await fetch(
+        `http://localhost:${BACKEND_PORT}/api/get_area/${user.email}`,
+        {
+          credentials: 'include',
+        }
+      );
       const data = await response.json();
       if (data.areas) {
         const formattedAreas = data.areas.map((area: any) => ({
@@ -43,7 +48,7 @@ const HomePage: React.FC = () => {
             type: area.reaction,
             service: area.reaction.split('_')[1],
           },
-          isActive: area.is_on === 'true'
+          isActive: area.is_on === 'true',
         }));
         setAreas(formattedAreas);
       }
@@ -67,17 +72,20 @@ const HomePage: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:${BACKEND_PORT}/api/set_area`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          email_user: user.email,
-          nom_area: areaName,
-          action: `${selectedAction.type}_${selectedAction.service}`,
-          reaction: `${selectedReaction.type}_${selectedReaction.service}`
-        })
-      });
+      const response = await fetch(
+        `http://localhost:${BACKEND_PORT}/api/set_area`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            email_user: user.email,
+            nom_area: areaName,
+            action: `${selectedAction.type}_${selectedAction.service}`,
+            reaction: `${selectedReaction.type}_${selectedReaction.service}`,
+          }),
+        }
+      );
 
       if (response.ok) {
         await fetchAreas();
@@ -102,10 +110,10 @@ const HomePage: React.FC = () => {
         credentials: 'include',
         body: JSON.stringify({
           email: user.email,
-          nom_area: areaId
-        })
+          nom_area: areaId,
+        }),
       });
-      setAreas(areas.filter(area => area.id !== areaId));
+      setAreas(areas.filter((area) => area.id !== areaId));
     } catch (error) {
       console.error('Error deleting area:', error);
     }
@@ -116,37 +124,39 @@ const HomePage: React.FC = () => {
       console.error('User email not found');
       return;
     }
-  
+
     try {
       console.log('Current state:', area.isActive); // Debug log
-      
-      const response = await fetch(`http://localhost:${BACKEND_PORT}/api/set_area`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          email_user: user.email,
-          nom_area: area.id,
-          action: area.action.type, // Supprimez le _service
-          reaction: area.reaction.type, // Supprimez le _service
-          is_on: !area.isActive ? 'true' : 'false' // Inversez la logique ici
-        })
-      });
-  
+
+      const response = await fetch(
+        `http://localhost:${BACKEND_PORT}/api/set_area`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            email_user: user.email,
+            nom_area: area.id,
+            action: area.action.type, // Supprimez le _service
+            reaction: area.reaction.type, // Supprimez le _service
+            is_on: !area.isActive ? 'true' : 'false', // Inversez la logique ici
+          }),
+        }
+      );
+
       if (!response.ok) {
         throw new Error('Failed to update area state');
       }
 
       console.log('New state:', !area.isActive); // Debug log
-  
-      setAreas(areas.map(a => 
-        a.id === area.id 
-          ? {...a, isActive: !a.isActive}
-          : a
-      ));
-  
+
+      setAreas(
+        areas.map((a) =>
+          a.id === area.id ? { ...a, isActive: !a.isActive } : a
+        )
+      );
     } catch (error) {
       console.error('Error toggling area:', error);
     }
@@ -161,14 +171,20 @@ const HomePage: React.FC = () => {
   if (!isAuthenticated) return null;
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-100'} p-8 transition-colors duration-200`}>
+    <div
+      className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-100'} p-8 transition-colors duration-200`}
+    >
       <div className="max-w-7xl mx-auto pt-20">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <h1 className={`text-4xl md:text-5xl font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+          <h1
+            className={`text-4xl md:text-5xl font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+          >
             {t('home.title_welcome')}
           </h1>
-          <p className={`text-lg md:text-xl ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+          <p
+            className={`text-lg md:text-xl ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
+          >
             {t('home.subtitle_welcome')}
           </p>
         </div>
@@ -176,11 +192,17 @@ const HomePage: React.FC = () => {
         {/* Areas Section */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h2 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+            <h2
+              className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
+            >
               {t('home.areas.title')}
             </h2>
-            <p className={`mt-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              {areas.length === 0 ? t('home.areas.empty') : `${areas.length} ${t('home.areas.count')}`}
+            <p
+              className={`mt-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}
+            >
+              {areas.length === 0
+                ? t('home.areas.empty')
+                : `${areas.length} ${t('home.areas.count')}`}
             </p>
           </div>
           <button
@@ -194,7 +216,7 @@ const HomePage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {areas.map(area => (
+          {areas.map((area) => (
             <AreaCard
               key={area.id}
               area={area}

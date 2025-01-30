@@ -14,7 +14,7 @@ export const translations: Record<Language, Record<TranslationKey, string>> = {
   it: itTranslations,
   es: esTranslations,
   zh: zhTranslations,
-  ja: jaTranslations
+  ja: jaTranslations,
 };
 
 export * from './types';

@@ -30,7 +30,7 @@ const LoginPage: React.FC = () => {
 
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
   });
   const [errors, setErrors] = useState<AuthError[]>([]);
 
@@ -41,11 +41,11 @@ const LoginPage: React.FC = () => {
     const isFirstLogin = urlParams.get('isFirstLogin') === 'true';
 
     if (firstName && lastName) {
-      login({ 
-        firstName: firstName, 
-        lastName: lastName, 
+      login({
+        firstName: firstName,
+        lastName: lastName,
         isFirstLogin: isFirstLogin,
-        email: '' 
+        email: '',
       });
       navigate('/');
     }
@@ -62,49 +62,58 @@ const LoginPage: React.FC = () => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors([]);
-    
+
     try {
       const response = await axios.post<LoginResponse>(
-        `http://localhost:${BACKEND_PORT}/api/sign_in`, 
+        `http://localhost:${BACKEND_PORT}/api/sign_in`,
         formData
       );
-  
+
       if (response.data.user) {
         // Store email in localStorage before login
         localStorage.setItem('userEmail', formData.email);
         login(response.data.user);
         navigate('/');
       }
-  
     } catch (error: any) {
       console.error('Login error:', error);
-      
+
       if (error.response?.data?.errors) {
         const apiErrors = error.response.data as ApiValidationError;
-        const mappedErrors = apiErrors.errors?.map(err => {
-          const translationKey = `login.errors.${err.param}` as TranslationKey;
-          return {
-            field: err.param,
-            message: t(translationKey) || err.msg
-          };
-        }) || [];
+        const mappedErrors =
+          apiErrors.errors?.map((err) => {
+            const translationKey =
+              `login.errors.${err.param}` as TranslationKey;
+            return {
+              field: err.param,
+              message: t(translationKey) || err.msg,
+            };
+          }) || [];
         setErrors(mappedErrors);
       } else if (error.response?.status === 401) {
-        setErrors([{
-          message: t('login.errors.invalid_credentials')
-        }]);
+        setErrors([
+          {
+            message: t('login.errors.invalid_credentials'),
+          },
+        ]);
       } else {
-        setErrors([{
-          message: t('login.errors.general')
-        }]);
+        setErrors([
+          {
+            message: t('login.errors.general'),
+          },
+        ]);
       }
     }
   };
 
   return (
-    <div className={`min-h-screen flex items-center justify-center ${
-      isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50 to-indigo-100'
-    } transition-colors duration-200`}>
+    <div
+      className={`min-h-screen flex items-center justify-center ${
+        isDarkMode
+          ? 'bg-gray-900'
+          : 'bg-gradient-to-br from-blue-50 to-indigo-100'
+      } transition-colors duration-200`}
+    >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -114,10 +123,14 @@ const LoginPage: React.FC = () => {
         } rounded-2xl shadow-2xl space-y-6`}
       >
         <div className="text-center">
-          <h2 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+          <h2
+            className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+          >
             {t('login.title')}
           </h2>
-          <p className={`mt-2 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p
+            className={`mt-2 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}
+          >
             {t('login.welcome_back')}
           </p>
         </div>
@@ -159,7 +172,9 @@ const LoginPage: React.FC = () => {
         </form>
 
         <div className="text-center mt-6">
-          <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p
+            className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}
+          >
             {t('login.no_account')}{' '}
             <Link
               to="/signup"
