@@ -5,18 +5,22 @@ import { getServerIp } from '../utils/giveIp';
 import dotenv from 'dotenv';
 dotenv.config();
 
+// Initialisation de SpotifyWebApi sans redirectUri pour le moment
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  redirectUri: `http://localhost:${getServerIp()}/api/auth/spotify/callback`
 });
 
 export const authSpotify = (req: Request, res: Response) => {
-    console.log(getServerIp());
     const { email, redirect_uri } = req.query;
+
+    // Vérification des paramètres requis
     if (!email || !redirect_uri) {
         return res.status(400).json({ message: 'Email and redirect_uri are required' });
     }
+
+    // Définition dynamique du redirectUri
+    spotifyApi.setRedirectURI(redirect_uri as string);
 
     const scopes = [
         'playlist-read-private',
@@ -37,8 +41,10 @@ export const authSpotify = (req: Request, res: Response) => {
 
     const state = JSON.stringify({ email, redirect_uri });
 
+    // Création de l'URL d'autorisation
     const authorizeURL = spotifyApi.createAuthorizeURL(scopes, state);
 
+    // Redirection vers l'URL d'autorisation Spotify
     res.redirect(authorizeURL);
 };
 
@@ -77,7 +83,8 @@ export const authSpotifyCallback = async (req: Request, res: Response) => {
             await user.save();
         }
 
-        res.redirect(redirect_uri.toString());
+        // Renvoyer les données au frontend au lieu de rediriger
+        res.status(200).json({message: 'OK'});
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
