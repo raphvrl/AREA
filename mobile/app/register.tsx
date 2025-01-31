@@ -1,23 +1,23 @@
-import {
+import { 
   Text,
   View,
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  Alert,
+  Alert
 } from "react-native";
 
 import { Link, router } from "expo-router";
 import { baseStyles } from "@/styles/baseStyles";
 import { useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface UserData {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-}
+} 
 
 export default function Register() {
   const [firstName, setFirstName] = useState("");
@@ -33,28 +33,28 @@ export default function Register() {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        password: password,
+        password: password
       };
 
-      const response = await fetch(`${apiUrl}/api/signUp`, {
+      const response = await fetch(`${apiUrl}/api/sign_up`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       const data = await response.json();
 
-      if (response.ok) {
-        router.push("/login");
-      } else {
-        Alert.alert("Erreur", data.message);
-      }
-    } catch (error) {
-      Alert.alert("Erreur", "Une erreur est survenue");
+    if (response.ok) {
+      router.push('/login');
+    } else {
+      Alert.alert("Erreur", data.message);
     }
-  };
+  } catch (error) {
+    Alert.alert("Erreur", "Une erreur est survenue");
+  }
+};
 
   return (
     <View
@@ -133,8 +133,7 @@ export default function Register() {
       <View style={styles.registerContainer}>
         <Text style={styles.registerText}>Déjà un compte?</Text>
         <Link
-          href="/login"
-          style={styles.registerLink}
+          href="/login" style={styles.registerLink}
           accessible={true}
           accessibilityLabel="Lien vers la connexion"
           accessibilityHint="Double tapez pour aller à la page de connexion"
@@ -149,22 +148,22 @@ export default function Register() {
 
 const styles = StyleSheet.create({
   buttonText: {
-    color: "white",
+    color: 'white',
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   registerContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 20,
   },
   registerText: {
-    color: "#666",
+    color: '#666',
   },
   registerLink: {
     marginLeft: 5,
   },
   registerLinkText: {
-    color: "#007AFF",
-    fontWeight: "600",
-  },
+    color: '#007AFF',
+    fontWeight: '600',
+  }
 });
