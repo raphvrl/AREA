@@ -10,13 +10,14 @@ const BACKEND_PORT = process.env.BACKEND_PORT || 8080;
 
 export const authDropbox = async (req: Request, res: Response) => {
     const { email, redirectUri } = req.query;
-    const service = '/api/auth/authDropbox/callback';
+    console.log('email:', email, 'redirectUri:', redirectUri);
+    const service = '/api/auth/dropbox/callback';
     if (!email || !redirectUri) {
         return res.status(400).json({ message: 'Email and redirect_uri are required' });
     }
     const user = await userModel.findOneAndUpdate(
         { email },
-        { redirectUriLinkedin: redirectUri },
+        { redirectUriDropbox: redirectUri },
         { new: true, upsert: true }
       );
     const scopes = [
@@ -41,12 +42,13 @@ export const authDropbox = async (req: Request, res: Response) => {
 
 export const authDropboxCallback = async (req: Request, res: Response) => {
     const { code, email } = req.body;
-
+    console.log('code:', code, 'email:', email);
     if (!code || !email) {
         return res.status(400).json({ message: 'Code and state are required' });
     }
 
     try {
+        console.log('email:', email);
         const user = await userModel.findOne({ email });
         if (!user || !user.redirectUriLinkedin) {
           return res
