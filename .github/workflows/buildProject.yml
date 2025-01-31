@@ -1,0 +1,48 @@
+name: Build Project
+on:
+  workflow_run:
+    workflows: ["Format Check"]
+    types:
+      - completed
+
+jobs:
+  build-frontend:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies (Frontend - Web)
+        run: |
+          cd web && npm install
+
+      - name: Build frontend
+        run: |
+          cd web && CI=false npm run build
+
+  build-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies (Backend - Server)
+        run: |
+          cd server && npm install
+
+      - name: Build backend
+        run: |
+          cd server && CI=false npm run build

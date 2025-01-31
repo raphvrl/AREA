@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+@layer base {
+  /* Base styles */
+  :root {
+    --contrast-high-light: theme('colors.contrast.high.light');
+    --contrast-high-dark: theme('colors.contrast.high.dark');
+    --contrast-maximum-light: theme('colors.contrast.maximum.light');
+    --contrast-maximum-dark: theme('colors.contrast.maximum.dark');
+  }
+}
+
+@layer utilities {
+  /* Contrast modes */
+  .contrast-high {
+    @apply bg-white text-black dark:bg-black dark:text-white;
+    color: var(--contrast-high-light);
+    background-color: var(--contrast-high-dark);
+  }
+
+  .contrast-maximum {
+    @apply bg-black text-white dark:bg-white dark:text-black;
+    filter: contrast(200%);
+  }
+
+  /* Reduced motion */
+  .motion-reduce * {
+    @apply transition-none transform-none animate-none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Simplified UI */
+  .simplified * {
+    @apply space-y-4 !important;
+  }
+
+  .simplified .decorative {
+    @apply hidden !important;
+  }
+
+  /* Dyslexic font */
+  .dyslexic-font {
+    font-family: 'OpenDyslexic', sans-serif !important;
+    line-height: 1.8;
+    letter-spacing: 0.35em;
+    word-spacing: 1em;
+  }
+}
