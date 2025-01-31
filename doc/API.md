@@ -57,27 +57,8 @@ This documentation describes the various APIs available in the **AREA** project.
 **📥 Response:**
 ```json
 {
-  "token": "jwt-token"
-}
-```
-
----
-
-## 👤 User Management
-
-### 🔍 Get User Information
-**📍 Endpoint:** `/user`  
-**🛠 Method:** `GET`  
-**📝 Description:** Retrieves the authenticated user's information.
-
-**📌 Headers:**
-- `Authorization` (*string, required*): User's JWT token.
-
-**📥 Response:**
-```json
-{
-  "firstName": "John",
-  "lastName": "Doe",
+  "firstName": "john",
+  "lastName": "doe",
   "email": "john.doe@example.com"
 }
 ```
@@ -86,22 +67,22 @@ This documentation describes the various APIs available in the **AREA** project.
 
 ## 🌐 Integration Services
 
-### 🎵 Spotify Authentication
-**📍 Endpoint:** `/auth/spotify`  
+### 🐙 Service Authentication
+**📍 Endpoint:** `/auth/nameService`  
 **🛠 Method:** `GET`  
-**📝 Description:** Redirects the user to Spotify's authentication page.
+**📝 Description:** Redirects the user to authentication's page.
 
 **📌 Parameters:**
 - `email` (*string, required*): User's email address.
 - `redirectUri` (*string, required*): URI for redirection after authentication.
 
-### 🎵 Spotify Callback
-**📍 Endpoint:** `/auth/spotify/callback`  
+### 🎵 Service Callback
+**📍 Endpoint:** `/auth/nameService/callback`  
 **🛠 Method:** `POST`  
-**📝 Description:** Handles the Spotify authentication callback and saves tokens.
+**📝 Description:** Handles the authentication callback and saves tokens.
 
 **📌 Parameters:**
-- `code` (*string, required*): Authentication code returned by Spotify.
+- `code` (*string, required*): Authentication code returned.
 - `state` (*string, required*): State containing email and `redirectUri`.
 
 **📤 Request Example:**
@@ -109,48 +90,6 @@ This documentation describes the various APIs available in the **AREA** project.
 {
   "code": "auth-code",
   "state": "{\"email\":\"john.doe@example.com\",\"redirectUri\":\"http://localhost:8080/callback\"}"
-}
-```
-
-**📥 Response:**
-```json
-{
-  "message": "OK"
-}
-```
-
----
-
-### 🐙 GitHub Authentication
-**📍 Endpoint:** `/auth/github`  
-**🛠 Method:** `GET`  
-**📝 Description:** Redirects the user to GitHub's authentication page.
-
-**📌 Parameters:**
-- `email` (*string, required*): User's email address.
-- `redirectUri` (*string, required*): URI for redirection after authentication.
-
-### 🐙 GitHub Callback
-**📍 Endpoint:** `/auth/github/callback`  
-**🛠 Method:** `POST`  
-**📝 Description:** Handles the GitHub authentication callback and saves tokens.
-
-**📌 Parameters:**
-- `code` (*string, required*): Authentication code returned by GitHub.
-- `state` (*string, required*): State containing email and `redirectUri`.
-
-**📤 Request Example:**
-```json
-{
-  "code": "auth-code",
-  "state": "{\"email\":\"john.doe@example.com\",\"redirectUri\":\"http://localhost:8080/callback\"}"
-}
-```
-
-**📥 Response:**
-```json
-{
-  "message": "OK"
 }
 ```
 
@@ -205,6 +144,39 @@ This documentation describes the various APIs available in the **AREA** project.
 ```json
 {
   "message": "AREA deleted successfully"
+}
+```
+
+### 📄 Get an AREA
+**📍 Endpoint:** `/getArea/:emailUser`  
+**🛠 Method:** `GET`  
+**📝 Description:** Retrieves all AREAs for a specific user.
+
+**📌 Parameters:**
+- `emailUser` (*string, required*): User's email address (as a URL parameter).
+
+**📤 Request Example:**
+```http
+GET /getArea/john.doe@example.com
+```
+
+**📥 Response:**
+```json
+{
+  "areas": [
+    {
+      "nomArea": "my_area",
+      "action": "new_email",
+      "reaction": "send_notification",
+      "is_on": "true"
+    },
+    {
+      "nomArea": "another_area",
+      "action": "new_tweet",
+      "reaction": "send_email",
+      "is_on": "false"
+    }
+  ]
 }
 ```
 
