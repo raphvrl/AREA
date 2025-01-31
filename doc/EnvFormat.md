@@ -9,19 +9,31 @@ BACKEND_PORT=8080
 FRONTEND_PORT=8081
 
 # 🔑 Authentication
-JWT_SECRET=your_super_secret_key
-ACCESS_TOKEN_EXPIRY=3600
-REFRESH_TOKEN_EXPIRY=86400
+TWITTER_CLIENT_SECRET=***
+REACT_APP_TWITTER_CALLBACK_URL=***
+LINKEDIN_CLIENT_ID=***
+LINKEDIN_CLIENT_SECRET=***
+JWT_SECRET=your_jwt_secret
+CALLBACK_URL=http://localhost:5000/api/auth/linkedin/callback
+FRONTEND_URL=http://localhost:8081/
 
-# 🛢️ Database
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=your_username
-DB_PASSWORD=your_password
-DB_NAME=your_database
+GOOGLE_client_id=***
+GOOGLE_client_secret=***
 
-# GitHub OAuth
-# Telegram OAuth
+SPOTIFY_CLIENT_ID=***
+SPOTIFY_CLIENT_SECRET=***
+REACT_APP_AUDD_API_KEY=***
+
+TELEGRAM_BOT_TOKEN=***
+TELEGRAM_CHAT_ID=***
+
+DISCORD_CLIENT_ID=***
+DISCORD_CLIENT_SECRET=***
+
+GITHUB_CLIENT_ID=***
+GITHUB_CLIENT_SECRET=***
+DISCORD_WEBHOOK_URL=***
+
 ```
 
 
