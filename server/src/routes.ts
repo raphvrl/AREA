@@ -117,7 +117,7 @@ router.delete(
 router.get('/getAction', getAction);
 router.get('/getReaction', getReaction);
 router.get('/auth/spotify', authSpotify);
-router.get('/auth/spotify/callback', authSpotifyCallback);
+router.post('/auth/spotify/callback', authSpotifyCallback);
 router.get('/auth/github', authGithub);
-router.get('/auth/github/callback', authGithubCallback);
+router.post('/auth/github/callback', authGithubCallback);
 export default router;
