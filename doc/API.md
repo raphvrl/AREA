@@ -67,22 +67,22 @@ This documentation describes the various APIs available in the **AREA** project.
 
 ## 🌐 Integration Services
 
-### 🎵 Spotify Authentication
-**📍 Endpoint:** `/auth/spotify`  
+### 🐙 Service Authentication
+**📍 Endpoint:** `/auth/nameService`  
 **🛠 Method:** `GET`  
-**📝 Description:** Redirects the user to Spotify's authentication page.
+**📝 Description:** Redirects the user to authentication's page.
 
 **📌 Parameters:**
 - `email` (*string, required*): User's email address.
 - `redirectUri` (*string, required*): URI for redirection after authentication.
 
-### 🎵 Spotify Callback
-**📍 Endpoint:** `/auth/spotify/callback`  
+### 🎵 Service Callback
+**📍 Endpoint:** `/auth/nameService/callback`  
 **🛠 Method:** `POST`  
-**📝 Description:** Handles the Spotify authentication callback and saves tokens.
+**📝 Description:** Handles the authentication callback and saves tokens.
 
 **📌 Parameters:**
-- `code` (*string, required*): Authentication code returned by Spotify.
+- `code` (*string, required*): Authentication code returned.
 - `state` (*string, required*): State containing email and `redirectUri`.
 
 **📤 Request Example:**
@@ -90,41 +90,6 @@ This documentation describes the various APIs available in the **AREA** project.
 {
   "code": "auth-code",
   "state": "{\"email\":\"john.doe@example.com\",\"redirectUri\":\"http://localhost:8080/callback\"}"
-}
-```
-
----
-
-### 🐙 GitHub Authentication
-**📍 Endpoint:** `/auth/github`  
-**🛠 Method:** `GET`  
-**📝 Description:** Redirects the user to GitHub's authentication page.
-
-**📌 Parameters:**
-- `email` (*string, required*): User's email address.
-- `redirectUri` (*string, required*): URI for redirection after authentication.
-
-### 🐙 GitHub Callback
-**📍 Endpoint:** `/auth/github/callback`  
-**🛠 Method:** `POST`  
-**📝 Description:** Handles the GitHub authentication callback and saves tokens.
-
-**📌 Parameters:**
-- `code` (*string, required*): Authentication code returned by GitHub.
-- `state` (*string, required*): State containing email and `redirectUri`.
-
-**📤 Request Example:**
-```json
-{
-  "code": "auth-code",
-  "state": "{\"email\":\"john.doe@example.com\",\"redirectUri\":\"http://localhost:8080/callback\"}"
-}
-```
-
-**📥 Response:**
-```json
-{
-  "message": "OK"
 }
 ```
 
