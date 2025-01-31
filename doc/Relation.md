@@ -6,7 +6,7 @@ This document describes how the different parts of the **AREA** project interact
 
 ```mermaid
 graph LR
-    A((Server)) <--> D{Database}
+    D{Database} <--> A((Server))
     A --> C[Web App]
     A --> B[Mobile App]
 ```
