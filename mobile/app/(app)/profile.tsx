@@ -145,6 +145,27 @@ export default function Profile() {
           userEmail={userEmail}
           fontSize={fontSize}
         />
+
+        <ServiceButton
+          text="Dropbox"
+          color="#007EE5"
+          iconName="dropbox"
+          iconType="FontAwesome"
+          apiUrl={`${apiUrl}/api/auth/dropbox`}
+          redirectUri={redirectUri}
+          userEmail={userEmail}
+          fontSize={fontSize}
+        />
+        <ServiceButton
+          text="Notion"
+          color="#000000"
+          iconName="notion"
+          iconType="FontAwesome"
+          apiUrl={`${apiUrl}/api/auth/notion`}
+          redirectUri={redirectUri}
+          userEmail={userEmail}
+          fontSize={fontSize}
+        />
       </ScrollView>
 
       <TouchableOpacity 
