@@ -8,13 +8,13 @@ const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 
 export const authGithub = (req: Request, res: Response) => {
-  const { email, redirect_uri } = req.query;
+  const { email, redirectUri } = req.query;
   const service = '/api/auth/github/callback';
 
-  if (!email || !redirect_uri) {
+  if (!email || !redirectUri) {
     return res
       .status(400)
-      .json({ message: 'Email and redirect_uri are required' });
+      .json({ message: 'Email and redirectUri are required' });
   }
 
   const scopes = ['user', 'repo', 'notifications'];
@@ -24,7 +24,7 @@ export const authGithub = (req: Request, res: Response) => {
   const githubAuthUrl =
     `https://github.com/login/oauth/authorize?` +
     `client_id=${GITHUB_CLIENT_ID}&` +
-    `redirect_uri=${encodeURIComponent(redirect_uri as string)}&` +
+    `redirect_uri=${encodeURIComponent(redirectUri as string)}&` +
     `scope=${encodeURIComponent(scopes.join(' '))}&` +
     `state=${encodeURIComponent(state)}`;
 

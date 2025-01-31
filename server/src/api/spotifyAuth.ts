@@ -12,16 +12,16 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 export const authSpotify = (req: Request, res: Response) => {
-  const { email, redirect_uri } = req.query;
+  const { email, redirectUri } = req.query;
   const service = '/api/auth/spotify/callback';
-  if (!email || !redirect_uri) {
+  if (!email || !redirectUri) {
     return res
       .status(400)
-      .json({ message: 'Email and redirect_uri are required' });
+      .json({ message: 'Email and redirectUri are required' });
   }
 
   // Définition dynamique du redirectUri
-  spotifyApi.setRedirectURI(redirect_uri as string);
+  spotifyApi.setRedirectURI(redirectUri as string);
 
   const scopes = [
     'playlist-read-private',

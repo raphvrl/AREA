@@ -3,13 +3,13 @@ import { Action } from '../types/area';
 
 export const availableActions: Action[] = [
   {
-    id: 'repoCreatedGithub',
+    id: 'repoCreated_github',
     service: 'github',
     type: 'repoCreated',
     description: 'When a new repository is created on Github',
   },
   {
-    id: 'checkNewSongSpotify',
+    id: 'checkNewSong_spotify',
     service: 'spotify',
     type: 'checkNewSong',
     description: 'When a song is played',
@@ -18,15 +18,21 @@ export const availableActions: Action[] = [
 
 export const availableReactions: Action[] = [
   {
-    id: 'sendMessageTelegram',
+    id: 'sendMessage_telegram',
     service: 'telegram',
     type: 'sendMessage',
     description: 'Send a message on Telegram',
   },
   {
-    id: 'sendMessageDiscord',
+    id: 'sendMessage_discord',
     service: 'discord',
     type: 'sendMessage',
     description: 'Send a message on Discord',
+  },
+  {
+    id: 'creatPost_linkedin',
+    service: 'linkedin',
+    type: 'creatPost',
+    description: 'Create a linkedin post',
   },
 ];
