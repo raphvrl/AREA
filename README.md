@@ -6,14 +6,14 @@
 
 Welcome to the **Action-REAction** project!
 
-An AREA is a key “zone” or module in the Action-REAction project, which functions as an automation unit. Inspired by the concepts of tools like IFTTT and Zapier, an AREA allows you to link an action (Action) to a reaction (Reaction).
+An AREA is a fundamental module within the Action-REAction project, serving as an automation unit. Drawing inspiration from platforms like IFTTT and Zapier, an AREA enables you to connect a triggering action (Action) to a corresponding response (Reaction).
 
 For example :
 
-- Action: "A new email arrives in your Gmail box."
-- Reaction: “Send a notification on Slack.”
+- Action: "Play music with Spotify"
+- Reaction: “Send a notification on discord.”
 
-AREAs thus serve as a bridge between different platforms or services, allowing personalized automation to be created based on user needs.
+AREAs act as connectors between various platforms or services, enabling users to design customized automations tailored to their specific needs.
 
 
 ## 🎯 Objectives
