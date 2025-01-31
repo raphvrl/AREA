@@ -1,12 +1,4 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-  Linking,
-} from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView, Alert, Linking } from "react-native";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { baseStyles } from "@/styles/baseStyles";
@@ -14,7 +6,7 @@ import { colors } from "@/styles/colors";
 import { useSettings } from "@/contexts/settingsContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome } from '@expo/vector-icons';
 
 const serviceColors = {
   github: "#333",
@@ -44,8 +36,8 @@ export default function Profile() {
   const handleGithubAuth = async () => {
     const apiUrl = await AsyncStorage.getItem("API_URL");
 
-    const redirectUri = "area-app://profile";
-    // const githubUrl = `${apiUrl}/api/auth/github?email=${encodeURIComponent(userEmail)}&redirectUri=${encodeURIComponent(redirectUri)}`
+    const redirect_uri = "area-app://profile";
+    // const githubUrl = `${apiUrl}/api/auth/github?email=${encodeURIComponent(userEmail)}&redirect_uri=${encodeURIComponent(redirect_uri)}`
 
     try {
       await Linking.openURL(`${apiUrl}/redirect`);
@@ -57,10 +49,8 @@ export default function Profile() {
   const handleSpotifyAuth = async () => {
     const apiUrl = await AsyncStorage.getItem("API_URL");
 
-    const redirectUri = "https://youtube.com";
-    const spotifyUrl = `${apiUrl}/api/auth/spotify?email=${encodeURIComponent(
-      userEmail
-    )}&redirectUri=${encodeURIComponent(redirectUri)}`;
+    const redirect_uri = "https://youtube.com";
+    const spotifyUrl = `${apiUrl}/api/auth/spotify?email=${encodeURIComponent(userEmail)}&redirect_uri=${encodeURIComponent(redirect_uri)}`
 
     console.log(spotifyUrl);
 
@@ -80,11 +70,7 @@ export default function Profile() {
     >
       <View style={styles.profileHeader}>
         <View style={styles.avatarContainer}>
-          <Ionicons
-            name="person-circle-outline"
-            size={80}
-            color={colors.text}
-          />
+          <Ionicons name="person-circle-outline" size={80} color={colors.text} />
         </View>
         <Text
           style={[styles.firstName, { fontSize: fontSize + 8, letterSpacing }]}
@@ -105,51 +91,29 @@ export default function Profile() {
       </View>
 
       <ScrollView style={styles.servicesContainer}>
-        <TouchableOpacity
-          style={[
-            baseStyles.button,
-            styles.serviceButton,
-            { backgroundColor: serviceColors.github },
-          ]}
-          onPress={() => {
-            handleGithubAuth();
-          }}
+        <TouchableOpacity 
+          style={[baseStyles.button, styles.serviceButton, { backgroundColor: serviceColors.github }]}
+          onPress={() => {handleGithubAuth()}}
           accessible={true}
           accessibilityLabel="Connexion GitHub"
           accessibilityRole="button"
         >
           <View style={styles.buttonContent}>
-            <Ionicons
-              name="logo-github"
-              size={24}
-              color="white"
-              style={styles.buttonIcon}
-            />
+            <Ionicons name="logo-github" size={24} color="white" style={styles.buttonIcon} />
             <Text style={[baseStyles.buttonText, { fontSize }]}>
               Connecter GitHub
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            baseStyles.button,
-            styles.serviceButton,
-            { backgroundColor: serviceColors.spotify },
-          ]}
-          onPress={() => {
-            handleSpotifyAuth();
-          }}
+        <TouchableOpacity 
+          style={[baseStyles.button, styles.serviceButton, { backgroundColor: serviceColors.spotify }]}
+          onPress={() => {handleSpotifyAuth()}}
           accessible={true}
           accessibilityLabel="Connexion Spotify"
           accessibilityRole="button"
         >
           <View style={styles.buttonContent}>
-            <FontAwesome
-              name="spotify"
-              size={24}
-              color="white"
-              style={styles.buttonIcon}
-            />
+            <FontAwesome name="spotify" size={24} color="white" style={styles.buttonIcon} />
             <Text style={[baseStyles.buttonText, { fontSize }]}>
               Connecter Spotify
             </Text>
@@ -157,7 +121,7 @@ export default function Profile() {
         </TouchableOpacity>
       </ScrollView>
 
-      <TouchableOpacity
+      <TouchableOpacity 
         style={[baseStyles.button, styles.logoutButton]}
         onPress={() => router.replace("/login")}
         accessible={true}
@@ -165,14 +129,7 @@ export default function Profile() {
         accessibilityHint="Double tapez pour vous déconnecter"
         accessibilityRole="button"
       >
-        <Text
-          style={[
-            baseStyles.buttonText,
-            { fontSize: fontSize - 2, letterSpacing },
-          ]}
-        >
-          Déconnexion
-        </Text>
+        <Text style={[baseStyles.buttonText, { fontSize: fontSize - 2, letterSpacing }]}>Déconnexion</Text>
       </TouchableOpacity>
     </View>
   );
@@ -180,7 +137,7 @@ export default function Profile() {
 
 const styles = StyleSheet.create({
   profileHeader: {
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 30,
   },
   avatarContainer: {
@@ -188,7 +145,7 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.title,
     marginBottom: 5,
   },
@@ -197,15 +154,15 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   section: {
-    width: "100%",
+    width: '100%',
     backgroundColor: colors.primary,
     borderRadius: 12,
     padding: 20,
     marginBottom: 20,
   },
   infoRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 15,
   },
   infoText: {
@@ -214,23 +171,23 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   logoutButton: {
-    marginTop: "auto",
+    marginTop: 'auto',
     backgroundColor: colors.button,
   },
   nameContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 20,
   },
   firstName: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.title,
     marginBottom: 5,
-    textTransform: "uppercase",
+    textTransform: 'uppercase',
   },
   lastName: {
-    fontWeight: "500",
+    fontWeight: '500',
     color: colors.text,
-    textTransform: "uppercase",
+    textTransform: 'uppercase',
   },
   servicesContainer: {
     marginBottom: 20,
@@ -239,8 +196,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonContent: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   buttonIcon: {
     marginRight: 10,

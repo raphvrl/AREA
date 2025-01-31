@@ -1,9 +1,9 @@
-import {
+import { 
   Text,
   View,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
+  TextInput ,
   Alert,
 } from "react-native";
 
@@ -35,15 +35,15 @@ export default function Login() {
 
       const userData: UserData = {
         email: email,
-        password: password,
+        password: password
       };
 
-      const response = await fetch(`${apiUrl}/api/signIn`, {
+      const response = await fetch(`${apiUrl}/api/sign_in`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       const data = await response.json();
@@ -55,7 +55,7 @@ export default function Login() {
           AsyncStorage.setItem("USER_LAST_NAME", data.user.lastName),
         ]);
 
-        router.push("/(app)/home");
+        router.push('/(app)/home');
       } else {
         Alert.alert("Erreur", data.message);
       }
@@ -132,12 +132,12 @@ export default function Login() {
 
 const styles = StyleSheet.create({
   buttonText: {
-    color: "white",
+    color: 'white',
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   registerContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 20,
   },
 });
