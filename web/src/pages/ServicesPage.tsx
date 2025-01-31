@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from '../context/TranslationContext';
 import { motion } from 'framer-motion';
-import { IoLogoGithub, IoLogoDiscord } from 'react-icons/io5';
-import { SiSpotify, SiLinkedin } from 'react-icons/si';
+import { IoLogoGithub, IoLogoDiscord, IoLogoDropbox } from 'react-icons/io5';
+import { SiSpotify, SiLinkedin, SiNotion } from 'react-icons/si';
 
 interface ServiceState {
   id: string;
@@ -13,8 +13,6 @@ interface ServiceState {
   color: string;
   isConnected: boolean;
 }
-
-const userEmail = localStorage.getItem('userEmail');
 
 const ServicesPage: React.FC = () => {
   const { isDarkMode } = useTheme();
@@ -26,15 +24,15 @@ const ServicesPage: React.FC = () => {
       description: t('services.github.description'),
       icon: IoLogoGithub,
       color: 'bg-gray-900',
-      isConnected: false,
+      isConnected: false
     },
     {
       id: 'spotify',
       name: 'Spotify',
       description: t('services.spotify.description'),
-      icon: SiSpotify,
+      icon: SiSpotify, 
       color: 'bg-green-600',
-      isConnected: false,
+      isConnected: false
     },
     {
       id: 'linkedin',
@@ -42,8 +40,25 @@ const ServicesPage: React.FC = () => {
       description: t('services.linkedin.description'),
       icon: SiLinkedin,
       color: 'bg-blue-600',
-      isConnected: false,
+      isConnected: false
     },
+    {
+      id: 'dropbox',
+      name: 'dropbox',
+      description: t('services.dropbox.description'),
+      icon: IoLogoDropbox,
+      color: 'bg-blue-600',
+      isConnected: false
+    },
+    {
+      id: 'notion',
+      name: 'Notion',
+      description: t('services.notion.description'),
+      icon: SiNotion,
+      color: 'bg-blue-600',
+      isConnected: false
+    },
+
   ]);
 
   useEffect(() => {
@@ -79,23 +94,11 @@ const ServicesPage: React.FC = () => {
         return;
       }
 
-      // Define base URL and endpoints for each service
-      const BACKEND_PORT = process.env.REACT_APP_BACKEND_PORT || 8080;
       const FRONTEND_PORT = process.env.REACT_APP_FRONTEND_PORT || 8081;
+      const redirectUri = `http://localhost:${FRONTEND_PORT}`;
 
-      const endpoints: { [key: string]: string } = {
-        github: `http://localhost:8080/api/auth/github`,
-        spotify: `http://localhost:8080/api/auth/spotify`,
-        linkedin: `http://localhost:8080/api/auth/linkedin`,
-      };
+      const authUrl = `http://localhost:8080/api/auth/${serviceId}?email=${encodeURIComponent(userEmail)}&redirectUri=${encodeURIComponent(redirectUri)}`;
 
-      // Construct redirect URI for the frontend callback
-      const redirectUri = `http://localhost:8081`;
-
-      // Build the complete auth URL with query parameters
-      const authUrl = `${endpoints[serviceId]}?email=${encodeURIComponent(userEmail)}&redirectUri=${encodeURIComponent(redirectUri)}`;
-
-      // Redirect to the authentication endpoint
       window.location.href = authUrl;
     } catch (error) {
       console.error(`Error connecting to ${serviceId}:`, error);
@@ -105,7 +108,7 @@ const ServicesPage: React.FC = () => {
   const handleDisconnect = async (serviceId: string) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/services/${serviceId}/disconnect`,
+        `http://localhost:8080/api/services/${serviceId}/disconnect`,
         {
           method: 'POST',
           credentials: 'include',
@@ -181,7 +184,11 @@ const ServicesPage: React.FC = () => {
               </p>
 
               <button
-                onClick={() => handleServiceConnection(service.id)}
+                onClick={() =>
+                  service.isConnected
+                    ? handleDisconnect(service.id)
+                    : handleServiceConnection(service.id)
+                }
                 className={`px-4 py-2 rounded-md text-white ${service.color}`}
               >
                 {service.isConnected

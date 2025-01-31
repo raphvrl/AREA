@@ -6,7 +6,7 @@ export interface TranslationContextType {
   t: (key: TranslationKey) => string;
 }
 
-export type TranslationKey =
+export type TranslationKey = 
   | 'nav.home'
   | 'nav.profile'
   | 'nav.logout'
@@ -32,15 +32,15 @@ export type TranslationKey =
   | 'signup.errors.firstname'
   | 'signup.errors.lastname'
   | 'signup.errors.passwords_match'
-  | 'signup.signIn'
+  | 'signup.sign_in'
   | 'signup.already_have_account'
   | 'signup.lastname'
   | 'signup.firstname'
   | 'login.identifier_placeholder'
   | 'login.password_placeholder'
-  | 'login.signIn'
+  | 'login.sign_in'
   | 'login.no_account'
-  | 'login.create_account'
+  | 'login.create_account' 
   | 'signup.errors.required_firstname'
   | 'signup.errors.required_lastname'
   | 'signup.errors.required_email'
@@ -116,5 +116,7 @@ export type TranslationKey =
   | 'services.github.description'
   | 'services.spotify.description'
   | 'services.linkedin.description'
+  | 'services.dropbox.description'
+  | 'services.notion.description'
   | 'services.connect'
   | 'services.disconnect';

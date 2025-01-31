@@ -1,4 +1,5 @@
 export const frTranslations = {
+
   // Navigation
   'nav.home': 'Accueil',
   'nav.profile': 'Profil',
@@ -6,7 +7,7 @@ export const frTranslations = {
   'nav.about': 'À propos',
   'nav.contact': 'Contact',
   'nav.services': 'Services',
-
+  
   // Login
   'login.title': 'Connexion',
   'login.with_linkedin': 'Se connecter avec LinkedIn',
@@ -17,30 +18,29 @@ export const frTranslations = {
   'login.welcome_back': 'Bienvenue de retour !',
   'login.identifier_placeholder': 'Identifiant',
   'login.password_placeholder': 'Mot de passe',
-  'login.signIn': 'Se connecter',
+  'login.sign_in': 'Se connecter',
   'login.no_account': 'Pas de compte ?',
   'login.create_account': 'Créer un compte',
   'login.email': 'Email',
   'login.welcome_message': 'Bienvenue sur AREA !',
   'login.errors.invalid_credentials': 'Email ou mot de passe invalide',
   'login.errors.general': 'Une erreur est survenue lors de la connexion',
-  'login.errors.email': "Format d'email invalide",
+  'login.errors.email': 'Format d\'email invalide',
   'login.errors.password': 'Mot de passe invalide',
 
   // Signup
-  'signup.signIn': 'Se connecter',
+  'signup.sign_in': 'Se connecter',
   'signup.already_have_account': 'Vous avez déjà un compte ?',
   'signup.lastname': 'Nom',
   'signup.firstname': 'Prénom',
   'signup.errors.required_firstname': 'Le prénom est requis',
   'signup.errors.required_lastname': 'Le nom est requis',
-  'signup.errors.required_email': "L'email est requis",
+  'signup.errors.required_email': 'L\'email est requis',
   'signup.errors.required_password': 'Le mot de passe est requis',
   'signup.errors.passwords_match': 'Les mots de passe ne correspondent pas',
-  'signup.errors.general': "Une erreur est survenue lors de l'inscription",
+  'signup.errors.general': 'Une erreur est survenue lors de l\'inscription',
   'signup.errors.email': 'Veuillez entrer un email valide',
-  'signup.errors.password':
-    'Le mot de passe doit contenir au moins 8 caractères',
+  'signup.errors.password': 'Le mot de passe doit contenir au moins 8 caractères',
   'signup.errors.firstname': 'Le prénom est requis',
   'signup.errors.lastname': 'Le nom est requis',
   'signup.create_account': 'Créer un compte',
@@ -48,7 +48,7 @@ export const frTranslations = {
   'signup.password': 'Mot de passe',
   'signup.confirm_password': 'Confirmer le mot de passe',
   'signup.email': 'Email',
-
+  
   // Home
   'home.title': 'Bienvenue',
   'home.spotify.title': 'Intégration Spotify',
@@ -57,8 +57,7 @@ export const frTranslations = {
   'home.spotify.connected': 'Connecté à Spotify',
   'home.spotify.play': 'Lancer la musique',
   'home.recognition.title': 'Reconnaissance musicale',
-  'home.recognition.dropzone':
-    'Déposez un fichier audio/vidéo ici pour identifier la musique',
+  'home.recognition.dropzone': 'Déposez un fichier audio/vidéo ici pour identifier la musique',
   'home.recognition.result': 'Musique reconnue :',
   'home.recognition.artist': 'Artiste',
   'home.recognition.addToSpotify': 'Ajouter aux favoris Spotify',
@@ -70,14 +69,14 @@ export const frTranslations = {
   'home.areas.empty': 'Aucune automatisation pour le moment',
   'home.areas.fill_all_fields': 'Veuillez remplir tous les champs',
   'home.areas.count': 'automatisations',
-
+  
   // About
   'about.title': 'À propos',
   'about.description': 'Découvrez notre application et ses fonctionnalités.',
-
+  
   // Contact
   'contact.title': 'Contact',
-  'contact.description': "Contactez-nous pour plus d'informations.",
+  'contact.description': 'Contactez-nous pour plus d\'informations.',
   'contact.phone': 'Téléphone',
   'contact.address': 'Adresse',
   'contact.form.name': 'Nom',
@@ -85,19 +84,18 @@ export const frTranslations = {
   'contact.form.subject': 'Sujet',
   'contact.form.message': 'Message',
   'contact.form.send': 'Envoyer',
-
+  
   // Profile
   'profile.title': 'Profil',
   'profile.info': 'Informations personnelles',
   'profile.firstname': 'Prénom',
   'profile.lastname': 'Nom',
-  'profile.avatar_description': "Photo de profil de l'utilisateur",
+  'profile.avatar_description': 'Photo de profil de l\'utilisateur',
   'profile.edit_profile': 'Modifier le profil',
   'profile.connected_services': 'Services connectés',
 
   // Footer
-  'footer.description':
-    "AREA est une plateforme d'automatisation qui vous permet de connecter vos services préférés.",
+  'footer.description': 'AREA est une plateforme d\'automatisation qui vous permet de connecter vos services préférés.',
   'footer.quick_links': 'Liens rapides',
   'footer.home': 'Accueil',
   'footer.about': 'À propos',
@@ -106,36 +104,30 @@ export const frTranslations = {
   'footer.follow_us': 'Suivez-nous',
   'footer.rights': 'Tous droits réservés.',
   'footer.privacy': 'Politique de confidentialité',
-  'footer.terms': "Conditions d'utilisation",
+  'footer.terms': 'Conditions d\'utilisation',
 
   // Landing
   'landing.hero.title': 'AREA - Action REAction',
-  'landing.hero.subtitle':
-    'Automatisez vos tâches quotidiennes en connectant vos services préférés',
+  'landing.hero.subtitle': 'Automatisez vos tâches quotidiennes en connectant vos services préférés',
   'landing.hero.start_button': 'Commencer gratuitement',
   'landing.hero.login_button': 'Se connecter',
   'landing.features.automation.title': 'Automatisation Rapide',
-  'landing.features.automation.description':
-    'Créez des automatisations en quelques clics pour gagner du temps dans vos tâches quotidiennes.',
+  'landing.features.automation.description': 'Créez des automatisations en quelques clics pour gagner du temps dans vos tâches quotidiennes.',
   'landing.features.services.title': 'Services Connectés',
-  'landing.features.services.description':
-    'Intégrez facilement vos services préférés comme Spotify, Discord, et bien plus.',
+  'landing.features.services.description': 'Intégrez facilement vos services préférés comme Spotify, Discord, et bien plus.',
   'landing.features.security.title': 'Sécurité Avancée',
-  'landing.features.security.description':
-    'Vos données sont protégées avec les meilleurs standards de sécurité.',
+  'landing.features.security.description': 'Vos données sont protégées avec les meilleurs standards de sécurité.',
   'landing.services.title': 'Services Disponibles',
   'landing.services.subtitle': 'Connectez-vous avec vos plateformes favorites',
 
   // Services
   'services.title': 'Services Disponibles',
-  'services.subtitle':
-    'Connectez vos services préférés pour automatiser vos tâches',
-  'services.github.description':
-    'Accédez à vos repositories et gérez vos projets GitHub',
-  'services.spotify.description':
-    'Contrôlez votre musique et gérez vos playlists',
-  'services.linkedin.description':
-    'Gérez votre réseau professionnel et vos connexions',
+  'services.subtitle': 'Connectez vos services préférés pour automatiser vos tâches',
+  'services.github.description': 'Accédez à vos repositories et gérez vos projets GitHub',
+  'services.spotify.description': 'Contrôlez votre musique et gérez vos playlists',
+  'services.linkedin.description': 'Gérez votre réseau professionnel et vos connexions',
+  'services.dropbox.description': 'Stockez et partagez vos fichiers en ligne',
+  'services.notion.description': 'Manage your notes and documents with Notion',
   'services.connect': 'Se connecter',
-  'services.disconnect': 'Se déconnecter',
+  'services.disconnect': 'Se déconnecter'
 };

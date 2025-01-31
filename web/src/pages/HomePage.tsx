@@ -10,20 +10,75 @@ import { AreaCard } from '../components/AreaCard';
 
 const userEmail = localStorage.getItem('userEmail');
 const BACKEND_PORT = process.env.BACKEND_PORT || 8080;
+const FRONTEND_PORT = process.env.REACT_APP_FRONTEND_PORT || 8081;
 
 const HomePage: React.FC = () => {
   const [areas, setAreas] = useState<Area[]>([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedAction, setSelectedAction] = useState<Action | null>(null);
-  const [selectedReaction, setSelectedReaction] = useState<Reaction | null>(
-    null
-  );
+  const [selectedReaction, setSelectedReaction] = useState<Reaction | null>(null);
   const [areaName, setAreaName] = useState('');
 
   const { isAuthenticated, user } = useAuth();
   const { isDarkMode } = useTheme();
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  // Gérer le retour du callback OAuth
+  const handleCallback = async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const state = urlParams.get('state'); // Le state est une chaîne JSON
+  
+    if (code && state) {
+      try {
+        // Parser le state pour extraire l'URL du service
+        const parsedState = JSON.parse(state);
+        const serviceUrl = parsedState.service; // Récupérer l'URL du service
+  
+        const userEmail = localStorage.getItem('userEmail');
+        if (!userEmail) {
+          console.error('No user email found');
+          return;
+        }
+  
+        // Envoyer le code et l'email au backend pour finaliser la connexion
+        const response = await fetch(
+          `http://localhost:${BACKEND_PORT}${serviceUrl}`, // Utiliser l'URL du service
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ code, email: userEmail }),
+          }
+        );
+  
+        if (response.ok) {
+          // Mettre à jour l'état de l'application si nécessaire
+          console.log('Service connected successfully:', serviceUrl);
+        } else {
+          const error = await response.json();
+          console.error('Error handling callback:', error.message);
+        }
+      } catch (error) {
+        console.error('Error handling callback:', error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+
+    // Gérer le callback OAuth au chargement de la page
+    handleCallback();
+
+    // Charger les zones de l'utilisateur
+    fetchAreas();
+  }, [isAuthenticated, navigate, user?.email]);
 
   const fetchAreas = async () => {
     if (!user?.email) return;
@@ -56,14 +111,6 @@ const HomePage: React.FC = () => {
       console.error('Error fetching areas:', error);
     }
   };
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
-    }
-    fetchAreas();
-  }, [isAuthenticated, navigate, user?.email]);
 
   const handleCreateArea = async () => {
     if (!selectedAction || !selectedReaction || !areaName || !user?.email) {
@@ -126,8 +173,6 @@ const HomePage: React.FC = () => {
     }
 
     try {
-      console.log('Current state:', area.isActive); // Debug log
-
       const response = await fetch(
         `http://localhost:${BACKEND_PORT}/api/setArea`,
         {
@@ -139,9 +184,9 @@ const HomePage: React.FC = () => {
           body: JSON.stringify({
             emailUser: user.email,
             nomArea: area.id,
-            action: area.action.type, // Supprimez le _service
-            reaction: area.reaction.type, // Supprimez le _service
-            is_on: !area.isActive ? 'true' : 'false', // Inversez la logique ici
+            action: area.action.type,
+            reaction: area.reaction.type,
+            is_on: !area.isActive ? 'true' : 'false',
           }),
         }
       );
@@ -149,8 +194,6 @@ const HomePage: React.FC = () => {
       if (!response.ok) {
         throw new Error('Failed to update area state');
       }
-
-      console.log('New state:', !area.isActive); // Debug log
 
       setAreas(
         areas.map((a) =>

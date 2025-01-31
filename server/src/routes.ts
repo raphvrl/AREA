@@ -10,6 +10,9 @@ import { getAction } from './api/getAction';
 import { getReaction } from './api/getReaction';
 import { authSpotify, authSpotifyCallback } from './api/spotifyAuth';
 import { authGithub, authGithubCallback } from './api/githubAuth';
+import { authLinkedin, authLinkedinCallback } from './api/linkedinAuth';
+import { authDropbox, authDropboxCallback } from './api/dropboxAuth';
+import { authNotion, authNotionCallback } from './api/notionAuth';
 const router = Router();
 
 // Route pour signUp
@@ -120,4 +123,10 @@ router.get('/auth/spotify', authSpotify);
 router.post('/auth/spotify/callback', authSpotifyCallback);
 router.get('/auth/github', authGithub);
 router.post('/auth/github/callback', authGithubCallback);
+router.get('/auth/linkedin', authLinkedin);
+router.post('/auth/linkedin/callback', authLinkedinCallback);
+router.get('/auth/dropbox', authDropbox);
+router.post('/auth/dropbox/callback', authDropboxCallback);
+router.get('/auth/notion', authNotion);
+router.post('/auth/notion/callback', authNotionCallback);
 export default router;

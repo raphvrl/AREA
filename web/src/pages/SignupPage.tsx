@@ -265,7 +265,7 @@ const SignupPage: React.FC = () => {
               to="/login"
               className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200"
             >
-              {t('signup.signIn')}
+              sign Up
             </Link>
           </p>
         </div>

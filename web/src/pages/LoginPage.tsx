@@ -167,7 +167,7 @@ const LoginPage: React.FC = () => {
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transform transition-all duration-200 hover:scale-[1.02]"
           >
-            {t('login.signIn')}
+            login
           </button>
         </form>
 

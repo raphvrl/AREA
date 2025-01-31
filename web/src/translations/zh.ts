@@ -1,4 +1,5 @@
 export const zhTranslations = {
+
   // Navigation
   'nav.home': '首页',
   'nav.profile': '个人资料',
@@ -6,7 +7,7 @@ export const zhTranslations = {
   'nav.about': '关于',
   'nav.contact': '联系我们',
   'nav.services': '服务',
-
+  
   // Login
   'login.title': '登录',
   'login.with_linkedin': '使用领英登录',
@@ -17,7 +18,7 @@ export const zhTranslations = {
   'login.welcome_back': '欢迎回来！',
   'login.identifier_placeholder': '标识符',
   'login.password_placeholder': '密码',
-  'login.signIn': '登录',
+  'login.sign_in': '登录',
   'login.no_account': '没有账户？',
   'login.create_account': '创建账户',
   'login.email': '电子邮箱',
@@ -28,7 +29,7 @@ export const zhTranslations = {
   'login.errors.password': '密码无效',
 
   // Signup
-  'signup.signIn': '登录',
+  'signup.sign_in': '登录',
   'signup.already_have_account': '已经有账户？',
   'signup.lastname': '姓',
   'signup.firstname': '名',
@@ -68,11 +69,11 @@ export const zhTranslations = {
   'home.areas.empty': '暂无自动化',
   'home.areas.fill_all_fields': '请填写所有字段',
   'home.areas.count': '自动化数量',
-
+  
   // About
   'about.title': '关于',
   'about.description': '探索我们的应用程序及其功能。',
-
+  
   // Contact
   'contact.title': '联系我们',
   'contact.description': '如需更多信息，请与我们联系。',
@@ -83,7 +84,7 @@ export const zhTranslations = {
   'contact.form.subject': '主题',
   'contact.form.message': '消息',
   'contact.form.send': '发送',
-
+  
   // Profile
   'profile.title': '个人资料',
   'profile.info': '个人信息',
@@ -111,11 +112,9 @@ export const zhTranslations = {
   'landing.hero.start_button': '免费开始',
   'landing.hero.login_button': '登录',
   'landing.features.automation.title': '快速自动化',
-  'landing.features.automation.description':
-    '只需点击几下即可创建自动化，节省日常任务时间。',
+  'landing.features.automation.description': '只需点击几下即可创建自动化，节省日常任务时间。',
   'landing.features.services.title': '连接服务',
-  'landing.features.services.description':
-    '轻松集成您喜爱的服务，如Spotify、Discord等。',
+  'landing.features.services.description': '轻松集成您喜爱的服务，如Spotify、Discord等。',
   'landing.features.security.title': '高级安全',
   'landing.features.security.description': '您的数据受到最高安全标准的保护。',
   'landing.services.title': '可用服务',
@@ -127,6 +126,8 @@ export const zhTranslations = {
   'services.github.description': '访问您的代码仓库并管理GitHub项目',
   'services.spotify.description': '控制您的音乐并管理播放列表',
   'services.linkedin.description': '管理您的职业网络和人脉',
+  'services.dropbox.description': '管理您的服务器和频道',
+  'services.notion.description': 'Manage your notes and documents with Notion',
   'services.connect': '连接',
-  'services.disconnect': '断开连接',
+  'services.disconnect': '断开连接'
 };
