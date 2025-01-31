@@ -1,22 +1,22 @@
 services:
-  # server:
-  #   build:
-  #     context: ./server
-  #   ports:
-  #     - "8080:8080"
-  #   volumes:
-  #     - shared_volume:/app/shared
-  #   environment:
-  #   - BACKEND_PORT=8080
-  #   - FRONTEND_PORT=8081
+  server:
+    build:
+      context: ./server
+    volumes:
+      - shared_volume:/apk
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./server/.env
+    command: ["npm", "start"]
 
-  # client_mobile:
-  #   build:
-  #     context: ./mobile
-  #   volumes:
-  #     - shared_volume:/apk
-  #   depends_on:
-  #     - server
+  client_mobile:
+    build:
+      context: ./mobile
+    volumes:
+      - shared_volume:/apk
+    depends_on:
+      - server
 
   client_web:
     build:
@@ -27,9 +27,10 @@ services:
       - shared_volume:/apk
     depends_on:
       - server
-    environment:
-      - REACT_APP_API_URL=http://localhost:8080
-      - PORT=8081
+      - client_mobile
+    env_file:
+      - ./web/.env
+    command: ["npm", "start"]
 
 volumes:
   shared_volume:
