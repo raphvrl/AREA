@@ -5,23 +5,16 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/styles/colors";
 import { baseStyles } from "@/styles/baseStyles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { useSettings } from "@/contexts/settingsContext";
-
-const actionsMap = {
-  repoCreatedGithub: "lors de la création d'un dépôt GitHub",
-  checkNewSongSpotify: "quand une nouvelle chanson est ajoutée",
-};
-
-const reactionMap = {
-  sendMessageTelegram: "envoyer un message sur Telegram",
-  sendMessageDiscord: "envoyer un message sur Discord",
-};
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { actionsMap, reactionMap } from "@/utils/areaMap";
 
 interface AddAreaModalProps {
   visible: boolean;
@@ -29,19 +22,68 @@ interface AddAreaModalProps {
   onAdd: (title: string, action: string, reaction: string) => void;
 }
 
+interface AddAreaInfo {
+  emailUser: string;
+  nomArea: string;
+  action: string;
+  reaction: string;
+};
+
 export const AddAreaModal = ({
   visible,
   onClose,
   onAdd,
 }: AddAreaModalProps) => {
-  const [selectedAction, setSelectedAction] = useState("discord");
-  const [selectedReaction, setSelectedReaction] = useState("github");
+  const [selectedAction, setSelectedAction] = useState<keyof typeof actionsMap>("repoCreated_github");
+  const [selectedReaction, setSelectedReaction] = useState<keyof typeof reactionMap>("sendMessage_telegram");
   const [title, setTitle] = useState("");
+  const [emailUser, setEmailUser] = useState("");
   const { fontSize, letterSpacing } = useSettings();
 
-  const handleAdd = () => {
-    onAdd(title, selectedAction, selectedReaction);
-    onClose();
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const email = await AsyncStorage.getItem("USER_EMAIL");
+      setEmailUser(email || "");
+    };
+
+    fetchUserData();
+  }, [visible]);
+
+  const handleAdd = async () => {
+    const areaInfo : AddAreaInfo = {
+      emailUser: emailUser,
+      nomArea: title,
+      action: selectedAction,
+      reaction: selectedReaction,
+    };
+
+    console.log(areaInfo);
+    
+    const apiUrl = await AsyncStorage.getItem("API_URL");
+
+    try {
+      const response = await fetch(`${apiUrl}/api/setArea`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(areaInfo),
+      });
+
+      if (response.ok) {
+        const action = actionsMap[selectedAction];
+        const reaction = reactionMap[selectedReaction];
+
+        onAdd(title, action, reaction);
+        onClose();
+      } else {
+        const errorData = await response.json();
+        const info = errorData.message || response.statusText
+        Alert.alert('Error:', info);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (

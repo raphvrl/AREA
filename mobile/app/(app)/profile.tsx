@@ -7,17 +7,29 @@ import { useSettings } from "@/contexts/settingsContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { FontAwesome } from '@expo/vector-icons';
+import ServiceButton from "@/components/serviceButton";
 
 const serviceColors = {
   github: "#333",
   spotify: "#1DB954",
 };
 
+interface CallbackState {
+  code: string;
+  email: string;
+};
+
+interface StateFormat {
+  service: string;
+}
+
 export default function Profile() {
   const { fontSize, letterSpacing } = useSettings();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [apiUrl, setApiUrl] = useState<string | null>(null);
+  const redirectUri = "https://raphvrl.github.io/my-app-redirection/";
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -31,35 +43,57 @@ export default function Profile() {
     };
 
     fetchUserData();
-  }, []);
 
-  const handleGithubAuth = async () => {
-    const apiUrl = await AsyncStorage.getItem("API_URL");
+    const fetchApiUrl = async () => {
+      const url = await AsyncStorage.getItem("API_URL");
+      setApiUrl(url);
+    };
 
-    const redirect_uri = "area-app://profile";
-    // const githubUrl = `${apiUrl}/api/auth/github?email=${encodeURIComponent(userEmail)}&redirect_uri=${encodeURIComponent(redirect_uri)}`
+    fetchApiUrl()
 
-    try {
-      await Linking.openURL(`${apiUrl}/redirect`);
-    } catch (error) {
-      Alert.alert("Erreur", "Impossible de se connecter à GitHub");
-    }
-  };
+    const handleDeepLink = async (event: { url: string }) => {
+      const { url} = event;
+      const parseUrl = new URL(url);
+  
+      const code = parseUrl.searchParams.get("code");
+      const state = parseUrl.searchParams.get("state");
+  
+      if (state) {
+        try {
+          const sender = {
+            code: code || "",
+            email: userEmail,
+          };
+  
+          const stateData = JSON.parse(state);
+          const service = stateData.service;
+  
+          const apiLink = `${apiUrl}${service}`;
+  
+          const response = await fetch(apiLink, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(sender),
+          });
+  
+          if (response.ok) {
+            Alert.alert("Succès", "Connexion réussie");
+          } else {
+            const errorData = await response.json();
+            const info = errorData.message || response.statusText
+            Alert.alert("Erreur", info);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
 
-  const handleSpotifyAuth = async () => {
-    const apiUrl = await AsyncStorage.getItem("API_URL");
-
-    const redirect_uri = "https://youtube.com";
-    const spotifyUrl = `${apiUrl}/api/auth/spotify?email=${encodeURIComponent(userEmail)}&redirect_uri=${encodeURIComponent(redirect_uri)}`
-
-    console.log(spotifyUrl);
-
-    try {
-      await Linking.openURL(spotifyUrl);
-    } catch (error) {
-      Alert.alert("Erreur", "Impossible de se connecter à Spotify");
-    }
-  };
+    const sub = Linking.addEventListener("url", handleDeepLink);
+    return () => sub.remove();
+  }, [userEmail, apiUrl]);
 
   return (
     <View
@@ -91,34 +125,26 @@ export default function Profile() {
       </View>
 
       <ScrollView style={styles.servicesContainer}>
-        <TouchableOpacity 
-          style={[baseStyles.button, styles.serviceButton, { backgroundColor: serviceColors.github }]}
-          onPress={() => {handleGithubAuth()}}
-          accessible={true}
-          accessibilityLabel="Connexion GitHub"
-          accessibilityRole="button"
-        >
-          <View style={styles.buttonContent}>
-            <Ionicons name="logo-github" size={24} color="white" style={styles.buttonIcon} />
-            <Text style={[baseStyles.buttonText, { fontSize }]}>
-              Connecter GitHub
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={[baseStyles.button, styles.serviceButton, { backgroundColor: serviceColors.spotify }]}
-          onPress={() => {handleSpotifyAuth()}}
-          accessible={true}
-          accessibilityLabel="Connexion Spotify"
-          accessibilityRole="button"
-        >
-          <View style={styles.buttonContent}>
-            <FontAwesome name="spotify" size={24} color="white" style={styles.buttonIcon} />
-            <Text style={[baseStyles.buttonText, { fontSize }]}>
-              Connecter Spotify
-            </Text>
-          </View>
-        </TouchableOpacity>
+      <ServiceButton
+          text="GitHub"
+          color={serviceColors.github}
+          iconName="logo-github"
+          iconType="Ionicons"
+          apiUrl={`${apiUrl}/api/auth/github`}
+          redirectUri={redirectUri}
+          userEmail={userEmail}
+          fontSize={fontSize}
+        />
+        <ServiceButton
+          text="Spotify"
+          color={serviceColors.spotify}
+          iconName="spotify"
+          iconType="FontAwesome"
+          apiUrl={`${apiUrl}/api/auth/spotify`}
+          redirectUri={redirectUri}
+          userEmail={userEmail}
+          fontSize={fontSize}
+        />
       </ScrollView>
 
       <TouchableOpacity 
