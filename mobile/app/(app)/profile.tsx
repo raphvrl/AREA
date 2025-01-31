@@ -13,6 +13,15 @@ const serviceColors = {
   spotify: "#1DB954",
 };
 
+interface CallbackState {
+  code: string;
+  email: string;
+};
+
+interface StateFormat {
+  service: string;
+}
+
 export default function Profile() {
   const { fontSize, letterSpacing } = useSettings();
   const [firstName, setFirstName] = useState("");
@@ -31,16 +40,60 @@ export default function Profile() {
     };
 
     fetchUserData();
+
+    const sub = Linking.addEventListener("url", handleDeepLink);
+    return () => sub.remove();
   }, []);
+  
+  const handleDeepLink = async (event: { url: string }) => {
+    const { url} = event;
+    const parseUrl = new URL(url);
+
+    const code = parseUrl.searchParams.get("code");
+    const state = parseUrl.searchParams.get("state");
+    const apiUrl = await AsyncStorage.getItem("API_URL");
+
+    if (state) {
+      try {
+        const sender : CallbackState = {
+          code: code || "",
+          email: userEmail,
+        };
+
+        const stateData = JSON.parse(state) as StateFormat;
+        const service = stateData.service;
+
+        console.log(sender);
+
+        const apiLink = `${apiUrl}${service}`;
+
+        const response = await fetch(apiLink, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(sender),
+        });
+
+        if (response.ok) {
+          Alert.alert("Succès", "Connexion à Spotify réussie");
+        } else {
+          Alert.alert("Erreur", "Impossible de se connecter à Spotify");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
 
   const handleGithubAuth = async () => {
     const apiUrl = await AsyncStorage.getItem("API_URL");
 
-    const redirect_uri = "area-app://profile";
-    // const githubUrl = `${apiUrl}/api/auth/github?email=${encodeURIComponent(userEmail)}&redirect_uri=${encodeURIComponent(redirect_uri)}`
+    const redirect_uri = "https://area-app.com/profile";
+    const githubUrl = `${apiUrl}/api/auth/github?email=${encodeURIComponent(userEmail)}&redirect_uri=${encodeURIComponent(redirect_uri)}`
 
     try {
-      await Linking.openURL(`${apiUrl}/redirect`);
+      await Linking.openURL(githubUrl);
     } catch (error) {
       Alert.alert("Erreur", "Impossible de se connecter à GitHub");
     }
@@ -49,10 +102,8 @@ export default function Profile() {
   const handleSpotifyAuth = async () => {
     const apiUrl = await AsyncStorage.getItem("API_URL");
 
-    const redirect_uri = "https://youtube.com";
+    const redirect_uri = "https://raphvrl.github.io/my-app-redirection/";
     const spotifyUrl = `${apiUrl}/api/auth/spotify?email=${encodeURIComponent(userEmail)}&redirect_uri=${encodeURIComponent(redirect_uri)}`
-
-    console.log(spotifyUrl);
 
     try {
       await Linking.openURL(spotifyUrl);

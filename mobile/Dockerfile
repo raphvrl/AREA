@@ -24,5 +24,6 @@ RUN mkdir -p /apk
 RUN ls -la /app/android/app/build/outputs/apk || true
 
 RUN find /app -name "*.apk" -exec cp {} /apk/ \; || echo "Aucun APK trouvé"
+RUN mv /apk/*.apk /apk/area.apk
 
 VOLUME /apk
