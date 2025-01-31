@@ -10,6 +10,8 @@ const userSchema: Schema = new Schema({
   lastFirstName: { type: String, default: '' },
   password: { type: String, default: '' },
   redirectUriLinkedin: { type: String, default: ''},
+  redirectUriDropbox: { type: String, default: ''},
+  redirectUriNotion: { type: String, default: ''},
   area: {
     type: Map,
     of: new Schema({

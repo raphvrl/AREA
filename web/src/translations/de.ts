@@ -1,4 +1,5 @@
 export const deTranslations = {
+
   // Navigation
   'nav.home': 'Startseite',
   'nav.profile': 'Profil',
@@ -6,7 +7,7 @@ export const deTranslations = {
   'nav.about': 'Über uns',
   'nav.contact': 'Kontakt',
   'nav.services': 'Dienste',
-
+  
   // Login
   'login.title': 'Anmeldung',
   'login.with_linkedin': 'Mit LinkedIn anmelden',
@@ -17,7 +18,7 @@ export const deTranslations = {
   'login.welcome_back': 'Willkommen zurück!',
   'login.identifier_placeholder': 'Benutzername',
   'login.password_placeholder': 'Passwort',
-  'login.signIn': 'Anmelden',
+  'login.sign_in': 'Anmelden',
   'login.no_account': 'Kein Konto?',
   'login.create_account': 'Konto erstellen',
   'login.email': 'E-Mail',
@@ -28,7 +29,7 @@ export const deTranslations = {
   'login.errors.password': 'Ungültiges Passwort',
 
   // Signup
-  'signup.signIn': 'Anmelden',
+  'signup.sign_in': 'Anmelden',
   'signup.already_have_account': 'Haben Sie bereits ein Konto?',
   'signup.lastname': 'Nachname',
   'signup.firstname': 'Vorname',
@@ -56,25 +57,23 @@ export const deTranslations = {
   'home.spotify.connected': 'Mit Spotify verbunden',
   'home.spotify.play': 'Musik abspielen',
   'home.recognition.title': 'Musikerkennung',
-  'home.recognition.dropzone':
-    'Audio-/Videodatei hier ablegen zur Musikerkennung',
+  'home.recognition.dropzone': 'Audio-/Videodatei hier ablegen zur Musikerkennung',
   'home.recognition.result': 'Erkannte Musik:',
   'home.recognition.artist': 'Künstler',
   'home.recognition.addToSpotify': 'Zu Spotify-Favoriten hinzufügen',
   'home.title_welcome': 'Willkommen bei AREA',
-  'home.subtitle_welcome':
-    'Verwalten Sie Ihre Integrationen und automatisieren Sie Ihre Aufgaben',
+  'home.subtitle_welcome': 'Verwalten Sie Ihre Integrationen und automatisieren Sie Ihre Aufgaben',
   'home.services.title': 'Verfügbare Dienste',
   'home.areas.title': 'Meine Automatisierungen',
   'home.areas.create': 'Neue Automatisierung erstellen',
   'home.areas.empty': 'Noch keine Automatisierung vorhanden',
   'home.areas.fill_all_fields': 'Bitte füllen Sie alle Felder aus',
   'home.areas.count': 'Anzahl der Automatisierungen',
-
+  
   // About
   'about.title': 'Über uns',
   'about.description': 'Entdecken Sie unsere Anwendung und ihre Funktionen.',
-
+  
   // Contact
   'contact.title': 'Kontakt',
   'contact.description': 'Kontaktieren Sie uns für weitere Informationen.',
@@ -85,7 +84,7 @@ export const deTranslations = {
   'contact.form.subject': 'Betreff',
   'contact.form.message': 'Nachricht',
   'contact.form.send': 'Senden',
-
+  
   // Profile
   'profile.title': 'Profil',
   'profile.info': 'Persönliche Informationen',
@@ -96,8 +95,7 @@ export const deTranslations = {
   'profile.connected_services': 'Verbundene Dienste',
 
   // Footer
-  'footer.description':
-    'AREA ist eine Automatisierungsplattform, die es Ihnen ermöglicht, Ihre bevorzugten Dienste zu verbinden.',
+  'footer.description': 'AREA ist eine Automatisierungsplattform, die es Ihnen ermöglicht, Ihre bevorzugten Dienste zu verbinden.',
   'footer.quick_links': 'Schnellzugriffe',
   'footer.home': 'Startseite',
   'footer.about': 'Über uns',
@@ -110,33 +108,26 @@ export const deTranslations = {
 
   // Landing
   'landing.hero.title': 'AREA - Action REAction',
-  'landing.hero.subtitle':
-    'Automatisieren Sie Ihre täglichen Aufgaben durch die Verbindung Ihrer bevorzugten Dienste',
+  'landing.hero.subtitle': 'Automatisieren Sie Ihre täglichen Aufgaben durch die Verbindung Ihrer bevorzugten Dienste',
   'landing.hero.start_button': 'Kostenlos starten',
   'landing.hero.login_button': 'Anmelden',
   'landing.features.automation.title': 'Schnelle Automatisierung',
-  'landing.features.automation.description':
-    'Erstellen Sie Automatisierungen mit wenigen Klicks und sparen Sie Zeit bei Ihren täglichen Aufgaben.',
+  'landing.features.automation.description': 'Erstellen Sie Automatisierungen mit wenigen Klicks und sparen Sie Zeit bei Ihren täglichen Aufgaben.',
   'landing.features.services.title': 'Verbundene Dienste',
-  'landing.features.services.description':
-    'Integrieren Sie einfach Ihre bevorzugten Dienste wie Spotify, Discord und mehr.',
+  'landing.features.services.description': 'Integrieren Sie einfach Ihre bevorzugten Dienste wie Spotify, Discord und mehr.',
   'landing.features.security.title': 'Erweiterte Sicherheit',
-  'landing.features.security.description':
-    'Ihre Daten werden mit höchsten Sicherheitsstandards geschützt.',
+  'landing.features.security.description': 'Ihre Daten werden mit höchsten Sicherheitsstandards geschützt.',
   'landing.services.title': 'Verfügbare Dienste',
-  'landing.services.subtitle':
-    'Verbinden Sie sich mit Ihren Lieblingsplattformen',
+  'landing.services.subtitle': 'Verbinden Sie sich mit Ihren Lieblingsplattformen',
 
   // Services
   'services.title': 'Verfügbare Dienste',
-  'services.subtitle':
-    'Verbinden Sie Ihre bevorzugten Dienste zur Automatisierung',
-  'services.github.description':
-    'Greifen Sie auf Ihre Repositories zu und verwalten Sie GitHub-Projekte',
-  'services.spotify.description':
-    'Steuern Sie Ihre Musik und verwalten Sie Playlists',
-  'services.linkedin.description':
-    'Verwalten Sie Ihr berufliches Netzwerk und Verbindungen',
+  'services.subtitle': 'Verbinden Sie Ihre bevorzugten Dienste zur Automatisierung',
+  'services.github.description': 'Greifen Sie auf Ihre Repositories zu und verwalten Sie GitHub-Projekte',
+  'services.spotify.description': 'Steuern Sie Ihre Musik und verwalten Sie Playlists',
+  'services.linkedin.description': 'Verwalten Sie Ihr berufliches Netzwerk und Verbindungen',
+  'services.dropbox.description': 'Speichern und teilen Sie Dateien in der Cloud',
+  'services.notion.description': 'Manage your notes and documents with Notion',
   'services.connect': 'Verbinden',
-  'services.disconnect': 'Trennen',
+  'services.disconnect': 'Trennen'
 };

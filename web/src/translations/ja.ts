@@ -1,4 +1,5 @@
 export const jaTranslations = {
+
   // Navigation
   'nav.home': 'ホーム',
   'nav.profile': 'プロフィール',
@@ -7,7 +8,7 @@ export const jaTranslations = {
   'nav.contact': 'お問い合わせ',
   'nav.services': 'サービス',
   'login.welcome_back': 'おかえりなさい！',
-
+  
   // Login
   'login.title': 'ログイン',
   'login.with_linkedin': 'LinkedInでログイン',
@@ -17,19 +18,18 @@ export const jaTranslations = {
   'login.or': 'または',
   'login.identifier_placeholder': '識別子',
   'login.password_placeholder': 'パスワード',
-  'login.signIn': 'ログイン',
+  'login.sign_in': 'ログイン',
   'login.no_account': 'アカウントがありませんか？',
   'login.create_account': 'アカウントを作成',
   'login.email': 'メールアドレス',
   'login.welcome_message': 'AREAへようこそ！',
-  'login.errors.invalid_credentials':
-    'メールアドレスまたはパスワードが無効です',
+  'login.errors.invalid_credentials': 'メールアドレスまたはパスワードが無効です',
   'login.errors.general': 'ログイン中にエラーが発生しました',
   'login.errors.email': 'メールアドレスの形式が無効です',
   'login.errors.password': 'パスワードが無効です',
 
   // Signup
-  'signup.signIn': 'ログイン',
+  'signup.sign_in': 'ログイン',
   'signup.already_have_account': 'すでにアカウントをお持ちですか？',
   'signup.lastname': '姓',
   'signup.firstname': '名',
@@ -57,8 +57,7 @@ export const jaTranslations = {
   'home.spotify.connected': 'Spotifyに接続済み',
   'home.spotify.play': '音楽を再生',
   'home.recognition.title': '音楽認識',
-  'home.recognition.dropzone':
-    '音声/動画ファイルをここにドロップして音楽を識別',
+  'home.recognition.dropzone': '音声/動画ファイルをここにドロップして音楽を識別',
   'home.recognition.result': '認識された音楽：',
   'home.recognition.artist': 'アーティスト',
   'home.recognition.addToSpotify': 'Spotifyのお気に入りに追加',
@@ -70,11 +69,11 @@ export const jaTranslations = {
   'home.areas.empty': '自動化はまだありません',
   'home.areas.fill_all_fields': 'すべてのフィールドに入力してください',
   'home.areas.count': '自動化の数',
-
+  
   // About
   'about.title': '概要',
   'about.description': 'アプリケーションとその機能について説明します。',
-
+  
   // Contact
   'contact.title': 'お問い合わせ',
   'contact.description': '詳細については、お問い合わせください。',
@@ -85,7 +84,7 @@ export const jaTranslations = {
   'contact.form.subject': '件名',
   'contact.form.message': 'メッセージ',
   'contact.form.send': '送信',
-
+  
   // Profile
   'profile.title': 'プロフィール',
   'profile.info': '個人情報',
@@ -96,8 +95,7 @@ export const jaTranslations = {
   'profile.connected_services': '接続済みのサービス',
 
   // Footer
-  'footer.description':
-    'AREAは、お気に入りのサービスを接続できる自動化プラットフォームです。',
+  'footer.description': 'AREAは、お気に入りのサービスを接続できる自動化プラットフォームです。',
   'footer.quick_links': 'クイックリンク',
   'footer.home': 'ホーム',
   'footer.about': '概要',
@@ -114,24 +112,22 @@ export const jaTranslations = {
   'landing.hero.start_button': '無料で始める',
   'landing.hero.login_button': 'ログイン',
   'landing.features.automation.title': '迅速な自動化',
-  'landing.features.automation.description':
-    '数回のクリックで日常のタスクを自動化し、時間を節約できます。',
+  'landing.features.automation.description': '数回のクリックで日常のタスクを自動化し、時間を節約できます。',
   'landing.features.services.title': '連携サービス',
-  'landing.features.services.description':
-    'SpotifyやDiscordなど、お気に入りのサービスを簡単に統合できます。',
+  'landing.features.services.description': 'SpotifyやDiscordなど、お気に入りのサービスを簡単に統合できます。',
   'landing.features.security.title': '高度なセキュリティ',
-  'landing.features.security.description':
-    'お客様のデータは最高のセキュリティ基準で保護されています。',
+  'landing.features.security.description': 'お客様のデータは最高のセキュリティ基準で保護されています。',
   'landing.services.title': '利用可能なサービス',
   'landing.services.subtitle': 'お気に入りのプラットフォームと連携',
 
   // Services
   'services.title': '利用可能なサービス',
   'services.subtitle': 'お気に入りのサービスを接続してタスクを自動化',
-  'services.github.description':
-    'リポジトリにアクセスしGitHubプロジェクトを管理',
+  'services.github.description': 'リポジトリにアクセスしGitHubプロジェクトを管理',
   'services.spotify.description': '音楽を制御しプレイリストを管理',
   'services.linkedin.description': 'プロフェッショナルネットワークと人脈を管理',
+  'services.dropbox.description': '友達とコミュニケーションを取る',
+  'services.notion.description': 'Manage your notes and documents with Notion',
   'services.connect': '接続',
-  'services.disconnect': '切断',
+  'services.disconnect': '切断'
 };

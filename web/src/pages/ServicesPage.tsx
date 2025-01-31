@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from '../context/TranslationContext';
 import { motion } from 'framer-motion';
-import { IoLogoGithub } from 'react-icons/io5';
-import { SiSpotify, SiLinkedin } from 'react-icons/si';
+import { IoLogoGithub, IoLogoDiscord, IoLogoDropbox } from 'react-icons/io5';
+import { SiSpotify, SiLinkedin, SiNotion } from 'react-icons/si';
 
 interface ServiceState {
   id: string;
@@ -24,15 +24,15 @@ const ServicesPage: React.FC = () => {
       description: t('services.github.description'),
       icon: IoLogoGithub,
       color: 'bg-gray-900',
-      isConnected: false,
+      isConnected: false
     },
     {
       id: 'spotify',
       name: 'Spotify',
       description: t('services.spotify.description'),
-      icon: SiSpotify,
+      icon: SiSpotify, 
       color: 'bg-green-600',
-      isConnected: false,
+      isConnected: false
     },
     {
       id: 'linkedin',
@@ -40,8 +40,25 @@ const ServicesPage: React.FC = () => {
       description: t('services.linkedin.description'),
       icon: SiLinkedin,
       color: 'bg-blue-600',
-      isConnected: false,
+      isConnected: false
     },
+    {
+      id: 'dropbox',
+      name: 'dropbox',
+      description: t('services.dropbox.description'),
+      icon: IoLogoDropbox,
+      color: 'bg-blue-600',
+      isConnected: false
+    },
+    {
+      id: 'notion',
+      name: 'Notion',
+      description: t('services.notion.description'),
+      icon: SiNotion,
+      color: 'bg-blue-600',
+      isConnected: false
+    },
+
   ]);
 
   useEffect(() => {
