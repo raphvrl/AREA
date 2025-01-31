@@ -17,6 +17,7 @@ interface UserData {
   lastName: string;
   email: string;
   password: string;
+  confirmPassword?: string;
 } 
 
 export default function Register() {
@@ -24,6 +25,7 @@ export default function Register() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleRegister = async () => {
     try {
@@ -33,10 +35,16 @@ export default function Register() {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        password: password
+        password: password,
+        confirmPassword: confirmPassword
       };
 
-      const response = await fetch(`${apiUrl}/api/sign_up`, {
+      if (userData.password !== userData.confirmPassword) {
+        Alert.alert("Erreur", "Les mots de passe ne correspondent pas");
+        return;
+      }
+
+      const response = await fetch(`${apiUrl}/api/signUp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,12 +52,12 @@ export default function Register() {
         body: JSON.stringify(userData)
       });
 
-      const data = await response.json();
-
     if (response.ok) {
       router.push('/login');
     } else {
-      Alert.alert("Erreur", data.message);
+      const errorData = await response.json();
+      const info = errorData.message || response.statusText;
+      Alert.alert("Erreur", info);
     }
   } catch (error) {
     Alert.alert("Erreur", "Une erreur est survenue");
@@ -116,6 +124,19 @@ export default function Register() {
         accessible={true}
         accessibilityLabel="Champ mot de passe"
         accessibilityHint="Entrez votre mot de passe"
+        accessibilityRole="text"
+      />
+
+      <TextInput
+        style={baseStyles.input}
+        placeholder="Confirmer le mot de passe"
+        secureTextEntry
+        autoCapitalize="none"
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+        accessible={true}
+        accessibilityLabel="Champ confirmation mot de passe"
+        accessibilityHint="Confirmez votre mot de passe"
         accessibilityRole="text"
       />
 

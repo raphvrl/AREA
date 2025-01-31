@@ -38,7 +38,7 @@ export default function Login() {
         password: password
       };
 
-      const response = await fetch(`${apiUrl}/api/sign_in`, {
+      const response = await fetch(`${apiUrl}/api/signIn`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,7 +57,9 @@ export default function Login() {
 
         router.push('/(app)/home');
       } else {
-        Alert.alert("Erreur", data.message);
+        const errorData = await response.json();
+        const info = errorData.message || response.statusText;
+        Alert.alert("Erreur", info);
       }
     } catch (error) {
       Alert.alert("Erreur", "Une erreur est survenue");
