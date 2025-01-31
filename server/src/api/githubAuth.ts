@@ -12,7 +12,9 @@ export const authGithub = (req: Request, res: Response) => {
   const service = '/api/auth/github/callback';
 
   if (!email || !redirect_uri) {
-    return res.status(400).json({ message: 'Email and redirect_uri are required' });
+    return res
+      .status(400)
+      .json({ message: 'Email and redirect_uri are required' });
   }
 
   const scopes = ['user', 'repo', 'notifications'];
