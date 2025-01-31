@@ -6,26 +6,25 @@ dotenv.config();
 
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
-const BACKEND_PORT = process.env.BACKEND_PORT || 8080;
 
 export const authGithub = (req: Request, res: Response) => {
-  const { email, redirectUri } = req.query;
+  const { email, redirect_uri } = req.query;
+  const service = '/api/auth/github/callback';
 
-  if (!email || !redirectUri) {
+  if (!email || !redirect_uri) {
     return res
       .status(400)
-      .json({ message: 'Email and redirectUri are required' });
+      .json({ message: 'Email and redirect_uri are required' });
   }
 
   const scopes = ['user', 'repo', 'notifications'];
 
-  const state = JSON.stringify({ email, redirectUri });
+  const state = JSON.stringify({ service });
 
-  const callbackUri = `http://localhost:${BACKEND_PORT}/api/auth/github/callback`;
   const githubAuthUrl =
     `https://github.com/login/oauth/authorize?` +
     `client_id=${GITHUB_CLIENT_ID}&` +
-    `redirect_uri=${encodeURIComponent(callbackUri)}&` +
+    `redirect_uri=${encodeURIComponent(redirect_uri as string)}&` +
     `scope=${encodeURIComponent(scopes.join(' '))}&` +
     `state=${encodeURIComponent(state)}`;
 
@@ -33,15 +32,13 @@ export const authGithub = (req: Request, res: Response) => {
 };
 
 export const authGithubCallback = async (req: Request, res: Response) => {
-  const { code, state } = req.query;
+  const { code, email } = req.body;
 
-  if (!code || !state) {
-    return res.status(400).json({ message: 'Code and state are required' });
+  if (!code || !email) {
+    return res.status(400).json({ message: 'Code and email are required' });
   }
 
   try {
-    const { email, redirectUri } = JSON.parse(state.toString());
-
     const tokenResponse = await axios.post(
       'https://github.com/login/oauth/access_token',
       {
@@ -67,7 +64,7 @@ export const authGithubCallback = async (req: Request, res: Response) => {
       await user.save();
     }
 
-    res.redirect(redirectUri.toString());
+    res.status(200).json({ message: 'OK' });
   } catch (error) {
     console.error('Error in GitHub callback:', error);
     res.status(500).json({ message: 'Internal server error' });
