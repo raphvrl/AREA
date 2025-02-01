@@ -10,6 +10,28 @@
 
 ---
 
+## 🤔 **Why MongoDB?**
+
+### 🌟 **Key Decision Factors**
+
+1. **NoSQL Benefits**
+   - Flexible schema allowing rapid data model evolution
+   - Perfect for storing unstructured data (JSON)
+   - Easy integration of new services without schema modification
+
+2. **MongoDB Atlas Advantages**
+   - Cloud-hosted database
+   - 24/7 accessibility for all team members
+   - Simplified management through MongoDB Compass
+   - Automatic backup and integrated security
+   - Automatic scaling based on needs
+
+3. **Team Collaboration**
+   - Unified access for all developers
+   - No local configuration needed
+   - Identical development environment for the whole team
+   - Facilitates continuous integration (CI/CD)
+
 ## 📖 **Detailed Documentation on MongoDB**
 
 ### 📌 **Overview**
