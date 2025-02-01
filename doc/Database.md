@@ -38,9 +38,7 @@ MongoDB is a **NoSQL database** that uses a **document-oriented data model**. It
 
 ---
 
-## 📊 Database Schema
-
-## 📊 Database Schema
+## 📊 **Database Schema**
 
 ```mermaid
 erDiagram
@@ -54,14 +52,21 @@ erDiagram
         String lastFirstName
         String password
         Map area
-        Array spotify_savedTracks
+        Object spotify
     }
+
     AREA {
         String action
         String reaction
         String is_on
     }
+
+    SPOTIFY {
+        Array savedTracks
+    }
+
     USER ||--o{ AREA : contains
+    USER ||--|| SPOTIFY : has
 
 ## 🛠️ **Database Operations**
 
