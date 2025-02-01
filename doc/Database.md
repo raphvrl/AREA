@@ -67,6 +67,7 @@ erDiagram
 
     USER ||--o{ AREA : contains
     USER ||--|| SPOTIFY : has
+```
 
 ## 🛠️ **Database Operations**
 
