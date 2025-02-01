@@ -38,6 +38,30 @@ MongoDB is a **NoSQL database** that uses a **document-oriented data model**. It
 
 ---
 
+## 📊 Database Schema
+
+```mermaid
+erDiagram
+    USER {
+        String firstName
+        String lastName
+        String email
+        Map apiKeys
+        Map idService
+        Map service
+        String lastFirstName
+        String password
+        Map area
+        Array spotify.savedTracks
+    }
+    AREA {
+        String action
+        String reaction
+        String is_on
+    }
+    USER ||--o{ AREA : contains
+```
+
 ## 🛠️ **Database Operations**
 
 ### 🔗 **Connecting to MongoDB**
