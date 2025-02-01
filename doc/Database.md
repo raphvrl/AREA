@@ -40,6 +40,8 @@ MongoDB is a **NoSQL database** that uses a **document-oriented data model**. It
 
 ## 📊 Database Schema
 
+## 📊 Database Schema
+
 ```mermaid
 erDiagram
     USER {
@@ -52,7 +54,7 @@ erDiagram
         String lastFirstName
         String password
         Map area
-        Array spotify.savedTracks
+        Array spotify_savedTracks
     }
     AREA {
         String action
@@ -60,7 +62,6 @@ erDiagram
         String is_on
     }
     USER ||--o{ AREA : contains
-```
 
 ## 🛠️ **Database Operations**
 
