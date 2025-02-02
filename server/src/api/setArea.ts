@@ -35,9 +35,7 @@ export const setArea = async (req: Request, res: Response) => {
       return res.status(400).json({
         message: `Service "${serviceAction}" is not connected for action.`,
       });
-    }
-
-    if (serviceReaction === 'telegram') {
+    } else if (serviceReaction === 'telegram') {
       if (!process.env.TELEGRAM_BOT_TOKEN || !process.env.TELEGRAM_CHAT_ID) {
         return res
           .status(400)

@@ -39,9 +39,14 @@ export const signUp = async (req: Request, res: Response) => {
   }
 };
 
-// Fonction login
 export const signIn = async (req: Request, res: Response) => {
   try {
+    // Vérifier les erreurs de validation
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() }); // Renvoyer les erreurs de validation
+    }
+
     const { email, password } = req.body;
 
     // Rechercher l'utilisateur par email
