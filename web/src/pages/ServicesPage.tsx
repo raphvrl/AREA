@@ -35,14 +35,6 @@ const ServicesPage: React.FC = () => {
       isConnected: false
     },
     {
-      id: 'linkedin',
-      name: 'LinkedIn',
-      description: t('services.linkedin.description'),
-      icon: SiLinkedin,
-      color: 'bg-blue-600',
-      isConnected: false
-    },
-    {
       id: 'dropbox',
       name: 'dropbox',
       description: t('services.dropbox.description'),
@@ -61,30 +53,40 @@ const ServicesPage: React.FC = () => {
 
   ]);
 
-  useEffect(() => {
-    fetchServicesStatus();
-  }, []);
+  const [connectedServices, setConnectedServices] = useState<string[]>([]);
 
   const fetchServicesStatus = async () => {
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/services/status`,
-        {
-          credentials: 'include',
-        }
-      );
-      const data = await response.json();
+      const token = localStorage.getItem('token');
+      const userEmail = localStorage.getItem('userEmail');
+      
+      const response = await fetch('http://localhost:8080/api/get_login_service', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ email: userEmail })
+      });
 
+      const data = await response.json();
+      
       setServices((prevServices) =>
         prevServices.map((service) => ({
           ...service,
-          isConnected: data[service.id] === true,
+          isConnected: data.activeServices.includes(service.id)
         }))
       );
+
     } catch (error) {
       console.error('Error fetching services status:', error);
     }
   };
+
+  // Call this when component mounts
+  useEffect(() => {
+    fetchServicesStatus();
+  }, []);
 
   const handleServiceConnection = async (serviceId: string) => {
     try {
@@ -130,71 +132,56 @@ const ServicesPage: React.FC = () => {
   };
 
   return (
-    <div
-      className={`min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 transition-colors duration-200 ${
-        isDarkMode ? 'bg-gray-900' : 'bg-gray-50'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
-        >
-          <h1
-            className={`text-4xl md:text-5xl font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
-          >
-            {t('services.title')}
-          </h1>
-          <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-            {t('services.subtitle')}
-          </p>
-        </motion.div>
+    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-100'} p-8`}>
+      <div className="max-w-7xl mx-auto pt-20">
+        {/* Proper heading hierarchy - starting with h1 */}
+        <h1 className={`text-3xl font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+          {t('services.title')}
+        </h1>
+        <p className={`mb-8 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+          {t('services.subtitle')}
+        </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {services.map((service) => (
             <motion.div
               key={service.id}
               whileHover={{ scale: 1.02 }}
-              className={`rounded-lg shadow-lg p-6 ${
-                isDarkMode
-                  ? 'bg-gray-800 hover:bg-gray-700'
-                  : 'bg-white hover:bg-gray-50'
-              } transition-colors duration-200 flex flex-col min-h-[250px]`} // Ajout de flex-col et min-h
+              className={`p-6 rounded-xl shadow-lg ${
+                isDarkMode ? 'bg-gray-800' : 'bg-white'
+              } transition-colors duration-200 flex flex-col min-h-[250px]`}
             >
-              {/* En-tête du service */}
-              <div className="flex-none"> {/* Contenu du haut avec taille fixe */}
+              <div className="flex-none">
                 <div className="flex items-center mb-4">
                   <div className={`p-3 ${service.color} rounded-full`}>
                     <service.icon className="w-6 h-6 text-white" aria-hidden="true" />
                   </div>
-                  <h3
-                    className={`ml-4 text-xl font-semibold ${
-                      isDarkMode ? 'text-white' : 'text-gray-900'
-                    }`}
-                  >
+                  {/* Changed from h3 to h2 for proper hierarchy */}
+                  <h2 className={`ml-4 text-xl font-semibold ${
+                    isDarkMode ? 'text-white' : 'text-gray-900'
+                  }`}>
                     {service.name}
-                  </h3>
+                  </h2>
                 </div>
 
-                <p
-                  className={`mb-6 ${
-                    isDarkMode ? 'text-gray-300' : 'text-gray-600'
-                  }`}
-                >
+                <p className={`mb-6 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                   {service.description}
                 </p>
               </div>
 
-              {/* Bouton en bas */}
-              <div className="flex-none mt-auto"> {/* Place le bouton en bas */}
+              <div className="flex-none mt-auto">
                 <button
                   onClick={() =>
                     service.isConnected
                       ? handleDisconnect(service.id)
                       : handleServiceConnection(service.id)
                   }
-                  className={`w-full px-4 py-2 rounded-md text-white ${service.color} transition-colors duration-200`}
+                  // Improved color contrast using a darker green that meets WCAG standards
+                  className={`w-full px-4 py-2 rounded-md text-white ${
+                    service.isConnected 
+                      ? 'bg-red-700 hover:bg-red-800' 
+                      : 'bg-green-700 hover:bg-green-800'
+                  } transition-colors duration-200`}
                   aria-label={`${service.isConnected ? 'Disconnect from' : 'Connect to'} ${service.name}`}
                 >
                   {service.isConnected

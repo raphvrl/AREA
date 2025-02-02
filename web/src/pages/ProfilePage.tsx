@@ -24,24 +24,37 @@ const ProfilePage: React.FC = () => {
           className={`${
             isDarkMode ? 'bg-gray-800' : 'bg-white'
           } rounded-2xl shadow-xl overflow-hidden`}
+          role="main"
+          aria-label={t('profile.title')}
         >
           {/* Cover Image */}
-          <div className="h-48 bg-gradient-to-r from-blue-500 to-purple-600 relative">
+          <div 
+            className="h-48 bg-gradient-to-r from-blue-500 to-purple-600 relative"
+            role="presentation"
+          >
             {/* Profile Picture */}
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: 'spring', stiffness: 100 }}
               className={`absolute -bottom-16 left-8 w-32 h-32 rounded-full border-4 ${
-                isDarkMode
-                  ? 'border-gray-800 bg-gray-700'
+                isDarkMode 
+                  ? 'border-gray-800 bg-gray-700' 
                   : 'border-white bg-gray-200'
               } flex items-center justify-center shadow-lg`}
+              aria-label={t('profile.avatar_description')}
+              role="img"
             >
               <span className="text-5xl font-bold text-gray-600">
                 {user?.firstName?.[0]?.toUpperCase()}
               </span>
             </motion.div>
+
+            <div className="p-4 rounded-lg bg-gray-900"> {/* Changed from bg-gray-700 for better contrast */}
+              <p className={`text-sm ${isDarkMode ? 'text-gray-200' : 'text-gray-100'}`}> {/* Changed from text-gray-400 for better contrast */}
+                {/* Text content */}
+              </p>
+            </div>
           </div>
 
           {/* Profile Info */}
@@ -59,21 +72,13 @@ const ProfilePage: React.FC = () => {
                   {t('profile.title')}
                 </p>
               </div>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="mt-4 md:mt-0 px-6 py-2 bg-blue-600 text-white rounded-lg
-                  hover:bg-blue-700 transition-colors duration-200"
-              >
-                {t('profile.edit_profile')}
-              </motion.button>
             </div>
 
             {/* Profile Details */}
             <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
               <div
                 className={`p-4 rounded-lg ${
-                  isDarkMode ? 'bg-gray-700' : 'bg-gray-50'
+                  isDarkMode ? 'bg-gray-900' : 'bg-gray-200'
                 }`}
               >
                 <div className="flex items-center space-x-3">
@@ -103,7 +108,7 @@ const ProfilePage: React.FC = () => {
 
               <div
                 className={`p-4 rounded-lg ${
-                  isDarkMode ? 'bg-gray-700' : 'bg-gray-50'
+                  isDarkMode ? 'bg-gray-900' : 'bg-gray-200'
                 }`}
               >
                 <div className="flex items-center space-x-3">
@@ -132,34 +137,6 @@ const ProfilePage: React.FC = () => {
               </div>
             </div>
 
-            {/* Connected Services Section */}
-            <div className="mt-8">
-              <h2
-                className={`text-xl font-semibold mb-4 ${
-                  isDarkMode ? 'text-white' : 'text-gray-900'
-                }`}
-              >
-                {t('profile.connected_services')}
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {['Discord', 'GitHub'].map((service) => (
-                  <motion.div
-                    key={service}
-                    whileHover={{ scale: 1.02 }}
-                    className={`p-4 rounded-lg ${
-                      isDarkMode ? 'bg-gray-700' : 'bg-gray-50'
-                    } flex items-center justify-between`}
-                  >
-                    <span
-                      className={isDarkMode ? 'text-white' : 'text-gray-900'}
-                    >
-                      {service}
-                    </span>
-                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
           </div>
         </motion.div>
       </div>
