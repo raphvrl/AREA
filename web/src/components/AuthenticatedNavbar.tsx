@@ -37,6 +37,16 @@ const AuthenticatedNavbar: React.FC = () => {
     }
   }, [login]);
 
+  // Navigation accessibility improvements
+  const navItems = [
+    { icon: IoHome, text: t('nav.home'), to: '/' },
+    { icon: IoApps, text: t('nav.services'), to: '/services' },
+    { icon: IoPersonCircle, text: t('nav.profile'), to: '/profile' },
+  ];
+
+  // Theme toggle button accessibility
+  const themeButtonLabel = isDarkMode ? 'Switch to light mode' : 'Switch to dark mode';
+
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -46,6 +56,8 @@ const AuthenticatedNavbar: React.FC = () => {
           ? 'bg-gray-900/95 backdrop-blur-md border-b border-gray-800'
           : 'bg-white/95 backdrop-blur-md border-b border-gray-200'
       } transition-all duration-200`}
+      role="navigation"
+      aria-label="Main navigation"
     >
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
@@ -70,54 +82,23 @@ const AuthenticatedNavbar: React.FC = () => {
           {/* Navigation Links and Controls */}
           <div className="flex items-center space-x-6">
             {/* Navigation Links */}
-            <Link to="/">
-              <motion.div
-                whileHover={{ scale: 1.1 }}
+            {navItems.map((item) => (
+              <Link 
+                key={item.to} 
+                to={item.to}
                 className={`flex items-center space-x-2 ${
                   isDarkMode
                     ? 'text-gray-300 hover:text-white'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
+                aria-label={item.text}
               >
-                <IoHome className="w-5 h-5" />
+                <item.icon className="w-5 h-5" aria-hidden="true" />
                 <span className="font-medium hidden md:block">
-                  {t('nav.home')}
+                  {item.text}
                 </span>
-              </motion.div>
-            </Link>
-
-            {/* Ajout du lien Services */}
-            <Link to="/services">
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                className={`flex items-center space-x-2 ${
-                  isDarkMode
-                    ? 'text-gray-300 hover:text-white'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <IoApps className="w-5 h-5" />
-                <span className="font-medium hidden md:block">
-                  {t('nav.services')}
-                </span>
-              </motion.div>
-            </Link>
-
-            <Link to="/profile">
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                className={`flex items-center space-x-2 ${
-                  isDarkMode
-                    ? 'text-gray-300 hover:text-white'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <IoPersonCircle className="w-5 h-5" />
-                <span className="font-medium hidden md:block">
-                  {t('nav.profile')}
-                </span>
-              </motion.div>
-            </Link>
+              </Link>
+            ))}
 
             {/* Language Selector */}
             <div className="relative">
@@ -129,8 +110,10 @@ const AuthenticatedNavbar: React.FC = () => {
                     ? 'text-gray-300 hover:text-white'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
+                aria-label={`Change language. Current language: ${language}`}
+                aria-expanded={isLangMenuOpen}
               >
-                <IoLanguage className="w-5 h-5" />
+                <IoLanguage className="w-5 h-5" aria-hidden="true" />
                 <span className="font-medium hidden md:block">
                   {language.toUpperCase()}
                 </span>
@@ -173,12 +156,13 @@ const AuthenticatedNavbar: React.FC = () => {
                 isDarkMode
                   ? 'bg-gray-800 text-yellow-400 hover:bg-gray-700'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
+              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500`}
+              aria-label={themeButtonLabel}
             >
               {isDarkMode ? (
-                <IoSunny className="w-5 h-5" />
+                <IoSunny className="w-5 h-5" aria-hidden="true" />
               ) : (
-                <IoMoon className="w-5 h-5" />
+                <IoMoon className="w-5 h-5" aria-hidden="true" />
               )}
             </motion.button>
 
@@ -189,12 +173,13 @@ const AuthenticatedNavbar: React.FC = () => {
               onClick={logout}
               className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${
                 isDarkMode
-                  ? 'bg-red-500 hover:bg-red-600'
-                  : 'bg-red-500 hover:bg-red-600'
-              } text-white`}
+                  ? 'bg-red-600 hover:bg-red-700 text-white' // Darker red in dark mode
+                  : 'bg-red-700 hover:bg-red-800 text-white' // Even darker red in light mode
+              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200`}
+              aria-label={t('nav.logout')}
             >
-              <IoLogOut className="w-5 h-5" />
-              <span className="font-medium hidden md:block">
+              <IoLogOut className="w-5 h-5" aria-hidden="true" />
+              <span className={`font-medium hidden md:block ${isDarkMode ? 'text-white' : 'text-white'}`}>
                 {t('nav.logout')}
               </span>
             </motion.button>

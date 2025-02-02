@@ -22,28 +22,31 @@ const Footer: React.FC = () => {
       className={`${
         isDarkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-600'
       } pt-12 pb-6 transition-colors duration-200`}
+      role="contentinfo"
+      aria-label="Site footer"
     >
       <div className="container mx-auto px-4">
-        {/* Footer Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          {/* Company Info */}
+        {/* Footer Grid - Ajuster les colonnes et l'espacement */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8"> {/* Changé de 4 à 3 colonnes */}
+          {/* Company Info - Ajuster la largeur */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">
               AREA
-            </h3>
-            <p className="text-sm">{t('footer.description')}</p>
+            </h2>
+            <p className="text-sm" role="text">{t('footer.description')}</p>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="font-semibold mb-4">{t('footer.quick_links')}</h4>
+          {/* Quick Links - Centré */}
+          <nav aria-label="Quick links" className="flex flex-col items-center">
+            <h2 className="font-semibold mb-4 text-lg">{t('footer.quick_links')}</h2>
             <ul className="space-y-2">
               <li>
                 <Link
                   to="/"
                   className="flex items-center space-x-2 hover:text-blue-500 transition-colors"
+                  aria-label={`${t('footer.home')} page`}
                 >
-                  <IoHome className="w-4 h-4" />
+                  <IoHome className="w-4 h-4" aria-hidden="true" />
                   <span>{t('footer.home')}</span>
                 </Link>
               </li>
@@ -52,37 +55,17 @@ const Footer: React.FC = () => {
                   to="/about"
                   className="flex items-center space-x-2 hover:text-blue-500 transition-colors"
                 >
-                  <IoInformationCircle className="w-4 h-4" />
+                  <IoInformationCircle className="w-4 h-4" aria-hidden="true" />
                   <span>{t('footer.about')}</span>
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/contact"
-                  className="flex items-center space-x-2 hover:text-blue-500 transition-colors"
-                >
-                  <IoCall className="w-4 h-4" />
-                  <span>{t('footer.contact')}</span>
-                </Link>
-              </li>
             </ul>
-          </div>
+          </nav>
 
-          {/* Contact Info */}
-          <div>
-            <h4 className="font-semibold mb-4">{t('footer.contact_us')}</h4>
-            <ul className="space-y-2">
-              <li className="flex items-center space-x-2">
-                <IoMail className="w-4 h-4" />
-                <span>contact@area.com</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Social Links */}
-          <div>
-            <h4 className="font-semibold mb-4">{t('footer.follow_us')}</h4>
-            <div className="flex space-x-4">
+          {/* Social Links - Aligné à droite */}
+          <div className="flex flex-col items-center">
+            <h2 className="font-semibold mb-4 text-lg">{t('footer.follow_us')}</h2>
+            <div className="flex space-x-4" aria-label="Social media links">
               <motion.a
                 href="https://github.com"
                 target="_blank"
@@ -90,8 +73,9 @@ const Footer: React.FC = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 className="p-2 rounded-full bg-gray-700 text-white hover:bg-gray-600 transition-colors"
+                aria-label="Visit our GitHub page"
               >
-                <IoLogoGithub className="w-5 h-5" />
+                <IoLogoGithub className="w-5 h-5" aria-hidden="true" />
               </motion.a>
               <motion.a
                 href="https://linkedin.com"
@@ -100,8 +84,9 @@ const Footer: React.FC = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 className="p-2 rounded-full bg-blue-600 text-white hover:bg-blue-500 transition-colors"
+                aria-label="Visit our LinkedIn page"
               >
-                <IoLogoLinkedin className="w-5 h-5" />
+                <IoLogoLinkedin className="w-5 h-5" aria-hidden="true" />
               </motion.a>
               <motion.a
                 href="https://twitter.com"
@@ -110,8 +95,9 @@ const Footer: React.FC = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 className="p-2 rounded-full bg-blue-400 text-white hover:bg-blue-300 transition-colors"
+                aria-label="Visit our Twitter page"
               >
-                <IoLogoTwitter className="w-5 h-5" />
+                <IoLogoTwitter className="w-5 h-5" aria-hidden="true" />
               </motion.a>
             </div>
           </div>

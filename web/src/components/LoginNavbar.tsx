@@ -3,11 +3,20 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from '../context/TranslationContext';
 import { motion } from 'framer-motion';
-import { IoLanguage, IoMoon, IoSunny } from 'react-icons/io5';
+import {
+  IoHome,
+  IoLanguage,
+  IoSunny,
+  IoMoon,
+} from 'react-icons/io5';
 
 const LoginNavbar: React.FC = () => {
   const { isDarkMode, toggleTheme } = useTheme();
-  const { language, setLanguage } = useTranslation();
+  const { language, setLanguage, t } = useTranslation();
+  const [isLangMenuOpen, setIsLangMenuOpen] = React.useState(false);
+
+  // Theme toggle button accessibility
+  const themeButtonLabel = isDarkMode ? 'Switch to light mode' : 'Switch to dark mode';
 
   return (
     <motion.nav
@@ -18,11 +27,13 @@ const LoginNavbar: React.FC = () => {
           ? 'bg-gray-900/95 backdrop-blur-md border-b border-gray-800'
           : 'bg-white/95 backdrop-blur-md border-b border-gray-200'
       } transition-all duration-200`}
+      role="navigation"
+      aria-label="Main navigation"
     >
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link to="/login">
+          <Link to="/">
             <motion.div
               whileHover={{ scale: 1.05 }}
               className="flex items-center space-x-2"
@@ -42,31 +53,50 @@ const LoginNavbar: React.FC = () => {
           {/* Controls */}
           <div className="flex items-center space-x-6">
             {/* Language Selector */}
-            <div className="relative group">
-              <div className="flex items-center space-x-2 cursor-pointer">
-                <IoLanguage
-                  className={`w-5 h-5 ${
-                    isDarkMode ? 'text-gray-400' : 'text-gray-600'
+            <div className="relative">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                className={`flex items-center space-x-2 ${
+                  isDarkMode
+                    ? 'text-gray-300 hover:text-white'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+                aria-label={`Change language. Current language: ${language}`}
+                aria-expanded={isLangMenuOpen}
+              >
+                <IoLanguage className="w-5 h-5" aria-hidden="true" />
+                <span className="font-medium hidden md:block">
+                  {language.toUpperCase()}
+                </span>
+              </motion.button>
+
+              {isLangMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`absolute right-0 mt-2 py-2 w-48 rounded-lg shadow-xl ${
+                    isDarkMode ? 'bg-gray-800' : 'bg-white'
                   }`}
-                />
-                <select
-                  value={language}
-                  onChange={(e) => setLanguage(e.target.value as 'fr' | 'en')}
-                  className={`appearance-none cursor-pointer font-medium ${
-                    isDarkMode
-                      ? 'bg-gray-900 text-gray-300'
-                      : 'bg-white text-gray-700'
-                  } focus:outline-none`}
                 >
-                  <option value="fr">Français</option>
-                  <option value="en">English</option>
-                  <option value="de">Deutsch</option>
-                  <option value="it">Italiano</option>
-                  <option value="es">Español</option>
-                  <option value="ja">日本語</option>
-                  <option value="zh">中文</option>
-                </select>
-              </div>
+                  {['fr', 'en', 'de', 'es', 'it', 'zh', 'ja'].map((lang) => (
+                    <button
+                      key={lang}
+                      onClick={() => {
+                        setLanguage(lang as any);
+                        setIsLangMenuOpen(false);
+                      }}
+                      className={`block w-full text-left px-4 py-2 text-sm ${
+                        isDarkMode
+                          ? 'text-gray-300 hover:bg-gray-700'
+                          : 'text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      {lang.toUpperCase()}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
             </div>
 
             {/* Theme Toggle */}
@@ -78,15 +108,13 @@ const LoginNavbar: React.FC = () => {
                 isDarkMode
                   ? 'bg-gray-800 text-yellow-400 hover:bg-gray-700'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              } transition-colors duration-200`}
-              aria-label={
-                isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'
-              }
+              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500`}
+              aria-label={themeButtonLabel}
             >
               {isDarkMode ? (
-                <IoSunny className="w-5 h-5" />
+                <IoSunny className="w-5 h-5" aria-hidden="true" />
               ) : (
-                <IoMoon className="w-5 h-5" />
+                <IoMoon className="w-5 h-5" aria-hidden="true" />
               )}
             </motion.button>
           </div>
