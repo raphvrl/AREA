@@ -65,6 +65,14 @@ router.post(
     body('reaction')
       .notEmpty()
       .withMessage('Reaction is required.'),
+    body('option_action')
+      .optional()
+      .isString()
+      .withMessage('Option action must be a string.'),
+    body('option_reaction')
+      .optional()
+      .isString()
+      .withMessage('Option reaction must be a string.'),
   ],
   setArea
 );

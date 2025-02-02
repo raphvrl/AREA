@@ -17,8 +17,18 @@ export const getArea = async (req: Request, res: Response) => {
     }
 
     const areaMap = user.area as
-      | Map<string, { action: string; reaction: string; is_on: string }>
+      | Map<
+          string,
+          {
+            action: string;
+            reaction: string;
+            is_on: string;
+            option_action?: string;
+            option_reaction?: string;
+          }
+        >
       | undefined;
+
     if (!areaMap) {
       return res.status(200).json({ areas: [] });
     }
