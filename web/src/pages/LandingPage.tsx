@@ -10,16 +10,39 @@ import {
   IoShieldCheckmark,
   IoLogoGithub,
   IoLogoDiscord,
+  IoLogoLinkedin,
 } from 'react-icons/io5';
 import { SiSpotify } from 'react-icons/si';
 
 const LandingPage: React.FC = () => {
   const { isDarkMode } = useTheme();
   const { t } = useTranslation();
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   return (
     <>
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:fixed focus:top-0 focus:left-0 focus:z-50 focus:p-4 focus:bg-blue-600 focus:text-white"
+        aria-label="Skip to main content"
+        tabIndex={0}
+      >
+        Skip to main
+      </a>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-0 focus:left-0 focus:z-50 focus:p-4 focus:bg-blue-600 focus:text-white"
+        aria-label="Skip to main content"
+        tabIndex={0}
+      >
+        Skip to main content
+      </a>
       <LoginNavbar />
+      <header role="banner">
+        <nav role="navigation" aria-label="Main navigation">
+          {/* Navigation content */}
+        </nav>
+      </header>
       <div
         className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}
       >
@@ -44,27 +67,31 @@ const LandingPage: React.FC = () => {
               >
                 {t('landing.hero.subtitle')}
               </p>
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Link to="/signup">
+              <div className="flex flex-col sm:flex-row justify-center gap-4" role="group" aria-label="Authentication options">
+                <Link to="/signup" aria-label={t('landing.hero.start_button')}>
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
+                    whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
                     className="w-full sm:w-auto px-8 py-3 bg-blue-600 text-white rounded-lg
                       font-semibold hover:bg-blue-700 transition-colors"
+                    aria-label={t('landing.hero.start_button')}
+                    role="button"
                   >
                     {t('landing.hero.start_button')}
                   </motion.button>
                 </Link>
-                <Link to="/login">
+                <Link to="/login" aria-label={t('landing.hero.login_button')}>
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
+                    whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
                     className={`w-full sm:w-auto px-8 py-3 rounded-lg font-semibold
                       ${
                         isDarkMode
                           ? 'bg-gray-800 text-white hover:bg-gray-700'
                           : 'bg-white text-gray-900 hover:bg-gray-100'
                       } transition-colors`}
+                    aria-label={t('landing.hero.login_button')}
+                    role="button"
                   >
                     {t('landing.hero.login_button')}
                   </motion.button>
@@ -86,13 +113,13 @@ const LandingPage: React.FC = () => {
               >
                 <div className="flex items-center mb-4">
                   <IoFlash className="w-8 h-8 text-blue-500" />
-                  <h3
+                  <h2 
                     className={`ml-3 text-xl font-semibold ${
                       isDarkMode ? 'text-white' : 'text-gray-900'
                     }`}
                   >
                     {t('landing.features.automation.title')}
-                  </h3>
+                  </h2>
                 </div>
                 <p
                   className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
@@ -204,6 +231,12 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
       </div>
+      <main id="main-content" role="main" tabIndex={-1}>
+        {/* Main content */}
+      </main>
+      <footer role="contentinfo">
+        {/* Footer content */}
+      </footer>
     </>
   );
 };

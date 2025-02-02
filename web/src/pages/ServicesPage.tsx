@@ -160,41 +160,48 @@ const ServicesPage: React.FC = () => {
                 isDarkMode
                   ? 'bg-gray-800 hover:bg-gray-700'
                   : 'bg-white hover:bg-gray-50'
-              } transition-colors duration-200`}
+              } transition-colors duration-200 flex flex-col min-h-[250px]`} // Ajout de flex-col et min-h
             >
-              <div className="flex items-center mb-4">
-                <div className={`p-3 ${service.color} rounded-full`}>
-                  <service.icon className="w-6 h-6 text-white" />
+              {/* En-tête du service */}
+              <div className="flex-none"> {/* Contenu du haut avec taille fixe */}
+                <div className="flex items-center mb-4">
+                  <div className={`p-3 ${service.color} rounded-full`}>
+                    <service.icon className="w-6 h-6 text-white" aria-hidden="true" />
+                  </div>
+                  <h3
+                    className={`ml-4 text-xl font-semibold ${
+                      isDarkMode ? 'text-white' : 'text-gray-900'
+                    }`}
+                  >
+                    {service.name}
+                  </h3>
                 </div>
-                <h3
-                  className={`ml-4 text-xl font-semibold ${
-                    isDarkMode ? 'text-white' : 'text-gray-900'
+
+                <p
+                  className={`mb-6 ${
+                    isDarkMode ? 'text-gray-300' : 'text-gray-600'
                   }`}
                 >
-                  {service.name}
-                </h3>
+                  {service.description}
+                </p>
               </div>
 
-              <p
-                className={`mb-6 ${
-                  isDarkMode ? 'text-gray-300' : 'text-gray-600'
-                }`}
-              >
-                {service.description}
-              </p>
-
-              <button
-                onClick={() =>
-                  service.isConnected
-                    ? handleDisconnect(service.id)
-                    : handleServiceConnection(service.id)
-                }
-                className={`px-4 py-2 rounded-md text-white ${service.color}`}
-              >
-                {service.isConnected
-                  ? t('services.disconnect')
-                  : t('services.connect')}
-              </button>
+              {/* Bouton en bas */}
+              <div className="flex-none mt-auto"> {/* Place le bouton en bas */}
+                <button
+                  onClick={() =>
+                    service.isConnected
+                      ? handleDisconnect(service.id)
+                      : handleServiceConnection(service.id)
+                  }
+                  className={`w-full px-4 py-2 rounded-md text-white ${service.color} transition-colors duration-200`}
+                  aria-label={`${service.isConnected ? 'Disconnect from' : 'Connect to'} ${service.name}`}
+                >
+                  {service.isConnected
+                    ? t('services.disconnect')
+                    : t('services.connect')}
+                </button>
+              </div>
             </motion.div>
           ))}
         </div>

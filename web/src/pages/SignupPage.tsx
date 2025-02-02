@@ -149,7 +149,9 @@ const SignupPage: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className={`max-w-md w-full mx-4 p-8 ${
-          isDarkMode ? 'bg-gray-800' : 'bg-white'
+          isDarkMode 
+            ? 'bg-gray-800 text-white' // Improved contrast for dark mode
+            : 'bg-white text-gray-900' // Maximum contrast for light mode
         } rounded-2xl shadow-2xl space-y-6`}
       >
         <div className="text-center">
@@ -263,9 +265,14 @@ const SignupPage: React.FC = () => {
             {t('signup.already_have_account')}{' '}
             <Link
               to="/login"
-              className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200"
+              className={`font-medium ${
+                isDarkMode
+                  ? 'text-blue-400 hover:text-blue-300' // Lighter blue for dark mode (better contrast)
+                  : 'text-blue-700 hover:text-blue-800' // Darker blue for light mode (better contrast)
+              } transition-colors duration-200`}
+              aria-label="Back to login page"
             >
-              sign Up
+              {t('signup.sign_in')}
             </Link>
           </p>
         </div>
