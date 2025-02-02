@@ -3,7 +3,14 @@ import userModel from '../db/userModel';
 
 export const setArea = async (req: Request, res: Response) => {
   try {
-    const { emailUser, nomArea, action, reaction } = req.body;
+    const {
+      emailUser,
+      nomArea,
+      action,
+      reaction,
+      option_action,
+      option_reaction,
+    } = req.body;
 
     if (!emailUser || !nomArea || !action || !reaction) {
       return res.status(400).json({
@@ -22,9 +29,20 @@ export const setArea = async (req: Request, res: Response) => {
     const serviceMap = user.service as Map<string, string>;
     const areaMap = user.area as Map<
       string,
-      { action: string; reaction: string; is_on: string }
+      {
+        action: string;
+        option_action?: string;
+        reaction: string;
+        option_reaction?: string;
+        is_on: string;
+      }
     >;
 
+    if (areaMap.has(nomArea)) {
+      return res.status(400).json({
+        message: `Area "${nomArea}" already exists. Please choose a different name.`,
+      });
+    }
     const serviceAction = action.split('_')[1];
     const serviceReaction = reaction.split('_')[1];
 
@@ -35,7 +53,9 @@ export const setArea = async (req: Request, res: Response) => {
       return res.status(400).json({
         message: `Service "${serviceAction}" is not connected for action.`,
       });
-    } else if (serviceReaction === 'telegram') {
+    }
+
+    if (serviceReaction === 'telegram') {
       if (!process.env.TELEGRAM_BOT_TOKEN || !process.env.TELEGRAM_CHAT_ID) {
         return res
           .status(400)
@@ -55,9 +75,12 @@ export const setArea = async (req: Request, res: Response) => {
         message: `Service "${serviceReaction}" is not connected for reaction.`,
       });
     }
+
     const newArea = {
       action,
+      option_action: option_action || '', // Garde une valeur par défaut si non fournie
       reaction,
+      option_reaction: option_reaction || '', // Garde une valeur par défaut si non fournie
       is_on: 'true',
     };
 
