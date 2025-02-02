@@ -1,9 +1,9 @@
 import User from './userModel';
 
 export const createUser = async (userData: {
-  firstName: string;
-  lastName: string;
-  email?: string;
+  firstName?: string;
+  lastName?: string;
+  email: string;
   apiKeys?: { [key: string]: string };
   idService?: { [key: string]: string };
   service?: { [key: string]: string };
