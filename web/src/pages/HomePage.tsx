@@ -18,6 +18,8 @@ const HomePage: React.FC = () => {
   const [selectedAction, setSelectedAction] = useState<Action | null>(null);
   const [selectedReaction, setSelectedReaction] = useState<Reaction | null>(null);
   const [areaName, setAreaName] = useState('');
+  const [actionOption, setActionOption] = useState('');
+  const [reactionOption, setReactionOption] = useState('');
 
   const { isAuthenticated, user } = useAuth();
   const { isDarkMode } = useTheme();
@@ -130,6 +132,8 @@ const HomePage: React.FC = () => {
             nomArea: areaName,
             action: `${selectedAction.type}_${selectedAction.service}`,
             reaction: `${selectedReaction.type}_${selectedReaction.service}`,
+            option_action: selectedAction.hasOptions ? actionOption : undefined,
+            option_reaction: selectedReaction.hasOptions ? reactionOption : undefined
           }),
         }
       );
@@ -138,6 +142,8 @@ const HomePage: React.FC = () => {
         await fetchAreas();
         setShowCreateModal(false);
         resetForm();
+        setActionOption('');
+        setReactionOption('');
       } else {
         const error = await response.json();
         alert(error.message);
@@ -286,6 +292,10 @@ const HomePage: React.FC = () => {
           availableActions={availableActions}
           availableReactions={availableReactions}
           isDarkMode={isDarkMode}
+          actionOption={actionOption}
+          setActionOption={setActionOption}
+          reactionOption={reactionOption}
+          setReactionOption={setReactionOption}
         />
       </div>
     </div>

@@ -69,12 +69,14 @@ export const availableReactions: Action[] = [
     id: 'sendMessage_telegram',
     service: 'telegram',
     type: 'sendMessage',
-    description: 'Send a message on Telegram',
+    description: 'Send a message via Telegram',
+    hasOptions: true // Supports option_reaction for custom message
   },
   {
     id: 'sendMessage_discord',
-    service: 'discord',
+    service: 'discord', 
     type: 'sendMessage',
-    description: 'Send a message on Discord',
+    description: 'Send a message via Discord',
+    hasOptions: true // Supports option_reaction for custom message
   }
 ];

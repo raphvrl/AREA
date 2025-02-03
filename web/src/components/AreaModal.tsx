@@ -13,6 +13,10 @@ interface AreaModalProps {
   setSelectedAction: (action: Action | null) => void;
   selectedReaction: Reaction | null;
   setSelectedReaction: (reaction: Reaction | null) => void;
+  actionOption: string;
+  setActionOption: (option: string) => void;
+  reactionOption: string;
+  setReactionOption: (option: string) => void;
   availableActions: Action[];
   availableReactions: Reaction[];
   isDarkMode: boolean;
@@ -28,6 +32,10 @@ export const AreaModal: React.FC<AreaModalProps> = ({
   setSelectedAction,
   selectedReaction,
   setSelectedReaction,
+  actionOption,
+  setActionOption,
+  reactionOption,
+  setReactionOption,
   availableActions,
   availableReactions,
   isDarkMode
@@ -137,6 +145,23 @@ export const AreaModal: React.FC<AreaModalProps> = ({
             )}
           </div>
 
+          {/* Action Option Input */}
+          {selectedAction?.hasOptions && (
+            <div className="space-y-2">
+              <input
+                type="text"
+                placeholder="Enter action option..."
+                value={actionOption}
+                onChange={(e) => setActionOption(e.target.value)}
+                className={`w-full px-4 py-3 rounded-xl border ${
+                  isDarkMode 
+                    ? 'bg-gray-700 border-gray-600 text-white' 
+                    : 'bg-gray-50 border-gray-200'
+                } focus:ring-2 focus:ring-blue-500 transition-all duration-200`}
+              />
+            </div>
+          )}
+
           {/* Reactions Selection */}
           <div className="space-y-2">
             <motion.button
@@ -190,6 +215,23 @@ export const AreaModal: React.FC<AreaModalProps> = ({
               </motion.div>
             )}
           </div>
+
+          {/* Reaction Option Input */}
+          {selectedReaction?.hasOptions && (
+            <div className="space-y-2">
+              <input
+                type="text"
+                placeholder="Enter reaction option..."
+                value={reactionOption}
+                onChange={(e) => setReactionOption(e.target.value)}
+                className={`w-full px-4 py-3 rounded-xl border ${
+                  isDarkMode 
+                    ? 'bg-gray-700 border-gray-600 text-white' 
+                    : 'bg-gray-50 border-gray-200'
+                } focus:ring-2 focus:ring-blue-500 transition-all duration-200`}
+              />
+            </div>
+          )}
 
           {/* Submit Button */}
           <motion.button

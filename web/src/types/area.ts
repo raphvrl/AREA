@@ -3,6 +3,7 @@ export interface Action {
   service: string;
   type: string;
   description: string;
+  hasOptions?: boolean; // Add this optional property
   config?: any;
 }
 
@@ -11,6 +12,7 @@ export interface Reaction {
   service: string;
   type: string;
   description: string;
+  hasOptions?: boolean; // Add this optional property like in Action interface
   config?: any;
 }
 
