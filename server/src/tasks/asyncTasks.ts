@@ -9,10 +9,16 @@ export const executeAreas = async () => {
     const promises = users.map(async user => {
       const areaPromises = [];
 
-      // S'assurer que `user.area` est un `Map<string, { action: string; reaction: string; is_on: string }>`
+      // S'assurer que `user.area` est un `Map<string, { action: string; reaction: string; is_on: string; option_action?: string; option_reaction?: string }>`
       const areas = user.area as Map<
         string,
-        { action: string; reaction: string; is_on: string }
+        {
+          action: string;
+          reaction: string;
+          is_on: string;
+          option_action?: string;
+          option_reaction?: string;
+        }
       >;
 
       // Parcourir chaque "area" de l'utilisateur
@@ -25,18 +31,27 @@ export const executeAreas = async () => {
           const actionFunction = areaHandlers[area.action];
           const reactionFunction = areaHandlers[area.reaction];
 
+          // Récupération des options si elles existent, sinon utiliser une chaîne vide
+          const optionAction = area.option_action || '';
+          const optionReaction = area.option_reaction || '';
+
           if (actionFunction && reactionFunction) {
             // Ajouter une promesse pour chaque action-réaction
             areaPromises.push(
               (async () => {
                 try {
-                  // Exécuter l'action
                   console.log(user.email);
-                  const actionResult = await actionFunction(user.email);
+                  // Exécuter l'action avec l'option correspondante
+                  const actionResult = await actionFunction(
+                    user.email as string,
+                    optionAction
+                  );
                   if (actionResult != null) {
+                    // Exécuter la réaction avec le résultat de l'action et l'option de la réaction
                     const reactionResult = await reactionFunction(
-                      user.email,
-                      actionResult
+                      user.email as string,
+                      actionResult,
+                      optionReaction
                     );
                     console.log(
                       `Action "${area.action}" completed with result:`,

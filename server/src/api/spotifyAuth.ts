@@ -50,10 +50,10 @@ export const authSpotify = (req: Request, res: Response) => {
 };
 
 export const authSpotifyCallback = async (req: Request, res: Response) => {
-  const { code, email } = req.body;
+  const { code, email, isLogin } = req.body;
 
-  if (!code || !email) {
-    return res.status(400).json({ message: 'Code and state are required' });
+  if (!code) {
+    return res.status(400).json({ message: 'Code is required' });
   }
 
   try {
@@ -65,27 +65,73 @@ export const authSpotifyCallback = async (req: Request, res: Response) => {
     const userProfile = await spotifyApi.getMe();
     const spotifyUserId = userProfile.body.id;
 
-    console.log(email);
-    console.log(access_token);
-    console.log(spotifyUserId);
+    console.log('Spotify ID:', spotifyUserId);
+    console.log('Access Token:', access_token);
 
-    const user = await UserModel.findOne({ email });
-    if (user) {
-      const apiKeysMap = user.apiKeys as Map<string, string>;
-      const serviceMap = user.service as Map<string, string>;
-      const idServiceMap = user.idService as Map<string, string>;
+    if (email) {
+      console.log('User email:', email);
+      const user = await UserModel.findOne({ email });
 
-      apiKeysMap.set('spotify', access_token);
-      serviceMap.set('spotify', 'true');
-      idServiceMap.set('spotify', spotifyUserId);
+      if (user) {
+        const apiKeysMap = user.apiKeys as Map<string, string>;
+        const serviceMap = user.service as Map<string, string>;
+        const idServiceMap = user.idService as Map<string, string>;
 
-      await user.save();
+        apiKeysMap.set('spotify', access_token);
+        serviceMap.set('spotify', 'true');
+        idServiceMap.set('spotify', spotifyUserId);
+
+        await user.save();
+        return res.status(200).json({
+          message: 'Login successful',
+          user: {
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+          },
+        });
+      } else {
+        return res
+          .status(404)
+          .json({ message: 'No user found with this Spotify ID' });
+      }
     }
 
-    // Renvoyer les données au frontend au lieu de rediriger
-    res.status(200).json({ message: 'OK' });
+    if (isLogin) {
+      console.log('Checking login with Spotify ID:', spotifyUserId);
+      const user = await UserModel.findOne({
+        [`idService.spotify`]: spotifyUserId,
+      });
+
+      if (user) {
+        console.log(
+          'firstName',
+          user.firstName,
+          'lastName',
+          user.lastName,
+          'email',
+          user.email
+        );
+        return res.status(200).json({
+          message: 'User found',
+          user: {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+          },
+        });
+      } else {
+        return res
+          .status(404)
+          .json({ message: 'No user found with this Spotify ID' });
+      }
+    }
+
+    return res.status(400).json({
+      message: 'Invalid parameters. Provide either email or isLogin.',
+    });
   } catch (error) {
-    console.error(error);
+    console.error('Error in authSpotifyCallback:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
