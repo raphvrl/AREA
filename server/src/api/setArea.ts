@@ -67,6 +67,12 @@ export const setArea = async (req: Request, res: Response) => {
           .status(400)
           .json({ message: 'Discord webhook URL is missing' });
       }
+    } else if (serviceReaction === 'teams') {
+      if (!process.env.DISCORD_WEBHOOK_URL) {
+        return res
+          .status(400)
+          .json({ message: 'Teams webhook URL is missing' });
+      }
     } else if (
       !serviceMap.get(serviceReaction) ||
       serviceMap.get(serviceReaction) !== 'true'

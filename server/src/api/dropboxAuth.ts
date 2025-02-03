@@ -50,12 +50,13 @@ export const authDropboxCallback = async (req: Request, res: Response) => {
     try {
         console.log('email:', email);
         const user = await userModel.findOne({ email });
-        if (!user || !user.redirectUriLinkedin) {
-          return res
-            .status(400)
-            .json({ message: 'Redirect URI not found for this user' });
+        if (!user || !user.redirectUriDropbox) {
+            return res
+                .status(400)
+                .json({ message: 'Redirect URI not found for this user' });
         }
         const redirectUri = user.redirectUriDropbox as string;
+
         const tokenResponse = await axios.post('https://api.dropbox.com/oauth2/token', 
             new URLSearchParams({
                 code: code.toString(),
@@ -78,25 +79,17 @@ export const authDropboxCallback = async (req: Request, res: Response) => {
             apiKeysMap.set('dropbox', access_token);
             serviceMap.set('dropbox', 'true');
             await user.save();
+            console.log('✅ Token Dropbox sauvegardé pour:', email);
         }
 
         res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.setHeader('Pragma', 'no-cache');
         res.setHeader('Expires', '0');
-    
-        // Renvoyer une réponse JSON et terminer la requête
-        res.status(200).json({ message: 'OK'});
-        return; // Assurez-vous de terminer la fonction ici
-      } catch (error) {
-        console.error('Error in LinkedIn callback:', error);
-    
-        // Définir les en-têtes de cache pour éviter la mise en cache
-        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-        res.setHeader('Pragma', 'no-cache');
-        res.setHeader('Expires', '0');
-    
-        // Renvoyer une réponse d'erreur
+        
+        res.status(200).json({ message: 'OK' });
+
+    } catch (error) {
+        console.error('Error in Dropbox callback:', error);
         res.status(500).json({ message: 'Internal server error' });
-        return; // Assurez-vous de terminer la fonction ici
-      }
-    };
+    }
+};

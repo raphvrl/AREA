@@ -13,6 +13,8 @@ import { authGithub, authGithubCallback } from './api/githubAuth';
 import { authLinkedin, authLinkedinCallback } from './api/linkedinAuth';
 import { authDropbox, authDropboxCallback } from './api/dropboxAuth';
 import { authNotion, authNotionCallback } from './api/notionAuth';
+import { authTwitch, authTwitchCallback } from './api/twitchAuth';
+
 const router = Router();
 
 // Route pour signUp
@@ -137,4 +139,6 @@ router.get('/auth/dropbox', authDropbox);
 router.post('/auth/dropbox/callback', authDropboxCallback);
 router.get('/auth/notion', authNotion);
 router.post('/auth/notion/callback', authNotionCallback);
+router.get('/auth/twitch', authTwitch);
+router.post('/auth/twitch/callback', authTwitchCallback);
 export default router;

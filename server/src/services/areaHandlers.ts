@@ -11,7 +11,11 @@ import { trackLiked_spotify } from './action/trackLiked_spotify';
 import { repoStarred_github } from './action/repoStarred_github';
 import { followerAdded_github } from './action/followerAdded_github';
 import { pageCreated_notion } from './action/pageCreated_notion';
-import { createLinkedInPost } from './reaction/createLinkedInPost';
+import {sendMessageTeams} from './reaction/teamsReaction';
+import {twitchFollowChange} from './action/twitchFollowChange';
+import {sendGifDiscord} from './reaction/giphyReaction';
+import {createFolder_dropbox} from './reaction/dropboxCreateReaction';
+import {createPlaylist_spotify} from './reaction/spotifyReaction';
 
 type Handler = (email: string, option?: string, data?: any) => Promise<any>;
 
@@ -43,14 +47,6 @@ const areaHandlers: { [key: string]: Handler } = {
     option?: string
   ) => {
     const result = await sendMessageTelegram(email, actionResult);
-    return result;
-  },
-  creatPost_linkedin: async (
-    email: string,
-    actionResult?: any,
-    option?: string
-  ) => {
-    const result = await createLinkedInPost(email, actionResult);
     return result;
   },
   sendMessage_discord: async (
@@ -93,6 +89,27 @@ const areaHandlers: { [key: string]: Handler } = {
     const result = await pageCreated_notion(email);
     return result;
   },
+  sendMessage_teams: async (email: String, actionResult?: any) => {
+    const result = await sendMessageTeams(email, actionResult);
+    return result;
+  },
+  createFolder_dropbox: async (email: string, actionResult?: any) => {
+    const result = await createFolder_dropbox(email, actionResult);
+    return result;
+  },
+  sendGif_discord: async (email: string, actionResult?: any) => {
+    const result = await sendGifDiscord(email, actionResult);
+    return result;
+  },
+  createPlaylist_spotify: async (email: string, actionResult?: any) => {
+    const result = await createPlaylist_spotify(email, actionResult);
+    return result;
+  },
+  followlist_twitch: async (email: string) => {
+    const result = await twitchFollowChange(email);
+    return result;
+  }
+  
 };
 
 export default areaHandlers;

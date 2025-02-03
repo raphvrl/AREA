@@ -12,6 +12,7 @@ const userSchema: Schema = new Schema({
   redirectUriLinkedin: { type: String, default: '' },
   redirectUriDropbox: { type: String, default: '' },
   redirectUriNotion: { type: String, default: '' },
+  redirectUriTwitch: { type: String, default: '' },
   area: {
     type: Map,
     of: new Schema({
