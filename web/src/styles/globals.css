@@ -1,0 +1,257 @@
+/* Import OpenDyslexic font */
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('/fonts/OpenDyslexic-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  /* Base accessibility variables */
+  --min-touch-target: 44px;
+  --focus-outline: 3px solid #2196f3;
+  --base-font-size: 1rem;
+  --heading-font-size: 1.25rem;
+  --text-contrast: 4.5: 1;
+  --spacing: 1rem;
+  --letter-spacing: normal;
+  --line-height: 1.5;
+  --text-spacing: 1rem;
+
+  /* WCAG AAA contrast ratios */
+  --contrast-ratio-normal: 7: 1;
+  --contrast-ratio-large: 4.5: 1;
+
+  /* Focus indicators */
+  --focus-outline-width: 3px;
+  --focus-outline-color: #2196f3;
+  --focus-outline-style: solid;
+
+  /* Touch targets */
+  --min-touch-target: 44px;
+
+  /* Typography */
+  --min-text-size: 18px;
+  --line-height: 1.5;
+  --letter-spacing: 0.12em;
+  --word-spacing: 0.16em;
+
+  /* Color schemes */
+  --color-text-normal: #000000;
+  --color-bg-normal: #ffffff;
+  --color-text-dark: #ffffff;
+  --color-bg-dark: #121212;
+}
+
+/* High contrast mode */
+.high-contrast-mode {
+  --text-primary: #ffffff;
+  --text-secondary: #ffeb3b;
+  --bg-primary: #000000;
+  --bg-secondary: #1a1a1a;
+
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.high-contrast-mode a {
+  color: var(--text-secondary);
+}
+
+/* Simplified UI mode */
+.simplified-ui {
+  --ui-complexity: simple;
+}
+
+.simplified-ui .decorative,
+.simplified-ui .optional {
+  display: none !important;
+}
+
+/* Base accessibility improvements */
+* {
+  line-height: var(--line-height);
+  letter-spacing: var(--letter-spacing);
+}
+
+/* Ensure sufficient touch targets */
+button,
+a,
+input,
+select {
+  min-height: var(--min-touch-target);
+  min-width: var(--min-touch-target);
+}
+
+/* Focus indicators */
+:focus {
+  outline: var(--focus-outline);
+  outline-offset: 2px;
+}
+
+/* Reduce motion when requested */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.reduced-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* High contrast mode */
+.high-contrast {
+  --color-text: #ffffff;
+  --color-bg: #000000;
+  --color-links: #ffeb3b;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+/* Maximum contrast mode */
+.maximum-contrast {
+  --color-text: #ffffff;
+  --color-bg: #000000;
+  --color-links: #ffff00;
+  filter: contrast(200%);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.reduced-motion * {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* Text spacing for better readability */
+.improved-readability {
+  line-height: var(--line-height);
+  letter-spacing: var(--letter-spacing);
+  word-spacing: var(--word-spacing);
+}
+
+/* Focus indicators */
+*:focus {
+  outline: var(--focus-outline-width) var(--focus-outline-style)
+    var(--focus-outline-color);
+  outline-offset: 4px;
+}
+
+/* Ensure sufficient touch targets */
+button,
+a,
+input[type='button'],
+input[type='submit'],
+input[type='reset'] {
+  min-height: var(--min-touch-target);
+  min-width: var (--min-touch-target);
+  padding: 12px;
+}
+
+/* Text resizing without breaking layout */
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Dyslexic-friendly text */
+.dyslexic-font {
+  font-family: 'OpenDyslexic', sans-serif !important;
+  line-height: 1.8;
+  letter-spacing: 0.35em;
+  word-spacing: 1em;
+}
+
+/* Color blind friendly mode */
+.color-blind-friendly {
+  filter: saturate(0) brightness(1.2);
+}
+
+/* Skip navigation link */
+.skip-nav {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-focus);
+  color: white;
+  padding: 8px;
+  z-index: 100;
+}
+
+.skip-nav:focus {
+  top: 0;
+}
+
+/* Enhanced keyboard navigation */
+:focus-visible {
+  outline: 3px solid var(--focus-outline-color);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.4);
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Reading guide */
+.reading-guide {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(33, 150, 243, 0.2);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Add to your existing globals.css */
+.accessibility-menu-enter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.accessibility-menu-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    opacity 200ms ease-in-out,
+    transform 200ms ease-in-out;
+}
+
+.accessibility-menu-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.accessibility-menu-exit-active {
+  opacity: 0;
+  transform: scale(0.95);
+  transition:
+    opacity 200ms ease-in-out,
+    transform 200ms ease-in-out;
+}

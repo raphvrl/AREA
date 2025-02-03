@@ -1,0 +1,36 @@
+services:
+  server:
+    build:
+      context: ./server
+    volumes:
+      - shared_volume:/apk
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./server/.env
+    command: ["npm", "start"]
+
+  client_mobile:
+    build:
+      context: ./mobile
+    volumes:
+      - shared_volume:/apk
+    depends_on:
+      - server
+
+  client_web:
+    build:
+      context: ./web
+    ports:
+      - "8081:8081"
+    volumes:
+      - shared_volume:/apk
+    depends_on:
+      - server
+      - client_mobile
+    env_file:
+      - ./web/.env
+    command: ["npm", "start"]
+
+volumes:
+  shared_volume:
