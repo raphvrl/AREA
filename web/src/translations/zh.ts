@@ -128,6 +128,7 @@ export const zhTranslations = {
   'services.linkedin.description': '管理您的职业网络和人脉',
   'services.dropbox.description': '管理您的服务器和频道',
   'services.notion.description': 'Manage your notes and documents with Notion',
+  'services.twitch.description': '管理您的频道和直播',
   'services.connect': '连接',
   'services.disconnect': '断开连接'
 };

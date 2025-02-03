@@ -118,5 +118,6 @@ export type TranslationKey =
   | 'services.linkedin.description'
   | 'services.dropbox.description'
   | 'services.notion.description'
+  | 'services.twitch.description'
   | 'services.connect'
   | 'services.disconnect';

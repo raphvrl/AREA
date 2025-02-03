@@ -3,7 +3,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from '../context/TranslationContext';
 import { motion } from 'framer-motion';
 import { IoLogoGithub, IoLogoDiscord, IoLogoDropbox } from 'react-icons/io5';
-import { SiSpotify, SiLinkedin, SiNotion } from 'react-icons/si';
+import { SiSpotify, SiNotion, SiTwitch } from 'react-icons/si';
 
 interface ServiceState {
   id: string;
@@ -50,7 +50,14 @@ const ServicesPage: React.FC = () => {
       color: 'bg-blue-600',
       isConnected: false
     },
-
+    {
+      id: 'twitch',
+      name: 'Twitch',
+      description: t('services.twitch.description'),
+      icon: SiTwitch,
+      color: 'bg-blue-600',
+      isConnected: false
+    },
   ]);
 
   const [connectedServices, setConnectedServices] = useState<string[]>([]);

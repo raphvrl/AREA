@@ -69,7 +69,8 @@ const oauthServices: OAuthService[] = [
     bgColor: 'bg-purple-600', 
     hoverColor: 'hover:bg-purple-700',
     path: '/api/auth/twitch'
-  }
+  },
+
 ];
 
 const LoginPage: React.FC = () => {
