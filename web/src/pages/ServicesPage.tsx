@@ -142,21 +142,35 @@ const ServicesPage: React.FC = () => {
           {t('services.subtitle')}
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service) => (
             <motion.div
               key={service.id}
               whileHover={{ scale: 1.02 }}
-              className={`p-6 rounded-xl shadow-lg ${
+              className={`relative p-6 rounded-lg shadow-lg ${
                 isDarkMode ? 'bg-gray-800' : 'bg-white'
-              } transition-colors duration-200 flex flex-col min-h-[250px]`}
+              }`}
             >
-              <div className="flex-none">
+              {/* Add status LED */}
+              <div
+                role="status"
+                aria-live="polite"
+                className={`absolute top-4 right-4 w-3 h-3 rounded-full 
+                  ${service.isConnected 
+                    ? 'bg-green-500 shadow-green-500/50' 
+                    : 'bg-red-500 shadow-red-500/50'} 
+                  shadow-lg transition-colors duration-300`}
+              >
+                <span className="sr-only">
+                  {service.name} is {service.isConnected ? 'connected' : 'disconnected'}
+                </span>
+              </div>
+
+              <div className="flex flex-col h-full">
                 <div className="flex items-center mb-4">
-                  <div className={`p-3 ${service.color} rounded-full`}>
+                  <div className={`p-3 rounded-lg ${service.color}`}>
                     <service.icon className="w-6 h-6 text-white" aria-hidden="true" />
                   </div>
-                  {/* Changed from h3 to h2 for proper hierarchy */}
                   <h2 className={`ml-4 text-xl font-semibold ${
                     isDarkMode ? 'text-white' : 'text-gray-900'
                   }`}>
@@ -167,27 +181,19 @@ const ServicesPage: React.FC = () => {
                 <p className={`mb-6 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                   {service.description}
                 </p>
-              </div>
 
-              <div className="flex-none mt-auto">
-                <button
-                  onClick={() =>
-                    service.isConnected
-                      ? handleDisconnect(service.id)
-                      : handleServiceConnection(service.id)
-                  }
-                  // Improved color contrast using a darker green that meets WCAG standards
-                  className={`w-full px-4 py-2 rounded-md text-white ${
-                    service.isConnected 
-                      ? 'bg-red-700 hover:bg-red-800' 
-                      : 'bg-green-700 hover:bg-green-800'
-                  } transition-colors duration-200`}
-                  aria-label={`${service.isConnected ? 'Disconnect from' : 'Connect to'} ${service.name}`}
-                >
-                  {service.isConnected
-                    ? t('services.disconnect')
-                    : t('services.connect')}
-                </button>
+                {/* Connect button only shown when disconnected */}
+                {!service.isConnected && (
+                  <button
+                    onClick={() => handleServiceConnection(service.id)}
+                    className={`w-full px-4 py-2 rounded-md text-white 
+                      bg-green-700 hover:bg-green-800 
+                      transition-colors duration-200`}
+                    aria-label={`Connect to ${service.name}`}
+                  >
+                    {t('services.connect')}
+                  </button>
+                )}
               </div>
             </motion.div>
           ))}

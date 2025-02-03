@@ -178,15 +178,15 @@ const SignupPage: React.FC = () => {
           <div>
             <input
               type="text"
-              name="firstName"
+              name="firstName" 
               placeholder={t('signup.firstname')}
               value={formData.firstName}
               onChange={handleInputChange}
               className={`w-full px-4 py-3 rounded-lg border ${
-                errors.find((e) => e.field === 'firstName')
-                  ? 'border-red-500'
-                  : ''
-              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                errors.find((e) => e.field === 'firstName') ? 'border-red-500' : ''
+              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
+                isDarkMode ? 'bg-gray-700 text-white placeholder-gray-400' : 'text-gray-900 placeholder-gray-500'
+              }`}
             />
             <ErrorMessage error={errors.find((e) => e.field === 'firstName')} />
           </div>
@@ -198,10 +198,10 @@ const SignupPage: React.FC = () => {
               value={formData.lastName}
               onChange={handleInputChange}
               className={`w-full px-4 py-3 rounded-lg border ${
-                errors.find((e) => e.field === 'lastName')
-                  ? 'border-red-500'
-                  : ''
-              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                errors.find((e) => e.field === 'firstName') ? 'border-red-500' : ''
+              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
+                isDarkMode ? 'bg-gray-700 text-white placeholder-gray-400' : 'text-gray-900 placeholder-gray-500'
+              }`}
             />
             <ErrorMessage error={errors.find((e) => e.field === 'lastName')} />
           </div>
@@ -213,8 +213,10 @@ const SignupPage: React.FC = () => {
               value={formData.email}
               onChange={handleInputChange}
               className={`w-full px-4 py-3 rounded-lg border ${
-                errors.find((e) => e.field === 'email') ? 'border-red-500' : ''
-              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                errors.find((e) => e.field === 'firstName') ? 'border-red-500' : ''
+              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
+                isDarkMode ? 'bg-gray-700 text-white placeholder-gray-400' : 'text-gray-900 placeholder-gray-500'
+              }`} 
             />
             <ErrorMessage error={errors.find((e) => e.field === 'email')} />
           </div>
@@ -226,10 +228,10 @@ const SignupPage: React.FC = () => {
               value={formData.password}
               onChange={handleInputChange}
               className={`w-full px-4 py-3 rounded-lg border ${
-                errors.find((e) => e.field === 'password')
-                  ? 'border-red-500'
-                  : ''
-              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                errors.find((e) => e.field === 'firstName') ? 'border-red-500' : ''
+              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
+                isDarkMode ? 'bg-gray-700 text-white placeholder-gray-400' : 'text-gray-900 placeholder-gray-500'
+              }`}
             />
             <ErrorMessage error={errors.find((e) => e.field === 'password')} />
           </div>
@@ -241,10 +243,10 @@ const SignupPage: React.FC = () => {
               value={formData.confirmPassword}
               onChange={handleInputChange}
               className={`w-full px-4 py-3 rounded-lg border ${
-                errors.find((e) => e.field === 'confirmPassword')
-                  ? 'border-red-500'
-                  : ''
-              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                errors.find((e) => e.field === 'firstName') ? 'border-red-500' : ''
+              } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
+                isDarkMode ? 'bg-gray-700 text-white placeholder-gray-400' : 'text-gray-900 placeholder-gray-500'
+              }`}
             />
             <ErrorMessage
               error={errors.find((e) => e.field === 'confirmPassword')}
