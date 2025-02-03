@@ -20,6 +20,43 @@ When selecting a database, it's crucial to consider various factors such as scal
 
 This comparative study helps us determine which database aligns best with our project needs, balancing performance, cost, and development efficiency.
 
+## 🤔 **Why Not PostgreSQL?**
+
+### ❌ **Key Limiting Factors**
+
+1. **SQL Constraints**
+   - Rigid schema complicates rapid prototyping
+   - Complex migrations for schema changes
+   - Overhead for simple document-style data
+
+2. **Hosting Complexity**
+   - More complex setup and maintenance
+   - Manual scaling configuration required
+   - Higher infrastructure management overhead
+
+3. **Team Collaboration**
+   - Local setup required for each developer
+   - More complex backup and restore procedures
+   - Steeper learning curve for team members
+
+## 🤔 **Why Not Firebase Firestore?**
+
+### ❌ **Key Limiting Factors**
+
+1. **Platform Limitations**
+   - Vendor lock-in with Google ecosystem
+   - Limited query capabilities
+   - Restricted data modeling options
+
+2. **Cost Structure**
+   - Pay-per-operation model can be expensive
+   - Higher costs for read-heavy applications
+   - Limited free tier capabilities
+
+3. **Development Constraints**
+   - Restricted batch operations
+   - Complex migration from other databases
+
 ## 🤔 **Why MongoDB?**
 
 ### 🌟 **Key Decision Factors**
