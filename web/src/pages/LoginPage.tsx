@@ -70,8 +70,11 @@ const LoginPage: React.FC = () => {
       );
 
       if (response.data.user) {
-        // Store email in localStorage before login
+        // Store user data in localStorage
         localStorage.setItem('userEmail', formData.email);
+        localStorage.setItem('userData', JSON.stringify(response.data.user));
+        localStorage.setItem('isAuthenticated', 'true');
+        
         login(response.data.user);
         navigate('/');
       }
@@ -119,7 +122,7 @@ const LoginPage: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className={`max-w-md w-full mx-4 p-8 ${
-          isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'
+          isDarkMode ? 'bg-gray-800' : 'bg-white'
         } rounded-2xl shadow-2xl space-y-6`}
       >
         <div className="text-center">
@@ -167,7 +170,7 @@ const LoginPage: React.FC = () => {
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transform transition-all duration-200 hover:scale-[1.02]"
           >
-            {t('login.title')}
+            login
           </button>
         </form>
 
@@ -178,12 +181,7 @@ const LoginPage: React.FC = () => {
             {t('login.no_account')}{' '}
             <Link
               to="/signup"
-              className={`font-medium ${
-                isDarkMode
-                  ? 'text-blue-400 hover:text-blue-300'
-                  : 'text-blue-700 hover:text-blue-800'
-              } transition-colors duration-200`}
-              aria-label="Sign up for an account"
+              className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200"
             >
               {t('login.create_account')}
             </Link>

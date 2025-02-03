@@ -307,15 +307,6 @@ export const AccessibilityFab: React.FC = () => {
             </button>
 
             <button
-              onClick={toggleSimplifiedUI}
-              className="flex items-center space-x-2 w-full p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              aria-label="Toggle simplified interface"
-            >
-              <IoColorPaletteOutline className="w-5 h-5" />
-              <span>Simplified UI: {settings.simplifiedUI ? 'On' : 'Off'}</span>
-            </button>
-
-            <button
               onClick={toggleDyslexicFont}
               className="flex items-center space-x-2 w-full p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               aria-label="Toggle dyslexic friendly font"
