@@ -60,6 +60,12 @@ export const availableActions: Action[] = [
     service: 'notion',
     type: 'pageCreated',
     description: 'When you a new page is created in notion'
+  },
+  {
+    id: 'twitchFollowChange',
+    service: 'twitch',
+    type: 'followlist',
+    description: 'When your follow list changes on Twitch'
   }
 
 ];
@@ -78,5 +84,33 @@ export const availableReactions: Action[] = [
     type: 'sendMessage',
     description: 'Send a message via Discord',
     hasOptions: true // Supports option_reaction for custom message
+  },
+  {
+    id: 'createFolder_dropbox',
+    service: 'dropbox',
+    type: 'createFolder',
+    description: 'Create a new Dropbox folder',
+    hasOptions: true // for name folder
+  },
+  {
+    id: 'sendMessage_teams',
+    service: 'teams',
+    type: 'sendMessage',
+    description: 'Send a message on Teams',
+    hasOptions: true // for weebhook
+  },
+  {
+    id: 'sendGif_discord',
+    service: 'discord',
+    type: 'sendGif',
+    description: 'Send a random GIF on Discord',
+    hasOptions: true // for weebhook
+  },
+  {
+    id: 'createPlaylist_spotify',
+    service: 'spotify',
+    type: 'createPlaylist',
+    description: 'Create a new Spotify playlist',
+    hasOptions: true // for name playlist
   }
 ];

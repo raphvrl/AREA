@@ -128,6 +128,7 @@ export const jaTranslations = {
   'services.linkedin.description': 'プロフェッショナルネットワークと人脈を管理',
   'services.dropbox.description': '友達とコミュニケーションを取る',
   'services.notion.description': 'Manage your notes and documents with Notion',
+  'services.twitch.description': 'チャンネルとライブを管理',
   'services.connect': '接続',
   'services.disconnect': '切断'
 };

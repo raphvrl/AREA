@@ -128,6 +128,7 @@ export const deTranslations = {
   'services.linkedin.description': 'Verwalten Sie Ihr berufliches Netzwerk und Verbindungen',
   'services.dropbox.description': 'Speichern und teilen Sie Dateien in der Cloud',
   'services.notion.description': 'Manage your notes and documents with Notion',
+  'services.twitch.description': 'Verwalten Sie Ihren Kanal und Live-Streams',
   'services.connect': 'Verbinden',
   'services.disconnect': 'Trennen'
 };
