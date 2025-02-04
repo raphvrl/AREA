@@ -20,64 +20,78 @@ When selecting a database, it's crucial to consider various factors such as scal
 
 This comparative study helps us determine which database aligns best with our project needs, balancing performance, cost, and development efficiency.
 
-## 🤔 **Why Not PostgreSQL?**
+## 🔄 **Database Comparison**
 
-### ❌ **Key Limiting Factors**
+### 📊 **PostgreSQL Analysis**
 
-1. **SQL Constraints**
-   - Rigid schema complicates rapid prototyping
-   - Complex migrations for schema changes
-   - Overhead for simple document-style data
+1. **How It Handles Data** 🔄
+   + Really good at keeping data organized
+   - Have to plan everything ahead
+   - Changing stuff later is a pain
+   
+2. **Where to Host It** 🌐
+   + Works with all the big cloud providers
+   + Good support if things break
+   - Need to know server stuff (yikes)
+   
+3. **Team Setup** 👥
+   + Security is solid
+   - Everyone needs to install it locally (ugh)
+   - Sharing configs is complicated
 
-2. **Hosting Complexity**
-   - More complex setup and maintenance
-   - Manual scaling configuration required
-   - Higher infrastructure management overhead
+### 🔥 **Firebase Firestore Analysis**
 
-3. **Team Collaboration**
-   - Local setup required for each developer
-   - More complex backup and restore procedures
-   - Steeper learning curve for team members
+1. **How It Handles Data** 🔄
+   + Super flexible with how you store stuff
+   + Can change things on the fly
+   - Gets tricky with complex queries
+   
+2. **Where It Lives** ☁️
+   + Just works out of the box
+   + Handles scaling by itself
+   - Stuck in Google's ecosystem
+   
+3. **Team Stuff** 👥
+   + Login system ready to go
+   + Updates happen in real-time
+   - Not much control over admin things
 
-## 🤔 **Why Not Firebase Firestore?**
+### 📦 **MongoDB Analysis**
 
-### ❌ **Key Limiting Factors**
+1. **How It Handles Data** 🔄
+   + Can change data structure whenever we want
+   + Works great with JSON (perfect for our APIs)
+   - Gets messy with linked data
+   
+2. **Where It Lives** ☁️
+   + Atlas handles all the hosting stuff
+   + Works with different cloud services
+   - Gets expensive if project grows big
+   
+3. **Working Together** 👥
+   + Compass makes it easy to manage
+   + Everyone can access from anywhere
+   + No need to install stuff locally
 
-1. **Platform Limitations**
-   - Vendor lock-in with Google ecosystem
-   - Limited query capabilities
-   - Restricted data modeling options
+### ✅ **Final Recommendation: Firebase Firestore**
 
-2. **Cost Structure**
-   - Pay-per-operation model can be expensive
-   - Higher costs for read-heavy applications
-   - Limited free tier capabilities
+Given our specific requirements:
+- Needs minimal infrastructure management
+- Requires easy team sharing
+- Benefits from flexible schema
 
-3. **Development Constraints**
-   - Restricted batch operations
-   - Complex migration from other databases
+Firebase Firestore offers the best balance of:
+1. Zero-configuration cloud hosting
+2. Built-in authentication and sharing
+3. Sufficient schema flexibility for our needs
+4. Most cost-effective for small to medium projects
 
-## 🤔 **Why MongoDB?**
+### 🎯 **Why We Chose MongoDB**
 
-### 🌟 **Key Decision Factors**
-
-1. **NoSQL Benefits**
-   - Flexible schema allowing rapid data model evolution
-   - Perfect for storing unstructured data (JSON)
-   - Easy integration of new services without schema modification
-
-2. **MongoDB Atlas Advantages**
-   - Cloud-hosted database
-   - 24/7 accessibility for all team members
-   - Simplified management through MongoDB Compass
-   - Automatic backup and integrated security
-   - Automatic scaling based on needs
-
-3. **Team Collaboration**
-   - Unified access for all developers
-   - No local configuration needed
-   - Identical development environment for the whole team
-   - Facilitates continuous integration (CI/CD)
+We finally opted for mongoDB because:
+- We've used it before in other projects, reducing the learning curve
+- It matched our technical requirements (schema flexibility, cloud hosting, team collaboration)
+- It allowed us to jump straight into coding features instead of wasting precious project time learning another database
 
 ## 📖 **Detailed Documentation on MongoDB**
 
