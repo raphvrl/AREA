@@ -152,6 +152,53 @@ erDiagram
     USER ||--|| SPOTIFY : has
 ```
 
+## 📑 **Document Example**
+
+```json
+{
+  "_id": "507f1f77bcf86cd799439011",
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john@example.com",
+  "password": "hashedPassword123",
+  "lastFirstName": "Doe John",
+  
+  <span style="color: #0066cc;">/* API keys for different services */</span>
+  "apiKeys": {
+    "spotify": "spotify_api_key_here",
+    "github": "github_api_key_here"
+  },
+  
+  <span style="color: #0066cc;">/* Service IDs */</span>
+  "idService": {
+    "spotify": "spotify_user_id",
+    "github": "github_username"
+  },
+  
+  <span style="color: #0066cc;">/* Service states */</span>
+  "service": {
+    "spotify": true,
+    "github": false
+  },
+  
+  <span style="color: #0066cc;">/* User's AREA automations */</span>
+  "area": {
+    "area1": {
+      "action": "SPOTIFY_LIKED_SONG",
+      "reaction": "GITHUB_CREATE_ISSUE",
+      "is_on": true
+    }
+  },
+  
+  <span style="color: #0066cc;">/* Spotify specific data */</span>
+  "spotify": {
+    "savedTracks": [
+      "track_id_1",
+      "track_id_2"
+    ]
+  }
+}
+
 ## 🛠️ **Database Operations**
 
 ### 🔗 **Connecting to MongoDB**
