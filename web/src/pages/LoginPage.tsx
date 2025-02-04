@@ -309,9 +309,6 @@ const LoginPage: React.FC = () => {
         <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div
-                className={`w-full border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-300'}`}
-              />
             </div>
           </div>
 
