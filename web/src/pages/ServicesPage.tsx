@@ -116,13 +116,17 @@ const ServicesPage: React.FC = () => {
 
   const handleDisconnect = async (serviceId: string) => {
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/services/${serviceId}/disconnect`,
-        {
-          method: 'POST',
-          credentials: 'include',
-        }
-      );
+      const userEmail = localStorage.getItem('userEmail');
+      const response = await fetch(`http://localhost:8080/api/logoutService`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nameService: serviceId,
+          email: userEmail
+        })
+      });
 
       if (response.ok) {
         setServices((prevServices) =>
@@ -190,16 +194,30 @@ const ServicesPage: React.FC = () => {
                 </p>
 
                 {/* Connect button only shown when disconnected */}
-                {!service.isConnected && (
-                  <button
-                    onClick={() => handleServiceConnection(service.id)}
-                    className={`w-full px-4 py-2 rounded-md text-white 
-                      bg-green-700 hover:bg-green-800 
-                      transition-colors duration-200`}
-                    aria-label={`Connect to ${service.name}`}
-                  >
-                    {t('services.connect')}
-                  </button>
+                {!service.isConnected ? (
+                  <div className="w-full mt-auto"> {/* Conteneur pour le bouton de connexion */}
+                    <button
+                      onClick={() => handleServiceConnection(service.id)}
+                      className="w-full px-4 py-2 rounded-md text-white 
+                        bg-green-700 hover:bg-green-800 
+                        transition-colors duration-200"
+                      aria-label={`Connect to ${service.name}`}
+                    >
+                      {t('services.connect')}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="w-full mt-auto"> {/* Conteneur pour le bouton de déconnexion */}
+                    <button
+                      onClick={() => handleDisconnect(service.name.toLowerCase())}
+                      className="w-full px-4 py-2 rounded-md text-white 
+                        bg-red-600 hover:bg-red-700
+                        transition-colors duration-200"
+                      aria-label={`Disconnect from ${service.name}`}
+                    >
+                      {t('services.disconnect')}
+                    </button>
+                  </div>
                 )}
               </div>
             </motion.div>
