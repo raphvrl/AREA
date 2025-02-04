@@ -82,6 +82,9 @@ export const authSpotifyCallback = async (req: Request, res: Response) => {
         idServiceMap.set('spotify', spotifyUserId);
 
         await user.save();
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
         return res.status(200).json({
           message: 'Login successful',
           user: {
@@ -112,6 +115,9 @@ export const authSpotifyCallback = async (req: Request, res: Response) => {
           'email',
           user.email
         );
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
         return res.status(200).json({
           message: 'User found',
           user: {
@@ -126,9 +132,8 @@ export const authSpotifyCallback = async (req: Request, res: Response) => {
           .json({ message: 'No user found with this Spotify ID' });
       }
     }
-
     return res.status(400).json({
-      message: 'Invalid parameters. Provide either email or isLogin.',
+      message: 'Invalid parameters. Provide either email or redirectUri.',
     });
   } catch (error) {
     console.error('Error in authSpotifyCallback:', error);

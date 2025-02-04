@@ -40,37 +40,36 @@ const oauthServices: OAuthService[] = [
     icon: FaGithub,
     bgColor: 'bg-gray-800',
     hoverColor: 'hover:bg-gray-900',
-    path: '/api/auth/github'
+    path: '/api/auth/github',
   },
   {
     name: 'Spotify',
     icon: FaSpotify,
     bgColor: 'bg-green-600',
     hoverColor: 'hover:bg-green-700',
-    path: '/api/auth/spotify'
+    path: '/api/auth/spotify',
   },
   {
     name: 'Notion',
     icon: SiNotion,
     bgColor: 'bg-black',
     hoverColor: 'hover:bg-gray-900',
-    path: '/api/auth/notion'
+    path: '/api/auth/notion',
   },
   {
     name: 'Dropbox',
     icon: FaDropbox,
     bgColor: 'bg-blue-600',
     hoverColor: 'hover:bg-blue-700',
-    path: '/api/auth/dropbox'
+    path: '/api/auth/dropbox',
   },
   {
     name: 'Twitch',
     icon: FaTwitch,
-    bgColor: 'bg-purple-600', 
+    bgColor: 'bg-purple-600',
     hoverColor: 'hover:bg-purple-700',
-    path: '/api/auth/twitch'
+    path: '/api/auth/twitch',
   },
-
 ];
 
 const LoginPage: React.FC = () => {
@@ -100,6 +99,9 @@ const LoginPage: React.FC = () => {
       });
       navigate('/');
     }
+
+    // 🔹 Exécuter handleCallback pour traiter la redirection OAuth
+    handleCallback();
   }, [login, navigate]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -125,7 +127,7 @@ const LoginPage: React.FC = () => {
         localStorage.setItem('userEmail', formData.email);
         localStorage.setItem('userData', JSON.stringify(response.data.user));
         localStorage.setItem('isAuthenticated', 'true');
-        
+
         login(response.data.user);
         navigate('/');
       }
@@ -161,19 +163,54 @@ const LoginPage: React.FC = () => {
   };
 
   const handleOAuthLogin = (service: OAuthService) => {
-    const email = localStorage.getItem('userEmail');
-    if (!email) {
-      setErrors([{ field: 'email', message: 'Please enter your email first' }]);
-      return;
+    const FRONTEND_PORT = process.env.REACT_APP_FRONTEND_PORT || 8081;
+    const redirectUri = `http://localhost:${FRONTEND_PORT}/login`;
+    const email = 'jonh.doe@email.com';
+    const authUrl = `http://localhost:8080${service.path}?email=${encodeURIComponent(email)}&redirectUri=${encodeURIComponent(redirectUri)}`;
+    window.location.href = authUrl;
+  };
+  const handleCallback = async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    console.log('zizi');
+    const code = urlParams.get('code');
+    const state = urlParams.get('state'); // Le state est une chaîne JSON
+
+    if (code && state) {
+      try {
+        // Parser le state pour extraire l'URL du service
+        const parsedState = JSON.parse(state);
+        const serviceUrl = parsedState.service; // Récupérer l'URL du service
+
+        // Envoyer le code et l'email au backend pour finaliser la connexion
+        const response = await fetch(
+          `http://localhost:${BACKEND_PORT}${serviceUrl}`, // Utiliser l'URL du service
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ code, isLogin: true }),
+          }
+        );
+
+        // ✅ Correction : Attendre la conversion en JSON
+        const data = await response.json();
+
+        if (data.user) {
+          // Stocker les infos utilisateur
+          localStorage.setItem('userEmail', data.user.email);
+          localStorage.setItem('userData', JSON.stringify(data.user));
+          localStorage.setItem('isAuthenticated', 'true');
+
+          login(data.user);
+          navigate('/');
+        } else {
+          console.error('Error handling callback:', data.message);
+        }
+      } catch (error) {
+        console.error('Error handling callback:', error);
+      }
     }
-  
-    const redirectUri = `${window.location.origin}/home`;
-    const queryParams = new URLSearchParams({
-      email,
-      redirectUri
-    }).toString();
-  
-    window.location.href = `http://localhost:${BACKEND_PORT}${service.path}?${queryParams}`;
   };
 
   return (
@@ -189,7 +226,7 @@ const LoginPage: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className={`max-w-md w-full mx-4 p-8 ${
-          isDarkMode 
+          isDarkMode
             ? 'bg-gray-900 text-gray-100' // Added text-gray-100 for better contrast
             : 'bg-white'
         } rounded-2xl shadow-2xl space-y-6`}
@@ -223,8 +260,8 @@ const LoginPage: React.FC = () => {
               value={formData.email}
               onChange={handleInputChange}
               className={`w-full px-4 py-3 rounded-lg border ${
-                isDarkMode 
-                  ? 'bg-gray-700 text-white border-gray-600 placeholder-gray-400' 
+                isDarkMode
+                  ? 'bg-gray-700 text-white border-gray-600 placeholder-gray-400'
                   : 'bg-white text-gray-900 border-gray-300 placeholder-gray-500'
               } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
             />
@@ -237,8 +274,8 @@ const LoginPage: React.FC = () => {
               value={formData.password}
               onChange={handleInputChange}
               className={`w-full px-4 py-3 rounded-lg border ${
-                isDarkMode 
-                  ? 'bg-gray-700 text-white border-gray-600 placeholder-gray-400' 
+                isDarkMode
+                  ? 'bg-gray-700 text-white border-gray-600 placeholder-gray-400'
                   : 'bg-white text-gray-900 border-gray-300 placeholder-gray-500'
               } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
             />
@@ -272,10 +309,12 @@ const LoginPage: React.FC = () => {
         <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className={`w-full border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-300'}`} />
+              <div
+                className={`w-full border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-300'}`}
+              />
             </div>
           </div>
-        
+
           <div className="mt-6 grid grid-cols-2 gap-3">
             {oauthServices.map((service) => (
               <motion.button
@@ -284,10 +323,13 @@ const LoginPage: React.FC = () => {
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleOAuthLogin(service)}
                 className={`w-full p-3 rounded-md flex justify-center items-center gap-2 text-white ${
-                  service.name === 'Spotify' ? 'bg-green-700 hover:bg-green-800' : service.bgColor
+                  service.name === 'Spotify'
+                    ? 'bg-green-700 hover:bg-green-800'
+                    : service.bgColor
                 } ${service.hoverColor} transition-colors duration-200`}
               >
-                <service.icon size={20} /> {/* Use size prop instead of className */}
+                <service.icon size={20} />{' '}
+                {/* Use size prop instead of className */}
                 <span>{service.name}</span>
               </motion.button>
             ))}

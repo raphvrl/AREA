@@ -11,10 +11,15 @@ interface TelegramMessage {
 
 export const sendMessageTelegram = async (
   email: String,
+  option: string,
   actionResult: TelegramMessage | null
 ): Promise<boolean> => {
   try {
-    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+    const parts = option.split('_');
+
+    const telegramBot = parts[0];
+    const chatId = parts[1];
+    if (!telegramBot || !chatId) {
       throw new Error('Missing Telegram configuration');
     }
 
@@ -24,9 +29,9 @@ export const sendMessageTelegram = async (
     }
 
     const response = await axios.post(
-      `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+      `https://api.telegram.org/bot${telegramBot}/sendMessage`,
       {
-        chat_id: TELEGRAM_CHAT_ID,
+        chat_id: chatId,
         text: actionResult.message,
         parse_mode: 'HTML',
       }
