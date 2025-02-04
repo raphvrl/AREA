@@ -180,7 +180,8 @@ const LoginPage: React.FC = () => {
         // Parser le state pour extraire l'URL du service
         const parsedState = JSON.parse(state);
         const serviceUrl = parsedState.service; // Récupérer l'URL du service
-
+        const FRONTEND_PORT = process.env.REACT_APP_FRONTEND_PORT || 8081;
+        const redirectUri = `http://localhost:${FRONTEND_PORT}/login`;
         // Envoyer le code et l'email au backend pour finaliser la connexion
         const response = await fetch(
           `http://localhost:${BACKEND_PORT}${serviceUrl}`, // Utiliser l'URL du service
@@ -189,13 +190,13 @@ const LoginPage: React.FC = () => {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ code, isLogin: true }),
+            body: JSON.stringify({ code, redirectUri: redirectUri}),
           }
         );
 
         // ✅ Correction : Attendre la conversion en JSON
         const data = await response.json();
-
+        console.log(data);
         if (data.user) {
           // Stocker les infos utilisateur
           localStorage.setItem('userEmail', data.user.email);

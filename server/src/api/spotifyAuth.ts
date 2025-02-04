@@ -50,7 +50,7 @@ export const authSpotify = (req: Request, res: Response) => {
 };
 
 export const authSpotifyCallback = async (req: Request, res: Response) => {
-  const { code, email, isLogin } = req.body;
+  const { code, email, redirectUri } = req.body;
 
   if (!code) {
     return res.status(400).json({ message: 'Code is required' });
@@ -100,7 +100,7 @@ export const authSpotifyCallback = async (req: Request, res: Response) => {
       }
     }
 
-    if (isLogin) {
+    if (redirectUri) {
       console.log('Checking login with Spotify ID:', spotifyUserId);
       const user = await UserModel.findOne({
         [`idService.spotify`]: spotifyUserId,
