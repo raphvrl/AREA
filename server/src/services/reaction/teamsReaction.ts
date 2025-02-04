@@ -11,10 +11,11 @@ interface TeamsMessage {
 
 export const sendMessageTeams = async (
   email: String,
+  option: string,
   actionResult: TeamsMessage | null
 ): Promise<boolean> => {
   try {
-    if (!TEAMS_WEBHOOK_URL) {
+    if (!option) {
       throw new Error('Missing Teams webhook URL configuration');
     }
 
@@ -23,9 +24,8 @@ export const sendMessageTeams = async (
       return true;
     }
 
-    const response = await axios.post(TEAMS_WEBHOOK_URL, {
+    const response = await axios.post(option, {
       text: actionResult.message,
-
     });
 
     console.log('Teams webhook response status:', response.status);

@@ -50,8 +50,8 @@ export const executeAreas = async () => {
                     // Exécuter la réaction avec le résultat de l'action et l'option de la réaction
                     const reactionResult = await reactionFunction(
                       user.email as string,
-                      actionResult,
-                      optionReaction
+                      optionReaction,
+                      actionResult
                     );
                     console.log(
                       `Action "${area.action}" completed with result:`,
