@@ -59,6 +59,7 @@ const HomePage: React.FC = () => {
         if (response.ok) {
           // Mettre à jour l'état de l'application si nécessaire
           console.log('Service connected successfully:', serviceUrl);
+          navigate('/services');
         } else {
           const error = await response.json();
           console.error('Error handling callback:', error.message);
