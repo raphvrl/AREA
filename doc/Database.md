@@ -152,9 +152,11 @@ erDiagram
     USER ||--|| SPOTIFY : has
 ```
 
-## 📑 **Document Example**
+
+### 📑 **Document Example**
 
 ```json
+// Example of a User document in MongoDB
 {
   "_id": "507f1f77bcf86cd799439011",
   "firstName": "John",
@@ -163,34 +165,39 @@ erDiagram
   "password": "hashedPassword123",
   "lastFirstName": "Doe John",
   
-  <span style="color: #0066cc;">/* API keys for different services */</span>
+  // API keys for different services
   "apiKeys": {
     "spotify": "spotify_api_key_here",
     "github": "github_api_key_here"
   },
   
-  <span style="color: #0066cc;">/* Service IDs */</span>
+  // Service IDs
   "idService": {
     "spotify": "spotify_user_id",
     "github": "github_username"
   },
   
-  <span style="color: #0066cc;">/* Service states */</span>
+  // Service states
   "service": {
     "spotify": true,
     "github": false
   },
   
-  <span style="color: #0066cc;">/* User's AREA automations */</span>
+  // User's AREA automations
   "area": {
     "area1": {
       "action": "SPOTIFY_LIKED_SONG",
       "reaction": "GITHUB_CREATE_ISSUE",
       "is_on": true
+    },
+    "area2": {
+      "action": "GITHUB_NEW_STAR",
+      "reaction": "SPOTIFY_CREATE_PLAYLIST",
+      "is_on": false
     }
   },
   
-  <span style="color: #0066cc;">/* Spotify specific data */</span>
+  // Spotify specific data
   "spotify": {
     "savedTracks": [
       "track_id_1",
@@ -198,6 +205,8 @@ erDiagram
     ]
   }
 }
+
+```
 
 ## 🛠️ **Database Operations**
 
