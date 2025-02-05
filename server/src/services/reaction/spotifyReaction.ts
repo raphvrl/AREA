@@ -12,61 +12,71 @@ interface SpotifyResponse {
   playlistUrl?: string;
 }
 
+// Variables de contrôle avec mutex
+const createdPlaylists = new Set<string>();
+let lastPlaylistCreationTime = 0;
+const CREATION_COOLDOWN = 15000;
+let isCreatingPlaylist = false;
+
 export const createPlaylist_spotify = async (
   email: string,
   option: string,
   actionResult?: any
 ): Promise<SpotifyResponse | null> => {
   try {
-    console.log('option', option);
-    console.log('🎵 Tentative de création de playlist Spotify pour:', email);
-    const user = await userModel.findOne({ email });
+    if (isCreatingPlaylist) {
+      console.log('⚠️ Création déjà en cours');
+      return null;
+    }
 
+    const currentTime = Date.now();
+    if (currentTime - lastPlaylistCreationTime < CREATION_COOLDOWN) {
+      console.log('⏳ Délai minimum non respecté:', currentTime - lastPlaylistCreationTime);
+      return null;
+    }
+
+    if (createdPlaylists.has(option)) {
+      console.log('🚫 Playlist déjà créée:', option);
+      return null;
+    }
+
+    isCreatingPlaylist = true;
+
+    console.log('🎵 Tentative de création de playlist:', option);
+    const user = await userModel.findOne({ email });
+    
     if (!user) {
-      throw new Error(`Utilisateur avec l'email "${email}" non trouvé`);
+      isCreatingPlaylist = false;
+      throw new Error(`Utilisateur avec l'email "${email}" non trouvé.`);
     }
 
     const apiKeysMap = user.apiKeys as Map<string, string>;
-    const idServiceMap = user.idService as Map<string, string>;
     const spotifyToken = apiKeysMap.get('spotify');
-    const spotifyUserId = idServiceMap.get('spotify');
 
-    if (!spotifyToken || !spotifyUserId) {
-      throw new Error("Informations d'authentification Spotify manquantes");
+    if (!spotifyToken) {
+      isCreatingPlaylist = false;
+      throw new Error('Token Spotify manquant');
     }
 
     spotifyApi.setAccessToken(spotifyToken);
-
-    // Créer la playlist avec un nom unique basé sur la date
-    const playlistName = option;
-    const description = 'Playlist créée automatiquement par AREA';
-
-    const response = await spotifyApi.createPlaylist(playlistName, {
-      description: description,
-      public: false,
+    
+    const playlist = await spotifyApi.createPlaylist(option, {
+      description: 'Playlist créée via AREA',
+      public: false
     });
 
-    console.log(
-      '✅ Playlist créée avec succès:',
-      response.body.external_urls.spotify
-    );
+    createdPlaylists.add(option);
+    lastPlaylistCreationTime = currentTime;
+    isCreatingPlaylist = false;
+
     return {
-      message: `🎵 Nouvelle playlist Spotify créée !\nNom: ${playlistName}\nURL: ${response.body.external_urls.spotify}`,
-      playlistUrl: response.body.external_urls.spotify,
+      message: `🎵 Nouvelle playlist Spotify créée !\nNom: ${option}\nURL: ${playlist.body.external_urls.spotify}`,
+      playlistUrl: playlist.body.external_urls.spotify
     };
+
   } catch (error) {
+    isCreatingPlaylist = false;
     console.error('❌ Erreur dans createPlaylist_spotify:', error);
-    if (axios.isAxiosError(error)) {
-      console.error("Détails de l'erreur:", {
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-      });
-    }
-    throw new Error(
-      `Erreur lors de la création de la playlist: ${
-        error instanceof Error ? error.message : 'Erreur inconnue'
-      }`
-    );
+    throw error;
   }
 };
