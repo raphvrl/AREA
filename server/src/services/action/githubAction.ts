@@ -16,59 +16,76 @@ export const repoCreatedGithub = async (
   email: string
 ): Promise<GithubRepo | null> => {
   try {
-    const serviceKey = 'github';
     const user = await userModel.findOne({ email });
     if (!user) {
       throw new Error(`User with email "${email}" not found.`);
     }
 
     const apiKeysMap = user.apiKeys as Map<string, string>;
-    const githubToken = apiKeysMap.get(serviceKey);
+    const githubToken = apiKeysMap.get('github');
+    
     if (!githubToken) {
-      throw new Error('GitHub token not found');
+      console.log('⚠️ Token GitHub manquant pour:', email);
+      return null;
     }
 
     const response = await axios.get('https://api.github.com/user/repos', {
       headers: {
-        Authorization: `Bearer ${githubToken}`,
-        Accept: 'application/vnd.github.v3+json',
+        'Authorization': `token ${githubToken}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': 'AREA-App'
       },
       params: {
         sort: 'created',
         direction: 'desc',
-        per_page: 1,
-      },
+        per_page: 1
+      }
     });
 
     const latestRepo = response.data[0] as GithubRepo;
 
     if (!isInitialized) {
-      lastKnownRepoId = latestRepo.id;
-      isInitialized = true;
-      console.log('Initialisation: sauvegarde du dernier repo');
+      if (latestRepo) {
+        lastKnownRepoId = latestRepo.id;
+        isInitialized = true;
+        console.log('🚀 Première exécution - Initialisation avec le repo:', {
+          name: latestRepo.name,
+          id: latestRepo.id
+        });
+      }
       return null;
     }
 
     if (latestRepo && latestRepo.id > lastKnownRepoId) {
       lastKnownRepoId = latestRepo.id;
-      console.log('Nouveau repository détecté:', {
+      console.log('✨ Nouveau repository détecté:', {
         name: latestRepo.name,
         id: latestRepo.id,
-        created_at: latestRepo.created_at,
+        created_at: latestRepo.created_at
       });
 
-      latestRepo.message = `🎉 Nouveau repository GitHub créé:\nNom: ${latestRepo.name}\nURL: ${latestRepo.html_url}`;
-      return latestRepo;
+      return {
+        ...latestRepo,
+        message: `🎉 Nouveau repository GitHub créé:\nNom: ${latestRepo.name}\nURL: ${latestRepo.html_url}`
+      };
     }
 
+    console.log('😴 Aucun nouveau repository détecté');
     return null;
+
   } catch (error) {
-    if (error instanceof Error) {
-      console.error('Error in githubRepoCreated:', error.message);
-      throw new Error(error.message);
-    } else {
-      console.error('An unknown error occurred');
-      throw new Error('An unknown error occurred');
+    console.error('❌ Erreur dans repoCreatedGithub:', error);
+    if (axios.isAxiosError(error)) {
+      console.error('Détails de l\'erreur:', {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data
+      });
     }
+    
+    if (error instanceof Error) {
+      throw new Error(`Erreur lors de la vérification des repositories: ${error.message}`);
+    }
+    throw new Error('Une erreur inconnue est survenue');
   }
 };

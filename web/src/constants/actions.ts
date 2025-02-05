@@ -112,5 +112,19 @@ export const availableReactions: Action[] = [
     type: 'createPlaylist',
     description: 'Create a new Spotify playlist',
     hasOptions: true // for name playlist
+  },
+  {
+    id: 'playTrack_spotify',
+    service: 'spotify',
+    type: 'playTrack',
+    description: 'Lancer la lecture d\'une musique sur Spotify',
+    hasOptions: true // Pour l'URL de la musique
+  },
+  {
+    id: 'createRepo_github',
+    service: 'github',
+    type: 'createRepo',
+    description: 'Créer un nouveau repository GitHub',
+    hasOptions: true // Pour le nom du repository
   }
 ];

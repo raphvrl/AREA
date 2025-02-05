@@ -16,6 +16,8 @@ import { twitchFollowChange } from './action/twitchFollowChange';
 import { sendGifDiscord } from './reaction/giphyReaction';
 import { createFolder_dropbox } from './reaction/dropboxCreateReaction';
 import { createPlaylist_spotify } from './reaction/spotifyReaction';
+import { playTrack_spotify } from './reaction/playTrackReaction';
+import { createRepo_github } from './reaction/githubCreateReaction';
 
 type Handler = (email: string, option?: string, data?: any) => Promise<any>;
 
@@ -145,6 +147,23 @@ const areaHandlers: { [key: string]: Handler } = {
     const result = await twitchFollowChange(email);
     return result;
   },
+  playTrack_spotify: async (
+    email: string,
+    option?: string,
+    actionResult?: any
+  ) => {
+    const result = await playTrack_spotify(email, option as string, actionResult);
+    return result;
+  },
+  createRepo_github: async (
+    email: string,
+    option?: string,
+    actionResult?: any
+  ) => {
+    const result = await createRepo_github(email, option as string, actionResult);
+    return result;
+  }
+
 };
 
 export default areaHandlers;
