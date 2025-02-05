@@ -43,63 +43,107 @@ export const authTwitch = async (req: Request, res: Response) => {
 };
 
 export const authTwitchCallback = async (req: Request, res: Response) => {
-  const { code, email } = req.body;
+  const { code, email, redirectUri } = req.body;
   console.log('📩 Callback Twitch reçu:', { code: !!code, email });
 
-  if (!code || !email) {
+  if (!code) {
     return res.status(400).json({ message: 'Code et email requis' });
   }
 
   try {
-    const user = await userModel.findOne({ email });
-    if (!user || !user.redirectUriTwitch) {
-      console.log('❌ Utilisateur ou redirectUri non trouvé');
-      return res
-        .status(400)
-        .json({ message: 'Utilisateur non trouvé ou redirectUri manquant' });
-    }
-
-    const tokenResponse = await axios.post(
-      'https://id.twitch.tv/oauth2/token',
-      {
-        client_id: TWITCH_CLIENT_ID,
-        client_secret: TWITCH_CLIENT_SECRET,
-        code,
-        grant_type: 'authorization_code',
-        redirect_uri: user.redirectUriTwitch,
+    if (email) {
+      const user = await userModel.findOne({ email });
+      if (!user || !user.redirectUriTwitch) {
+        console.log('❌ Utilisateur ou redirectUri non trouvé');
+        return res
+          .status(400)
+          .json({ message: 'Utilisateur non trouvé ou redirectUri manquant' });
       }
-    );
 
-    const accessToken = tokenResponse.data.access_token;
+      const tokenResponse = await axios.post(
+        'https://id.twitch.tv/oauth2/token',
+        {
+          client_id: TWITCH_CLIENT_ID,
+          client_secret: TWITCH_CLIENT_SECRET,
+          code,
+          grant_type: 'authorization_code',
+          redirect_uri: user.redirectUriTwitch,
+        }
+      );
 
-    // Récupération des informations utilisateur
-    const userResponse = await axios.get('https://api.twitch.tv/helix/users', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Client-Id': TWITCH_CLIENT_ID as string,
-      },
-    });
+      const accessToken = tokenResponse.data.access_token;
 
-    const twitchUserId = userResponse.data.data[0].id;
-    console.log('👤 ID utilisateur Twitch récupéré:', twitchUserId);
+      // Récupération des informations utilisateur
+      const userResponse = await axios.get('https://api.twitch.tv/helix/users', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Client-Id': TWITCH_CLIENT_ID as string,
+        },
+      });
 
-    // Mise à jour des informations utilisateur
-    const apiKeysMap = user.apiKeys as Map<string, string>;
-    const serviceMap = user.service as Map<string, string>;
-    const idServiceMap = user.idService as Map<string, string>;
+      const twitchUserId = userResponse.data.data[0].id;
+      console.log('👤 ID utilisateur Twitch récupéré:', twitchUserId);
 
-    apiKeysMap.set('twitch', accessToken);
-    serviceMap.set('twitch', 'true');
-    idServiceMap.set('twitch', twitchUserId);
+      // Mise à jour des informations utilisateur
+      const apiKeysMap = user.apiKeys as Map<string, string>;
+      const serviceMap = user.service as Map<string, string>;
+      const idServiceMap = user.idService as Map<string, string>;
 
-    await user.save();
-    console.log('💾 Informations utilisateur sauvegardées en BDD');
+      apiKeysMap.set('twitch', accessToken);
+      serviceMap.set('twitch', 'true');
+      idServiceMap.set('twitch', twitchUserId);
 
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
+      await user.save();
+      console.log('💾 Informations utilisateur sauvegardées en BDD');
 
-    res.status(200).json({ message: 'OK' });
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+
+      res.status(200).json({ message: 'OK' });
+    }
+    if (redirectUri) {
+      const tokenResponse = await axios.post(
+        'https://id.twitch.tv/oauth2/token',
+        {
+          client_id: TWITCH_CLIENT_ID,
+          client_secret: TWITCH_CLIENT_SECRET,
+          code,
+          grant_type: 'authorization_code',
+          redirect_uri: redirectUri,
+        }
+      );
+
+      const accessToken = tokenResponse.data.access_token;
+
+      // Récupération des informations utilisateur
+      const userResponse = await axios.get('https://api.twitch.tv/helix/users', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Client-Id': TWITCH_CLIENT_ID as string,
+        },
+      });
+      const twitchUserId = userResponse.data.data[0].id;
+      console.log('👤 ID utilisateur Twitch récupéré:', twitchUserId);
+      const user = await userModel.findOne({
+        'idService.twitch': twitchUserId,
+      });
+
+      if (user) {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        return res.status(200).json({
+          message: 'User found',
+          user: {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            service: user.service,
+          },
+        });
+       }
+      }
   } catch (error) {
     console.error('❌ Erreur callback Twitch:', error);
 
