@@ -14,14 +14,9 @@ const serviceColors = {
   spotify: "#1DB954",
 };
 
-interface CallbackState {
-  code: string;
+interface ActiveServices {
   email: string;
 };
-
-interface StateFormat {
-  service: string;
-}
 
 export default function Profile() {
   const { fontSize, letterSpacing } = useSettings();
@@ -29,7 +24,31 @@ export default function Profile() {
   const [lastName, setLastName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [apiUrl, setApiUrl] = useState<string | null>(null);
+  const [activeServices, setActiveServices] = useState<string[]>([]);
   const redirectUri = "https://raphvrl.github.io/my-app-redirection/";
+
+  const fetchActiveServices = async () => {
+    try {
+      if (!userEmail || !apiUrl) return;
+  
+      const response = await fetch(`${apiUrl}/api/get_login_service`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: userEmail
+        })
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        setActiveServices(data.activeServices);
+      }
+    } catch (error) {
+      console.error('Erreur récupération services:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -49,7 +68,10 @@ export default function Profile() {
       setApiUrl(url);
     };
 
-    fetchApiUrl()
+    fetchApiUrl();
+    fetchActiveServices();
+
+    console.log("activeServices", activeServices);
 
     const handleDeepLink = async (event: { url: string }) => {
       const { url} = event;
@@ -95,6 +117,12 @@ export default function Profile() {
     return () => sub.remove();
   }, [userEmail, apiUrl]);
 
+  const isServiceActive = (serviceName: string): boolean => {
+    console.log("activeServices", activeServices);
+    console.log("serviceName", serviceName);
+    return activeServices.includes(serviceName.toLowerCase());
+  };
+
   return (
     <View
       style={baseStyles.container}
@@ -125,7 +153,7 @@ export default function Profile() {
       </View>
 
       <ScrollView style={styles.servicesContainer}>
-      <ServiceButton
+        <ServiceButton
           text="GitHub"
           color={serviceColors.github}
           iconName="logo-github"
@@ -134,6 +162,7 @@ export default function Profile() {
           redirectUri={redirectUri}
           userEmail={userEmail}
           fontSize={fontSize}
+          isActive={isServiceActive("github")}
         />
         <ServiceButton
           text="Spotify"
@@ -144,8 +173,8 @@ export default function Profile() {
           redirectUri={redirectUri}
           userEmail={userEmail}
           fontSize={fontSize}
+          isActive={isServiceActive("spotify")}
         />
-
         <ServiceButton
           text="Dropbox"
           color="#007EE5"
@@ -155,6 +184,7 @@ export default function Profile() {
           redirectUri={redirectUri}
           userEmail={userEmail}
           fontSize={fontSize}
+          isActive={isServiceActive("dropbox")}
         />
         <ServiceButton
           text="Notion"
@@ -165,6 +195,18 @@ export default function Profile() {
           redirectUri={redirectUri}
           userEmail={userEmail}
           fontSize={fontSize}
+          isActive={isServiceActive("notion")}
+        />
+        <ServiceButton
+          text="Twitch"
+          color="#9146FF"
+          iconName="twitch"
+          iconType="FontAwesome"
+          apiUrl={`${apiUrl}/api/auth/twitch`}
+          redirectUri={redirectUri}
+          userEmail={userEmail}
+          fontSize={fontSize}
+          isActive={isServiceActive("twitch")}
         />
       </ScrollView>
 

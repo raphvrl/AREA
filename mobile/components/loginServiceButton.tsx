@@ -18,7 +18,7 @@ interface ServiceButtonProps {
   isActive?: boolean;
 }
 
-const ServiceButton: React.FC<ServiceButtonProps> = ({
+const LoginServiceButton: React.FC<ServiceButtonProps> = ({
   text,
   color,
   iconName,
@@ -43,8 +43,6 @@ const ServiceButton: React.FC<ServiceButtonProps> = ({
 
   return (
     <View style={styles.outerContainer}>
-      <View style={styles.greyBox}>
-        <View style={[styles.statusLed, { backgroundColor: isActive ? '#4CAF50' : '#FF0000' }]} />
         <TouchableOpacity 
           style={[baseStyles.button, styles.serviceButton, { backgroundColor: color }]}
           onPress={handlePress}
@@ -59,7 +57,6 @@ const ServiceButton: React.FC<ServiceButtonProps> = ({
             </Text>
           </View>
         </TouchableOpacity>
-      </View>
     </View>
   );
 }
@@ -102,4 +99,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ServiceButton;
+export default LoginServiceButton;

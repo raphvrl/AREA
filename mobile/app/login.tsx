@@ -5,12 +5,14 @@ import {
   TouchableOpacity,
   TextInput ,
   Alert,
+  ScrollView,
 } from "react-native";
 
 import { Link, router } from "expo-router";
 import { baseStyles } from "@/styles/baseStyles";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import LoginServiceButton from "@/components/loginServiceButton";
 
 interface UserData {
   email: string;
@@ -25,9 +27,28 @@ interface UserResponse {
   };
 }
 
+const serviceColors = {
+  github: "#333",
+  spotify: "#1DB954",
+  dropbox: "#0061FF",
+  notion: "#000000",
+  twitch: "#9146FF",
+};
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const redirectUri = "https://raphvrl.github.io/my-app-redirection/";
+  const [apiUrl, setApiUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchApiUrl = async () => {
+      const url = await AsyncStorage.getItem("API_URL");
+      setApiUrl(url);
+    };
+    fetchApiUrl();
+  }, []);
 
   const handleLogin = async () => {
     try {
@@ -73,60 +94,116 @@ export default function Login() {
       accessibilityLabel="Page de connexion AREA"
       accessibilityRole="header"
     >
-      <Text
-        style={baseStyles.title}
-        accessibilityLabel="AREA"
-        accessibilityRole="header"
-      >
-        AREA
-      </Text>
-
-      <TextInput
-        style={baseStyles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        value={email}
-        onChangeText={setEmail}
-        accessibilityLabel="Champ email"
-        accessibilityHint="Entrez votre adresse email"
-        accessibilityRole="text"
-      />
-
-      <TextInput
-        style={baseStyles.input}
-        placeholder="Mot de passe"
-        secureTextEntry
-        autoCapitalize="none"
-        value={password}
-        onChangeText={setPassword}
-        accessibilityLabel="Champ mot de passe"
-        accessibilityHint="Entrez votre mot de passe"
-        accessibilityRole="text"
-      />
-
-      <TouchableOpacity
-        style={baseStyles.button}
-        onPress={handleLogin}
-        accessible={true}
-        accessibilityLabel="Se connecter"
-        accessibilityHint="Double tapez pour vous connecter"
-        accessibilityRole="button"
-      >
-        <Text style={styles.buttonText}>Connexion</Text>
-      </TouchableOpacity>
-
-      <View style={styles.registerContainer}>
-        <Text style={baseStyles.text}>Pas de compte ? </Text>
-        <Link
-          href="/register"
-          accessible={true}
-          accessibilityLabel="Créer un compte"
-          accessibilityHint="Double tapez pour créer un compte"
-          accessibilityRole="link"
+      <View style={styles.formContainer}>
+        <Text
+          style={baseStyles.title}
+          accessibilityLabel="AREA"
+          accessibilityRole="header"
         >
-          <Text style={baseStyles.link}>Créer un compte</Text>
-        </Link>
+          AREA
+        </Text>
+
+        <TextInput
+          style={baseStyles.input}
+          placeholder="Email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+          accessibilityLabel="Champ email"
+          accessibilityHint="Entrez votre adresse email"
+          accessibilityRole="text"
+        />
+
+        <TextInput
+          style={baseStyles.input}
+          placeholder="Mot de passe"
+          secureTextEntry
+          autoCapitalize="none"
+          value={password}
+          onChangeText={setPassword}
+          accessibilityLabel="Champ mot de passe"
+          accessibilityHint="Entrez votre mot de passe"
+          accessibilityRole="text"
+        />
+
+        <TouchableOpacity
+          style={baseStyles.button}
+          onPress={handleLogin}
+          accessible={true}
+          accessibilityLabel="Se connecter"
+          accessibilityHint="Double tapez pour vous connecter"
+          accessibilityRole="button"
+        >
+          <Text style={styles.buttonText}>Connexion</Text>
+        </TouchableOpacity>
+
+        <View style={styles.registerContainer}>
+          <Text style={baseStyles.text}>Pas de compte ? </Text>
+          <Link
+            href="/register"
+            accessible={true}
+            accessibilityLabel="Créer un compte"
+            accessibilityHint="Double tapez pour créer un compte"
+            accessibilityRole="link"
+          >
+            <Text style={styles.loginLink}>Créer un compte</Text>
+          </Link>
+        </View>
+      </View>
+      <View style={styles.servicesSection}>
+        <ScrollView style={styles.servicesContainer}>
+          <LoginServiceButton
+            text="GitHub"
+            color={serviceColors.github}
+            iconName="logo-github"
+            iconType="Ionicons"
+            apiUrl={`${apiUrl}/api/auth/github`}
+            redirectUri={redirectUri}
+            userEmail={email}
+            fontSize={16}
+          />
+          <LoginServiceButton
+            text="Spotify"
+            color={serviceColors.spotify}
+            iconName="spotify"
+            iconType="FontAwesome"
+            apiUrl={`${apiUrl}/api/auth/spotify`}
+            redirectUri={redirectUri}
+            userEmail={email}
+            fontSize={16}
+          />
+          <LoginServiceButton
+            text="Dropbox"
+            color={serviceColors.dropbox}
+            iconName="dropbox"
+            iconType="FontAwesome"
+            apiUrl={`${apiUrl}/api/auth/dropbox`}
+            redirectUri={redirectUri}
+            userEmail={email}
+            fontSize={16}
+          />
+          <LoginServiceButton
+            text="Notion"
+            color={serviceColors.notion}
+            iconName="notion"
+            iconType="FontAwesome"
+            apiUrl={`${apiUrl}/api/auth/notion`}
+            redirectUri={redirectUri}
+            userEmail={email}
+            fontSize={16}
+          />
+          <LoginServiceButton
+            text="Twitch"
+            color={serviceColors.twitch}
+            iconName="twitch"
+            iconType="FontAwesome"
+            apiUrl={`${apiUrl}/api/auth/twitch`}
+            redirectUri={redirectUri}
+            userEmail={email}
+            fontSize={16}
+          />
+        </ScrollView>
       </View>
     </View>
   );
@@ -141,5 +218,24 @@ const styles = StyleSheet.create({
   registerContainer: {
     flexDirection: 'row',
     marginTop: 20,
+  },
+  servicesContainer: {
+    width: '100%',
+    maxHeight: 200,
+    marginTop: 20,
+  },
+  formContainer: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 20,
+  },
+  servicesSection: {
+    width: '100%',
+    marginTop: 10,
+  },
+  loginLink: {
+    color: '#007EE5',
+    fontWeight: '600'
   },
 });

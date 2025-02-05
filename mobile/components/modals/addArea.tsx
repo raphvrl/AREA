@@ -6,6 +6,8 @@ import {
   TextInput,
   StyleSheet,
   Alert,
+  ScrollView,
+  Animated,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/styles/colors";
@@ -27,6 +29,7 @@ interface AddAreaInfo {
   nomArea: string;
   action: string;
   reaction: string;
+  reactionOption?: string;
 };
 
 export const AddAreaModal = ({
@@ -38,6 +41,9 @@ export const AddAreaModal = ({
   const [selectedReaction, setSelectedReaction] = useState<keyof typeof reactionMap>("sendMessage_telegram");
   const [title, setTitle] = useState("");
   const [emailUser, setEmailUser] = useState("");
+  const [isActionOpen, setIsActionOpen] = useState(false);
+  const [isReactionOpen, setIsReactionOpen] = useState(false);
+  const [reactionOption, setReactionOption] = useState("");
   const { fontSize, letterSpacing } = useSettings();
 
   useEffect(() => {
@@ -83,6 +89,16 @@ export const AddAreaModal = ({
       }
     } catch (error) {
       console.error('Error:', error);
+    }
+  };
+
+  const handleSectionToggle = (section: 'action' | 'reaction') => {
+    if (section === 'action') {
+      setIsActionOpen(!isActionOpen);
+      setIsReactionOpen(false);
+    } else {
+      setIsReactionOpen(!isReactionOpen);
+      setIsActionOpen(false);
     }
   };
 
@@ -136,43 +152,99 @@ export const AddAreaModal = ({
             >
               Action
             </Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={selectedAction}
-                onValueChange={(value) => setSelectedAction(value)}
-                style={[{ color: colors.text, fontSize: fontSize - 2 }]}
-                accessible={true}
-                accessibilityLabel="Sélection de l'action"
-                accessibilityHint="Choisissez l'action déclencheur"
-                accessibilityRole="combobox"
+            <View style={styles.section}>
+              <TouchableOpacity 
+                style={styles.collapsibleHeader}
+                onPress={() => handleSectionToggle('action')}
               >
-                {Object.entries(actionsMap).map(([value, label]) => (
-                  <Picker.Item key={value} label={label} value={value} />
-                ))}
-              </Picker>
+                <Text style={[styles.label, { fontSize: fontSize - 2, letterSpacing }]}>
+                  Action: {actionsMap[selectedAction]}
+                </Text>
+                <Ionicons 
+                  name={isActionOpen ? "chevron-up" : "chevron-down"} 
+                  size={24} 
+                  color={colors.text} 
+                />
+              </TouchableOpacity>
+              
+              {isActionOpen && (
+                <ScrollView style={styles.optionsContainer}>
+                  {Object.entries(actionsMap).map(([value, label]) => (
+                    <TouchableOpacity
+                      key={value}
+                      style={[
+                        styles.optionButton,
+                        selectedAction === value && styles.selectedOption
+                      ]}
+                      onPress={() => {
+                        setSelectedAction(value as keyof typeof actionsMap);
+                      }}
+                    >
+                      <Text style={[
+                        styles.optionText,
+                        selectedAction === value && styles.selectedOptionText
+                      ]}>
+                        {label}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              )}
             </View>
           </View>
-
           <View style={styles.section}>
             <Text
               style={[styles.label, { fontSize: fontSize - 2, letterSpacing }]}
             >
               Réaction
             </Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={selectedReaction}
-                onValueChange={(value) => setSelectedReaction(value)}
-                style={[{ color: colors.text, fontSize: fontSize - 2 }]}
-                accessible={true}
-                accessibilityLabel="Sélection de la réaction"
-                accessibilityHint="Choisissez la réaction à déclencher"
-                accessibilityRole="combobox"
-              >
-                {Object.entries(reactionMap).map(([value, label]) => (
-                  <Picker.Item key={value} label={label} value={value} />
-                ))}
-              </Picker>
+              <View style={styles.section}>
+                <TouchableOpacity 
+                  style={styles.collapsibleHeader}
+                  onPress={() => handleSectionToggle('reaction')}
+                >
+                  <Text style={[styles.label, { fontSize: fontSize - 2, letterSpacing }]}>
+                    Réaction: {reactionMap[selectedReaction]}
+                  </Text>
+                  <Ionicons 
+                    name={isReactionOpen ? "chevron-up" : "chevron-down"} 
+                    size={24} 
+                    color={colors.text} 
+                  />
+                </TouchableOpacity>
+                
+                {isReactionOpen && (
+                  <ScrollView style={styles.optionsContainer}>
+                    {Object.entries(reactionMap).map(([value, label]) => (
+                      <TouchableOpacity
+                        key={value}
+                        style={[
+                          styles.optionButton,
+                          selectedReaction === value && styles.selectedOption
+                        ]}
+                        onPress={() => {
+                          setSelectedReaction(value as keyof typeof reactionMap);
+                        }}
+                      >
+                        <Text style={[
+                          styles.optionText,
+                          selectedReaction === value && styles.selectedOptionText
+                        ]}>
+                          {label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                )}
+                {isReactionOpen && (
+                  <TextInput
+                    style={[styles.optionInput, { fontSize: fontSize - 2 }]}
+                    placeholder="Option pour la réaction"
+                    value={reactionOption}
+                    onChangeText={setReactionOption}
+                    placeholderTextColor={colors.text}
+                  />
+                )}
             </View>
           </View>
 
@@ -230,5 +302,36 @@ const styles = StyleSheet.create({
   pickerContainer: {
     backgroundColor: colors.input,
     borderRadius: 12,
+  },
+  optionsContainer: {
+    maxHeight: 200,
+    marginTop: 10,
+  },
+  optionButton: {
+    padding: 10,
+    backgroundColor: colors.primary,
+    borderRadius: 12,
+    marginBottom: 5,
+  },
+  optionText: {
+    color: colors.text,
+  },
+  selectedOption: {
+    backgroundColor: colors.input,
+  },
+  selectedOptionText: {
+    color: colors.text,
+  },
+  collapsibleHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  optionInput: {
+    backgroundColor: colors.input,
+    borderRadius: 8,
+    padding: 10,
+    marginTop: 10,
+    color: colors.text,
   },
 });
