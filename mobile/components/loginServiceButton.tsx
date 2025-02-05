@@ -32,7 +32,7 @@ const LoginServiceButton: React.FC<ServiceButtonProps> = ({
   const IconComponent = iconType === 'Ionicons' ? Ionicons : FontAwesome;
 
   const handlePress = async () => {
-    const url = `${apiUrl}?email=${encodeURIComponent(userEmail)}&redirectUri=${encodeURIComponent(redirectUri)}`;
+    const url = `${apiUrl}?redirectUri=${encodeURIComponent(redirectUri)}`;
 
     try {
       await Linking.openURL(url);

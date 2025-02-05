@@ -102,6 +102,9 @@ export default function Profile() {
   
           if (response.ok) {
             Alert.alert("Succès", "Connexion réussie");
+            if (onServiceUpdate) {
+              onServiceUpdate();
+            }
           } else {
             const errorData = await response.json();
             const info = errorData.message || response.statusText
@@ -121,6 +124,10 @@ export default function Profile() {
     console.log("activeServices", activeServices);
     console.log("serviceName", serviceName);
     return activeServices.includes(serviceName.toLowerCase());
+  };
+
+  const onServiceUpdate = () => {
+    fetchActiveServices();
   };
 
   return (
@@ -162,6 +169,7 @@ export default function Profile() {
           redirectUri={redirectUri}
           userEmail={userEmail}
           fontSize={fontSize}
+          onServiceUpdate={onServiceUpdate}
           isActive={isServiceActive("github")}
         />
         <ServiceButton
@@ -173,6 +181,7 @@ export default function Profile() {
           redirectUri={redirectUri}
           userEmail={userEmail}
           fontSize={fontSize}
+          onServiceUpdate={onServiceUpdate}
           isActive={isServiceActive("spotify")}
         />
         <ServiceButton
@@ -184,6 +193,7 @@ export default function Profile() {
           redirectUri={redirectUri}
           userEmail={userEmail}
           fontSize={fontSize}
+          onServiceUpdate={onServiceUpdate}
           isActive={isServiceActive("dropbox")}
         />
         <ServiceButton
@@ -195,6 +205,7 @@ export default function Profile() {
           redirectUri={redirectUri}
           userEmail={userEmail}
           fontSize={fontSize}
+          onServiceUpdate={onServiceUpdate}
           isActive={isServiceActive("notion")}
         />
         <ServiceButton
@@ -206,6 +217,7 @@ export default function Profile() {
           redirectUri={redirectUri}
           userEmail={userEmail}
           fontSize={fontSize}
+          onServiceUpdate={onServiceUpdate}
           isActive={isServiceActive("twitch")}
         />
       </ScrollView>

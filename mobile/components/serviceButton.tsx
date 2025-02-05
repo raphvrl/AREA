@@ -15,6 +15,7 @@ interface ServiceButtonProps {
   redirectUri: string;
   userEmail: string;
   fontSize: number;
+  onServiceUpdate?: () => void;
   isActive?: boolean;
 }
 
@@ -27,17 +28,55 @@ const ServiceButton: React.FC<ServiceButtonProps> = ({
   redirectUri,
   userEmail,
   fontSize,
+  onServiceUpdate,
   isActive,
 }) => {
   const IconComponent = iconType === 'Ionicons' ? Ionicons : FontAwesome;
 
-  const handlePress = async () => {
+  const handleConnect = async () => {
     const url = `${apiUrl}?email=${encodeURIComponent(userEmail)}&redirectUri=${encodeURIComponent(redirectUri)}`;
 
     try {
       await Linking.openURL(url);
     } catch (error) {
       Alert.alert("Erreur", `Impossible de se connecter à ${text}`);
+    }
+  }
+
+  const handleDisconnect = async () => {
+    const url = await AsyncStorage.getItem('API_URL');
+
+    try {
+      const response = await fetch(`${url}/api/logoutService`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nameService: text.toLowerCase(),
+          email: userEmail,
+        }),
+      });
+
+      if (response.ok) {
+        Alert.alert('Déconnexion réussie', `Vous êtes maintenant déconnecté de ${text}`);
+        if (onServiceUpdate) {
+          onServiceUpdate();
+        }
+      } else {
+        Alert.alert('Erreur', `Impossible de se déconnecter de ${text}`);
+      }
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handlePress = async () => {
+    if (isActive) {
+      await handleDisconnect();
+    } else {
+      await handleConnect();
     }
   };
 
@@ -49,13 +88,13 @@ const ServiceButton: React.FC<ServiceButtonProps> = ({
           style={[baseStyles.button, styles.serviceButton, { backgroundColor: color }]}
           onPress={handlePress}
           accessible={true}
-          accessibilityLabel={`Connexion ${text}`}
+          accessibilityLabel={isActive ? `Déconnecter ${text}` : `Connecter ${text}`}
           accessibilityRole="button"
         >
           <View style={styles.buttonContent}>
             <IconComponent name={iconName} size={24} color="white" style={styles.buttonIcon} />
             <Text style={[baseStyles.buttonText, { fontSize }]}>
-              {`Connecter ${text}`}
+              {isActive ? `Déconnecter ${text}` : `Connecter ${text}`}
             </Text>
           </View>
         </TouchableOpacity>

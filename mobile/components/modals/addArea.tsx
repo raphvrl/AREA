@@ -29,7 +29,7 @@ interface AddAreaInfo {
   nomArea: string;
   action: string;
   reaction: string;
-  reactionOption?: string;
+  option_reaction?: string
 };
 
 export const AddAreaModal = ({
@@ -61,6 +61,7 @@ export const AddAreaModal = ({
       nomArea: title,
       action: selectedAction,
       reaction: selectedReaction,
+      option_reaction: reactionOption
     };
 
     console.log(areaInfo);
