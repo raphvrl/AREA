@@ -9,9 +9,16 @@ export const actionsMap = {
   repoStarred_github: "dépôt est étoilé sur GitHub",
   followerAdded_github: "nouveau follower GitHub",
   pageCreated_notion: "création d'une page Notion",
+  twitchFollowChange: "changement de followers Twitch",
 };
 
 export const reactionMap = {
   sendMessage_telegram: "envoyer sur Telegram",
   sendMessage_discord: "envoyer sur Discord",
+  createFolder_dropbox: "créer un dossier sur Dropbox",
+  sendMessage_teams: "envoyer sur Teams",
+  sendGif_discord: "envoyer un GIF sur Discord",
+  createPlaylist_spotify: "créer une playlist sur Spotify",
+  playTrack_spotify: "jouer une chanson sur Spotify",
+  createRepo_github: "créer un dépôt sur GitHub",
 };
