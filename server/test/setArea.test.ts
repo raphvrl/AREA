@@ -75,6 +75,12 @@ describe('POST /api/setArea', () => {
         reaction: 'notify_github',
       });
 
+    // Suppression de l'area existante pour permettre une mise à jour correcte
+    await userModel.updateOne(
+      { email: 'john.doe@example.com' },
+      { $unset: { [`area.TestArea`]: 1 } }
+    );
+
     const res = await request(app)
       .post('/api/setArea')
       .send({

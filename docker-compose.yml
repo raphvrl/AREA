@@ -15,8 +15,11 @@ services:
       context: ./mobile
     volumes:
       - shared_volume:/apk
+      - ~/.gradle:/root/.gradle
     depends_on:
       - server
+    mem_limit: 8g
+    cpus: '4.0'
 
   client_web:
     build:
