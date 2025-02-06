@@ -39,7 +39,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const redirectUri = "https://raphvrl.github.io/my-app-redirection/";
+  const redirectUri = "https://raphvrl.github.io/my-app-redirection/home";
   const [apiUrl, setApiUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -160,7 +160,6 @@ export default function Login() {
             iconType="Ionicons"
             apiUrl={`${apiUrl}/api/auth/github`}
             redirectUri={redirectUri}
-            userEmail={email}
             fontSize={16}
           />
           <LoginServiceButton
@@ -170,7 +169,6 @@ export default function Login() {
             iconType="FontAwesome"
             apiUrl={`${apiUrl}/api/auth/spotify`}
             redirectUri={redirectUri}
-            userEmail={email}
             fontSize={16}
           />
           <LoginServiceButton
@@ -180,7 +178,6 @@ export default function Login() {
             iconType="FontAwesome"
             apiUrl={`${apiUrl}/api/auth/dropbox`}
             redirectUri={redirectUri}
-            userEmail={email}
             fontSize={16}
           />
           <LoginServiceButton
@@ -190,7 +187,6 @@ export default function Login() {
             iconType="FontAwesome"
             apiUrl={`${apiUrl}/api/auth/notion`}
             redirectUri={redirectUri}
-            userEmail={email}
             fontSize={16}
           />
           <LoginServiceButton
@@ -200,7 +196,6 @@ export default function Login() {
             iconType="FontAwesome"
             apiUrl={`${apiUrl}/api/auth/twitch`}
             redirectUri={redirectUri}
-            userEmail={email}
             fontSize={16}
           />
         </ScrollView>

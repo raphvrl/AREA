@@ -13,9 +13,7 @@ interface ServiceButtonProps {
   iconType: 'Ionicons' | 'FontAwesome';
   apiUrl: string;
   redirectUri: string;
-  userEmail: string;
   fontSize: number;
-  isActive?: boolean;
 }
 
 const LoginServiceButton: React.FC<ServiceButtonProps> = ({
@@ -25,14 +23,13 @@ const LoginServiceButton: React.FC<ServiceButtonProps> = ({
   iconType,
   apiUrl, 
   redirectUri,
-  userEmail,
   fontSize,
-  isActive,
 }) => {
   const IconComponent = iconType === 'Ionicons' ? Ionicons : FontAwesome;
 
   const handlePress = async () => {
-    const url = `${apiUrl}?redirectUri=${encodeURIComponent(redirectUri)}`;
+    const userEmail = 'jonh.doe@email.com';
+    const url = `${apiUrl}?email=${encodeURIComponent(userEmail)}&redirectUri=${encodeURIComponent(redirectUri)}`;
 
     try {
       await Linking.openURL(url);

@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, ScrollView, Alert } from "react-native";
+import { Text, View, TouchableOpacity, ScrollView, Alert, Linking } from "react-native";
 import { useEffect, useState } from "react";
 import { baseStyles } from "@/styles/baseStyles";
 import { AddAreaModal } from "@/components/modals/addArea";
@@ -18,6 +18,76 @@ export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
   const [areas, setAreas] = useState<AreaType[]>([]);
   const { fontSize, letterSpacing } = useSettings();
+
+  const redirectUri = "https://raphvrl.github.io/my-app-redirection/home";
+
+  useEffect(() => {
+    const checkInitialURL = async () => {
+      try {
+        const initialUrl = await Linking.getInitialURL();
+        if (initialUrl) {
+          handleDeepLink({ url: initialUrl });
+        }
+      } catch (error) {
+        console.error('Erreur URL initiale:', error);
+      }
+    };
+
+    const handleDeepLink = async (event: { url: string }) => {
+      console.log("Hello!");
+
+      const apiUrl = await AsyncStorage.getItem("API_URL");
+
+      const { url} = event;
+      const parseUrl = new URL(url);
+  
+      const code = parseUrl.searchParams.get("code");
+      const state = parseUrl.searchParams.get("state");
+  
+      if (state) {
+        try {    
+          const stateData = JSON.parse(state);
+          const service = stateData.service;
+  
+          const apiLink = `${apiUrl}${service}`;
+  
+          const response = await fetch(apiLink, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              code: code,
+              redirectUri: redirectUri,
+            }),
+          });
+  
+          if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+
+            AsyncStorage.setItem("USER_EMAIL", data.user.email);
+            AsyncStorage.setItem("USER_FIRST_NAME", data.user.firstName);
+            AsyncStorage.setItem("USER_LAST_NAME", data.user.lastName);
+          } else {
+            const errorData = await response.json();
+            const info = errorData.message || response.statusText
+            Alert.alert("Erreur", info);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+
+    checkInitialURL();
+
+    const subscription = Linking.addEventListener("url", handleDeepLink);
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     const fetchAreas = async () => {
