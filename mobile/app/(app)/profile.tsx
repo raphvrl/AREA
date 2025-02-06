@@ -25,7 +25,7 @@ export default function Profile() {
   const [userEmail, setUserEmail] = useState("");
   const [apiUrl, setApiUrl] = useState<string | null>(null);
   const [activeServices, setActiveServices] = useState<string[]>([]);
-  const redirectUri = "https://raphvrl.github.io/my-app-redirection/";
+  const redirectUri = "https://raphvrl.github.io/my-app-redirection/profile";
 
   const fetchActiveServices = async () => {
     try {
@@ -71,9 +71,9 @@ export default function Profile() {
     fetchApiUrl();
     fetchActiveServices();
 
-    console.log("activeServices", activeServices);
-
     const handleDeepLink = async (event: { url: string }) => {
+      if (!event.url.includes('/profile')) return;
+
       const { url} = event;
       const parseUrl = new URL(url);
   
@@ -121,8 +121,6 @@ export default function Profile() {
   }, [userEmail, apiUrl]);
 
   const isServiceActive = (serviceName: string): boolean => {
-    console.log("activeServices", activeServices);
-    console.log("serviceName", serviceName);
     return activeServices.includes(serviceName.toLowerCase());
   };
 
