@@ -22,19 +22,7 @@ export default function Home() {
   const redirectUri = "https://raphvrl.github.io/my-app-redirection/home";
 
   useEffect(() => {
-    const checkInitialURL = async () => {
-      try {
-        const initialUrl = await Linking.getInitialURL();
-        if (initialUrl) {
-          handleDeepLink({ url: initialUrl });
-        }
-      } catch (error) {
-        console.error('Erreur URL initiale:', error);
-      }
-    };
-
     const handleDeepLink = async (event: { url: string }) => {
-      console.log("Hello!");
 
       const apiUrl = await AsyncStorage.getItem("API_URL");
 
@@ -64,11 +52,9 @@ export default function Home() {
   
           if (response.ok) {
             const data = await response.json();
-            console.log(data);
-
-            AsyncStorage.setItem("USER_EMAIL", data.user.email);
-            AsyncStorage.setItem("USER_FIRST_NAME", data.user.firstName);
-            AsyncStorage.setItem("USER_LAST_NAME", data.user.lastName);
+            await AsyncStorage.setItem("USER_EMAIL", data.user.email);
+            await AsyncStorage.setItem("USER_FIRST_NAME", data.user.firstName);
+            await AsyncStorage.setItem("USER_LAST_NAME", data.user.lastName);
           } else {
             const errorData = await response.json();
             const info = errorData.message || response.statusText
@@ -80,13 +66,9 @@ export default function Home() {
       }
     };
 
-    checkInitialURL();
-
     const subscription = Linking.addEventListener("url", handleDeepLink);
 
-    return () => {
-      subscription.remove();
-    };
+    return () => subscription.remove();
   }, []);
 
   useEffect(() => {
