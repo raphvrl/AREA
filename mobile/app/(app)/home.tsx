@@ -52,9 +52,11 @@ export default function Home() {
   
           if (response.ok) {
             const data = await response.json();
-            await AsyncStorage.setItem("USER_EMAIL", data.user.email);
-            await AsyncStorage.setItem("USER_FIRST_NAME", data.user.firstName);
-            await AsyncStorage.setItem("USER_LAST_NAME", data.user.lastName);
+            await Promise.all([
+              AsyncStorage.setItem("USER_EMAIL", data.user.email),
+              AsyncStorage.setItem("USER_FIRST_NAME", data.user.firstName),
+              AsyncStorage.setItem("USER_LAST_NAME", data.user.lastName),
+            ]);
           } else {
             const errorData = await response.json();
             const info = errorData.message || response.statusText
