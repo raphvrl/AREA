@@ -39,7 +39,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const redirectUri = "https://raphvrl.github.io/my-app-redirection/home";
+  const redirectUri = "https://raphvrl.github.io/my-app-redirection/profile";
   const [apiUrl, setApiUrl] = useState<string | null>(null);
 
   useEffect(() => {

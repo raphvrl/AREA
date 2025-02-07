@@ -20,5 +20,5 @@ export const reactionMap = {
   sendGif_discord: "envoyer un GIF sur Discord",
   createPlaylist_spotify: "créer une playlist sur Spotify",
   playTrack_spotify: "jouer une chanson sur Spotify",
-  createRepo_github: "créer un dépôt sur GitHub",
+  createPage_notion: "créer une page sur Notion",
 };

@@ -79,6 +79,9 @@ export default function Profile() {
   
       const code = parseUrl.searchParams.get("code");
       const state = parseUrl.searchParams.get("state");
+
+      console.log('code:', code);
+      console.log('state:', state);
   
       if (state) {
         try {

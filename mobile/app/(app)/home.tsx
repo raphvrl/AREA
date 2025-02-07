@@ -19,58 +19,6 @@ export default function Home() {
   const [areas, setAreas] = useState<AreaType[]>([]);
   const { fontSize, letterSpacing } = useSettings();
 
-  const redirectUri = "https://raphvrl.github.io/my-app-redirection/home";
-
-  useEffect(() => {
-    const handleDeepLink = async (event: { url: string }) => {
-
-      const apiUrl = await AsyncStorage.getItem("API_URL");
-
-      const { url} = event;
-      const parseUrl = new URL(url);
-  
-      const code = parseUrl.searchParams.get("code");
-      const state = parseUrl.searchParams.get("state");
-  
-      if (state) {
-        try {    
-          const stateData = JSON.parse(state);
-          const service = stateData.service;
-  
-          const apiLink = `${apiUrl}${service}`;
-  
-          const response = await fetch(apiLink, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              code: code,
-              redirectUri: redirectUri,
-            }),
-          });
-  
-          if (response.ok) {
-            const data = await response.json();
-            await AsyncStorage.setItem("USER_EMAIL", data.user.email);
-            await AsyncStorage.setItem("USER_FIRST_NAME", data.user.firstName);
-            await AsyncStorage.setItem("USER_LAST_NAME", data.user.lastName);
-          } else {
-            const errorData = await response.json();
-            const info = errorData.message || response.statusText
-            Alert.alert("Erreur", info);
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    };
-
-    const subscription = Linking.addEventListener("url", handleDeepLink);
-
-    return () => subscription.remove();
-  }, []);
-
   useEffect(() => {
     const fetchAreas = async () => {
       const apiUrl = await AsyncStorage.getItem("API_URL");
