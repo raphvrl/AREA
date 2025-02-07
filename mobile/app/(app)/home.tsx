@@ -23,7 +23,8 @@ export default function Home() {
 
   useEffect(() => {
     const handleDeepLink = async (event: { url: string }) => {
-
+      
+      console.log("hello");
       const apiUrl = await AsyncStorage.getItem("API_URL");
 
       const { url} = event;
@@ -31,6 +32,7 @@ export default function Home() {
   
       const code = parseUrl.searchParams.get("code");
       const state = parseUrl.searchParams.get("state");
+
   
       if (state) {
         try {    
