@@ -131,6 +131,7 @@ export const authTwitchCallback = async (req: Request, res: Response) => {
       const email = twitchUser.email; // Récupérer l'email (nécessite le scope user:read:email)
       const displayName = twitchUser.display_name; // Nom d'affichage (pseudo)
       const twitchUserId = userResponse.data.data[0].id;
+      console.log("DATA", twitchUser);
       const userIdAccount = await userModel.findOne({
         email: email,
       });
@@ -184,7 +185,7 @@ export const authTwitchCallback = async (req: Request, res: Response) => {
       const serviceMap = newUser.service as Map<string, string>;
       const idServiceMap = newUser.idService as Map<string, string>;
       apiKeysMap.set('twitch', accessToken);
-      serviceMap.set('twich', 'true');
+      serviceMap.set('twitch', 'true');
       idServiceMap.set('twitch', twitchUserId);
       await newUser.save();
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');

@@ -28,6 +28,7 @@ export const authNotion = async (req: Request, res: Response) => {
     'page:write',
     'database:read',
     'database:write',
+    'user:email',
   ];
 
   const notionAuthUrl =
@@ -137,6 +138,33 @@ export const authNotionCallback = async (req: Request, res: Response) => {
       );
 
       const userId = userInfoResponse.data.id;
+      console.log("DATA", userInfoResponse.data.bot.owner.user)
+      const nameUser = userInfoResponse.data.bot.owner.user.name;
+      const emailUser = userInfoResponse.data.bot.owner.user.person.email;
+      const userIdAccount = await userModel.findOne({
+        email: emailUser,
+      });
+      if (userIdAccount) {
+        const apiKeysMap = userIdAccount.apiKeys as Map<string, string>;
+        const serviceMap = userIdAccount.service as Map<string, string>;
+        const idServiceMap = userIdAccount.idService as Map<string, string>;
+        apiKeysMap.set('notion', access_token);
+        serviceMap.set('notion', 'true');
+        idServiceMap.set('notion', userId);
+        await userIdAccount.save();
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        return res.status(200).json({
+          message: 'User found',
+          user: {
+            firstName: userIdAccount.firstName,
+            lastName: userIdAccount.lastName,
+            email: userIdAccount.email,
+            service: userIdAccount.service,
+          },
+        });
+      }
       const user = await userModel.findOne({
         'idService.notion': userId,
       });
@@ -153,11 +181,31 @@ export const authNotionCallback = async (req: Request, res: Response) => {
             service: user.service,
           },
         });
-      } else {
-        return res
-          .status(404)
-          .json({ message: 'No user found with this Dropbox ID' });
-      }
+      } 
+      const newUser = new userModel({
+        firstName: nameUser,
+        lastName: nameUser,
+        email: email,
+      });
+      await newUser.save();
+      const apiKeysMap = newUser.apiKeys as Map<string, string>;
+      const serviceMap = newUser.service as Map<string, string>;
+      const idServiceMap = newUser.idService as Map<string, string>;
+      apiKeysMap.set('twitch', access_token);
+      serviceMap.set('twitch', 'true');
+      idServiceMap.set('twitch', userId);
+      await newUser.save();
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+      return res.status(200).json({
+        message: 'User found',
+        user: {
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          email: newUser.email,
+        },
+      });
     }
   } catch (error) {
     console.error('Error in LinkedIn callback:', error);
