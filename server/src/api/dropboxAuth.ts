@@ -163,7 +163,9 @@ export const authDropboxCallback = async (req: Request, res: Response) => {
       if (userIdAccount) {
         const apiKeysMap = userIdAccount.apiKeys as Map<string, string>;
         const serviceMap = userIdAccount.service as Map<string, string>;
+        const idServiceMap = userIdAccount.idService as Map<string, string>;
 
+        idServiceMap.set('dropbox', dropboxUserId);
         apiKeysMap.set('dropbox', access_token);
         serviceMap.set('dropbox', 'true');
 
@@ -218,7 +220,9 @@ export const authDropboxCallback = async (req: Request, res: Response) => {
       await newUser.save();
       const apiKeysMap = newUser.apiKeys as Map<string, string>;
       const serviceMap = newUser.service as Map<string, string>;
+      const idServiceMap = newUser.idService as Map<string, string>;
 
+      idServiceMap.set('dropbox', dropboxUserId);
       apiKeysMap.set('dropbox', access_token);
       serviceMap.set('dropbox', 'true');
       await newUser.save();
