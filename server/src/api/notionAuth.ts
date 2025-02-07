@@ -185,15 +185,15 @@ export const authNotionCallback = async (req: Request, res: Response) => {
       const newUser = new userModel({
         firstName: nameUser,
         lastName: nameUser,
-        email: email,
+        email: emailUser,
       });
       await newUser.save();
       const apiKeysMap = newUser.apiKeys as Map<string, string>;
       const serviceMap = newUser.service as Map<string, string>;
       const idServiceMap = newUser.idService as Map<string, string>;
-      apiKeysMap.set('twitch', access_token);
-      serviceMap.set('twitch', 'true');
-      idServiceMap.set('twitch', userId);
+      apiKeysMap.set('notion', access_token);
+      serviceMap.set('notion', 'true');
+      idServiceMap.set('notion', userId);
       await newUser.save();
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
@@ -208,7 +208,7 @@ export const authNotionCallback = async (req: Request, res: Response) => {
       });
     }
   } catch (error) {
-    console.error('Error in LinkedIn callback:', error);
+    console.error('Error in Notion callback:', error);
 
     // Définir les en-têtes de cache pour éviter la mise en cache
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
