@@ -1,91 +1,160 @@
-import User from './userModel';
+import mongoose from 'mongoose';
+import userModel from './userModel'; // Assurez-vous que le chemin est correct
 
-export const createUser = async (userData: {
-  firstName?: string;
-  lastName?: string;
-  email: string;
-  apiKeys?: { [key: string]: string };
-  idService?: { [key: string]: string };
-  service?: { [key: string]: string };
-  lastFirstName?: string;
-  password?: string;
-}) => {
-  const user = new User(userData);
-  await user.save();
-  console.log('User created:', user);
-};
-
-export const createUserWithCredentials = async (
-  lastFirstName: string,
-  password: string
-) => {
-  const user = new User({ lastFirstName, password });
-  await user.save();
-  console.log('User created with credentials:', user);
-  return user;
-};
-
+// Fonction pour récupérer un utilisateur par email
 export const getUserByEmail = async (email: string) => {
-  const user = await User.findOne({ email });
-  console.log('User found:', user);
-  return user;
+  try {
+    const user = await userModel.findOne({ email });
+    return user;
+  } catch (error) {
+    console.error('Error fetching user by email:', error);
+    throw error;
+  }
 };
 
-export const updateUserApiKey = async (
-  lastName: string,
-  firstName: string,
-  service: string,
-  encryptedKey: string
-) => {
-  const user = await User.findOneAndUpdate(
-    { firstName, lastName },
-    { $set: { [`apiKeys.${service}`]: encryptedKey } },
-    { new: true }
-  );
-  console.log('Updated user:', user);
-  return user;
+// Fonction pour mettre à jour ou créer un utilisateur
+export const saveUser = async (userData: any) => {
+  try {
+    const user = await userModel.findOneAndUpdate(
+      { email: userData.email },
+      userData,
+      { new: true, upsert: true }
+    );
+    return user;
+  } catch (error) {
+    console.error('Error saving user:', error);
+    throw error;
+  }
 };
 
-export const updateUserService = async (
-  firstName: string,
-  lastName: string,
-  service: string,
-  is_activate: boolean
-) => {
-  const user = await User.findOneAndUpdate(
-    { firstName, lastName },
-    { $set: { [`service.${service}`]: is_activate } },
-    { new: true }
-  );
-  console.log('Updated user:', user);
-  return user;
-};
-export const updateUserCredentials = async (
-  lastName: string,
-  firstName: string,
-  lastFirstName: string,
-  password: string
-) => {
-  const user = await User.findOneAndUpdate(
-    { firstName, lastName },
-    { $set: { lastFirstName, password } },
-    { new: true }
-  );
-  console.log('Updated user credentials:', user);
-  return user;
+// Fonction pour mettre à jour les clés API d'un utilisateur
+export const updateApiKeys = async (email: string, apiKeys: Map<string, string>) => {
+  try {
+    const user = await userModel.findOneAndUpdate(
+      { email },
+      { apiKeys },
+      { new: true }
+    );
+    return user;
+  } catch (error) {
+    console.error('Error updating API keys:', error);
+    throw error;
+  }
 };
 
-export const updateUserIdService = async (
-  lastName: string,
-  firstName: string,
-  service: string,
-  id: string
-) => {
-  const user = await User.findOneAndUpdate(
-    { firstName, lastName },
-    { $set: { [`idService.${service}`]: id } },
-    { new: true }
-  );
-  console.log('Updated user:', user);
-  return user;
+// Fonction pour mettre à jour les services d'un utilisateur
+export const updateServices = async (email: string, services: Map<string, string>) => {
+  try {
+    const user = await userModel.findOneAndUpdate(
+      { email },
+      { service: services },
+      { new: true }
+    );
+    return user;
+  } catch (error) {
+    console.error('Error updating services:', error);
+    throw error;
+  }
+};
+
+// Fonction pour mettre à jour les IDs de service d'un utilisateur
+export const updateIdServices = async (email: string, idServices: Map<string, string>) => {
+  try {
+    const user = await userModel.findOneAndUpdate(
+      { email },
+      { idService: idServices },
+      { new: true }
+    );
+    return user;
+  } catch (error) {
+    console.error('Error updating ID services:', error);
+    throw error;
+  }
+};
+
+// Fonction pour mettre à jour les URI de redirection
+export const updateRedirectUri = async (email: string, service: string, redirectUri: string) => {
+  try {
+    const updateField = `redirectUri${service}`;
+    const user = await userModel.findOneAndUpdate(
+      { email },
+      { [updateField]: redirectUri },
+      { new: true }
+    );
+    return user;
+  } catch (error) {
+    console.error('Error updating redirect URI:', error);
+    throw error;
+  }
+};
+
+// Fonction pour ajouter ou mettre à jour une zone (area) d'un utilisateur
+export const updateUserArea = async (email: string, areaId: string, areaData: any) => {
+  try {
+    const user = await userModel.findOneAndUpdate(
+      { email },
+      { $set: { [`area.${areaId}`]: areaData } },
+      { new: true }
+    );
+    return user;
+  } catch (error) {
+    console.error('Error updating user area:', error);
+    throw error;
+  }
+};
+
+// Fonction pour récupérer les zones (areas) d'un utilisateur
+export const getUserAreas = async (email: string) => {
+  try {
+    const user = await userModel.findOne({ email });
+    return user?.area;
+  } catch (error) {
+    console.error('Error fetching user areas:', error);
+    throw error;
+  }
+};
+
+// Fonction pour mettre à jour les musiques enregistrées Spotify d'un utilisateur
+export const updateSpotifySavedTracks = async (email: string, savedTracks: string[]) => {
+  try {
+    const user = await userModel.findOneAndUpdate(
+      { email },
+      { 'spotify.savedTracks': savedTracks },
+      { new: true }
+    );
+    return user;
+  } catch (error) {
+    console.error('Error updating Spotify saved tracks:', error);
+    throw error;
+  }
+};
+
+// Fonction pour mettre à jour le mot de passe d'un utilisateur
+export const updatePassword = async (email: string, password: string) => {
+  try {
+    const user = await userModel.findOneAndUpdate(
+      { email },
+      { password },
+      { new: true }
+    );
+    return user;
+  } catch (error) {
+    console.error('Error updating password:', error);
+    throw error;
+  }
+};
+
+// Fonction pour mettre à jour le nom et prénom d'un utilisateur
+export const updateName = async (email: string, firstName: string, lastName: string) => {
+  try {
+    const user = await userModel.findOneAndUpdate(
+      { email },
+      { firstName, lastName },
+      { new: true }
+    );
+    return user;
+  } catch (error) {
+    console.error('Error updating name:', error);
+    throw error;
+  }
 };

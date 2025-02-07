@@ -5,12 +5,38 @@ interface DropboxResponse {
   message: string;
 }
 
-export const createFolder_dropbox = async (email: string, actionResult?: any): Promise<DropboxResponse | null> => {
+// Variables de contrôle
+const createdFolders = new Set<string>();
+let lastFolderCreationTime = 0;
+const CREATION_COOLDOWN = 5000;
+let isCreatingFolder = false;
+
+export const createFolder_dropbox = async (
+  email: string,
+  option: string,
+  actionResult?: any
+): Promise<DropboxResponse | null> => {
   try {
-    console.log('📁 Tentative de création de dossier Dropbox pour:', email);
+    // Vérifications multi-niveaux
+    if (isCreatingFolder) {
+      console.log('⚠️ Création de dossier déjà en cours');
+      return null;
+    }
+
+    const currentTime = Date.now();
+    if (currentTime - lastFolderCreationTime < CREATION_COOLDOWN) {
+      console.log('⏳ Délai minimum non respecté:', currentTime - lastFolderCreationTime);
+      return null;
+    }
+
+    // Verrouiller la création
+    isCreatingFolder = true;
+
+    console.log('📁 Tentative de création de dossier:', option);
     const user = await userModel.findOne({ email });
-    
+
     if (!user) {
+      isCreatingFolder = false;
       throw new Error(`Utilisateur avec l'email "${email}" non trouvé`);
     }
 
@@ -18,44 +44,72 @@ export const createFolder_dropbox = async (email: string, actionResult?: any): P
     const dropboxToken = apiKeysMap.get('dropbox');
 
     if (!dropboxToken) {
+      isCreatingFolder = false;
       throw new Error('Token Dropbox manquant');
     }
 
-    // Nom du dossier à créer (en dur pour l'instant)
-    const folderName = 'test-area-folder';
-    const folderPath = `/${folderName}`;
+    // Vérifier si le dossier existe déjà
+    const listResponse = await axios.post(
+      'https://api.dropboxapi.com/2/files/list_folder',
+      {
+        path: '',
+        recursive: false
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${dropboxToken}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    const existingFolders = listResponse.data.entries
+      .filter((entry: any) => entry['.tag'] === 'folder')
+      .map((folder: any) => folder.name);
+
+    if (existingFolders.includes(option)) {
+      console.log('🚫 Un dossier avec ce nom existe déjà:', option);
+      isCreatingFolder = false;
+      return null;
+    }
+
+    const folderPath = `/${option}`;
 
     // Créer le dossier
     await axios.post(
       'https://api.dropboxapi.com/2/files/create_folder_v2',
       {
         path: folderPath,
-        autorename: true
+        autorename: false
       },
       {
         headers: {
-          'Authorization': `Bearer ${dropboxToken}`,
+          Authorization: `Bearer ${dropboxToken}`,
           'Content-Type': 'application/json'
         }
       }
     );
 
+    // Mettre à jour les variables de contrôle
+    createdFolders.add(option);
+    lastFolderCreationTime = currentTime;
+    isCreatingFolder = false;
+
     console.log('✅ Dossier créé avec succès:', folderPath);
     return {
-      message: `📁 Nouveau dossier Dropbox créé !\nNom: ${folderName}\nChemin: ${folderPath}`
+      message: `📁 Nouveau dossier Dropbox créé !\nNom: ${option}\nChemin: ${folderPath}`
     };
 
   } catch (error) {
+    isCreatingFolder = false;
     console.error('❌ Erreur dans createFolder_dropbox:', error);
     if (axios.isAxiosError(error)) {
-      console.error('Détails de l\'erreur:', {
+      console.error("Détails de l'erreur:", {
         status: error.response?.status,
         statusText: error.response?.statusText,
         data: error.response?.data
       });
     }
-    throw new Error(
-      `Erreur lors de la création du dossier: ${error instanceof Error ? error.message : 'Erreur inconnue'}`
-    );
+    throw error;
   }
 };

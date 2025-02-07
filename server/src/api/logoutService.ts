@@ -19,19 +19,30 @@ export const logoutService = async (req: Request, res: Response) => {
     }
 
     const serviceMap = user.service as Map<string, string>;
-    console.log(serviceMap.get(nameService));
+    const idServiceMap = user.idService as Map<string, string>;
+    const apiKeysMap = user.apiKeys as Map<string, string>;
+
     if (!serviceMap || serviceMap.get(nameService) === undefined) {
       return res.status(404).json({
         message: `Service "${nameService}" not found for user "${email}".`,
       });
     }
 
+    // Mettre à jour le service à 'false'
     serviceMap.set(nameService, 'false');
+
+    // Supprimer l'idService et l'apiKeys liés au service
+    if (idServiceMap.has(nameService)) {
+      idServiceMap.delete(nameService);
+    }
+    if (apiKeysMap.has(nameService)) {
+      apiKeysMap.delete(nameService);
+    }
 
     await user.save();
 
     return res.status(200).json({
-      message: `Service "${nameService}" has been successfully logged out.`,
+      message: `Service "${nameService}" has been successfully logged out and associated data has been removed.`,
     });
   } catch (error) {
     console.error('Error in logoutService:', error);

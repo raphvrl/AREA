@@ -10,10 +10,11 @@ interface DiscordMessage {
 
 export const sendMessageDiscord = async (
   email: String,
+  option: String,
   actionResult: DiscordMessage | null
 ): Promise<boolean> => {
   try {
-    if (!DISCORD_WEBHOOK_URL) {
+    if (!option) {
       throw new Error('Missing Discord webhook URL configuration');
     }
 
@@ -22,7 +23,7 @@ export const sendMessageDiscord = async (
       return true;
     }
 
-    const response = await axios.post(DISCORD_WEBHOOK_URL, {
+    const response = await axios.post(option as string, {
       content: actionResult.message,
       username: 'AREA Bot',
       avatar_url: 'https://github.com/github.png',

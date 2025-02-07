@@ -13,26 +13,35 @@ interface FolderCreatedResult {
     name: string;
 }
 
-let knownFolderPaths: string[] = [];
+const knownFolderPaths = new Set<string>();
+let lastExecutionTime = 0;
+const EXECUTION_DELAY = 5000;
 let isInitialized = false;
 
 export const folderCreated_dropbox = async (email: string): Promise<FolderCreatedResult | null> => {
     try {
-        console.log('Checking for new Dropbox folders for user:', email);
+        const currentTime = Date.now();
+        if (currentTime - lastExecutionTime < EXECUTION_DELAY) {
+            console.log('⏳ Vérification ignorée : trop tôt depuis la dernière exécution');
+            return null;
+        }
+        lastExecutionTime = currentTime;
+
+        console.log('🔍 Vérification des nouveaux dossiers Dropbox pour:', email);
         const user = await UserModel.findOne({ email });
         if (!user) {
-            throw new Error(`User with email "${email}" not found.`);
+            throw new Error(`Utilisateur avec l'email "${email}" non trouvé`);
         }
 
         const apiKeysMap = user.apiKeys as Map<string, string>;
         const dropboxToken = apiKeysMap.get('dropbox');
 
         if (!dropboxToken) {
-            throw new Error(`Dropbox token missing for user "${email}".`);
+            throw new Error('Token Dropbox manquant');
         }
 
-        console.log('Making request to Dropbox API...');
-        const response = await axios.post('https://api.dropboxapi.com/2/files/list_folder', 
+        const response = await axios.post(
+            'https://api.dropboxapi.com/2/files/list_folder',
             {
                 path: "",
                 recursive: false,
@@ -47,43 +56,44 @@ export const folderCreated_dropbox = async (email: string): Promise<FolderCreate
             }
         );
 
-        // Filtrer pour ne garder que les dossiers
-        const folders = response.data.entries.filter((entry: any) => entry['.tag'] === 'folder') as DropboxFolder[];
-        const currentFolderPaths = folders.map((folder: DropboxFolder) => folder.path_display);
+        const currentFolders = response.data.entries
+            .filter((entry: DropboxFolder) => entry['.tag'] === 'folder')
+            .map((folder: DropboxFolder) => folder.path_display);
 
-        console.log('Current folders:', currentFolderPaths);
+        console.log('📂 Dossiers actuels:', currentFolders);
 
         if (!isInitialized) {
-            knownFolderPaths = currentFolderPaths;
+            currentFolders.forEach((path: string) => knownFolderPaths.add(path));
             isInitialized = true;
-            console.log('First run - Initialized with folders:', knownFolderPaths);
+            console.log('🚀 Première exécution - Initialisation avec les dossiers:', Array.from(knownFolderPaths));
             return null;
         }
 
-        // Trouver les nouveaux dossiers
-        const newFolders = folders.filter((folder: DropboxFolder) => !knownFolderPaths.includes(folder.path_display));
+        const newFolders = currentFolders.filter((path: string) => !knownFolderPaths.has(path));
+        
+        currentFolders.forEach((path: string) => knownFolderPaths.add(path));
 
         if (newFolders.length > 0) {
-            const latestFolder = newFolders[0];
-            knownFolderPaths = currentFolderPaths;
+            const newFolder = newFolders[0];
+            const folderName = newFolder.split('/').pop() || 'unknown';
             
-            console.log('New folder detected:', {
-                name: latestFolder.name,
-                path: latestFolder.path_display
+            console.log('✨ Nouveau dossier détecté:', {
+                name: folderName,
+                path: newFolder
             });
 
             return {
-                message: `📁 Nouveau dossier Dropbox créé:\nNom: ${latestFolder.name}\nChemin: ${latestFolder.path_display}`,
-                name: latestFolder.name
+                message: `📁 Nouveau dossier Dropbox créé:\nNom: ${folderName}\nChemin: ${newFolder}`,
+                name: folderName
             };
         }
 
-        console.log('No new folders detected');
+        console.log('😴 Aucun nouveau dossier détecté');
         return null;
 
     } catch (error) {
         const axiosError = error as AxiosError;
-        console.error('Error details:', {
+        console.error('❌ Erreur dans folderCreated_dropbox:', {
             name: axiosError.name,
             message: axiosError.message,
             response: axiosError.response?.data

@@ -1,11 +1,9 @@
 import { Request, Response } from 'express';
 import SpotifyWebApi from 'spotify-web-api-node';
 import UserModel from '../db/userModel';
-import { getServerIp } from '../utils/giveIp';
 import dotenv from 'dotenv';
 dotenv.config();
 
-// Initialisation de SpotifyWebApi sans redirectUri pour le moment
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
@@ -14,13 +12,11 @@ const spotifyApi = new SpotifyWebApi({
 export const authSpotify = (req: Request, res: Response) => {
   const { email, redirectUri } = req.query;
   const service = '/api/auth/spotify/callback';
-  if (!email || !redirectUri) {
-    return res
-      .status(400)
-      .json({ message: 'Email and redirectUri are required' });
+  
+  if (!redirectUri) {
+    return res.status(400).json({ message: 'redirectUri is required' });
   }
 
-  // Définition dynamique du redirectUri
   spotifyApi.setRedirectURI(redirectUri as string);
 
   const scopes = [
@@ -38,100 +34,99 @@ export const authSpotify = (req: Request, res: Response) => {
     'user-read-private',
     'user-library-modify',
     'user-library-read',
+    'user-read-email',
   ];
 
-  const state = JSON.stringify({ service });
-
-  // Création de l'URL d'autorisation
+  const state = JSON.stringify({ service, email });
   const authorizeURL = spotifyApi.createAuthorizeURL(scopes, state);
-
-  // Redirection vers l'URL d'autorisation Spotify
   res.redirect(authorizeURL);
 };
 
 export const authSpotifyCallback = async (req: Request, res: Response) => {
-  const { code, email, isLogin } = req.body;
+  const { code, email, redirectUri } = req.body;
 
   if (!code) {
-    return res.status(400).json({ message: 'Code is required' });
+    return res.status(400).json({ message: 'Code requis' });
   }
 
   try {
     const data = await spotifyApi.authorizationCodeGrant(code.toString());
-    const { access_token, refresh_token } = data.body;
+    const { access_token } = data.body;
 
     spotifyApi.setAccessToken(access_token);
-
     const userProfile = await spotifyApi.getMe();
-    const spotifyUserId = userProfile.body.id;
+    const {
+      id: spotifyUserId,
+      display_name: spotifyName,
+      email: spotifyEmail
+    } = userProfile.body;
 
-    console.log('Spotify ID:', spotifyUserId);
-    console.log('Access Token:', access_token);
+    console.log('Infos Spotify:', {
+      id: spotifyUserId,
+      name: spotifyName,
+      email: spotifyEmail
+    });
 
-    if (email) {
-      console.log('User email:', email);
-      const user = await UserModel.findOne({ email });
+    // Rechercher l'utilisateur par email ou ID Spotify
+    let user = await UserModel.findOne({
+      $or: [
+        { email: email || spotifyEmail },
+        { 'idService.spotify': spotifyUserId }
+      ]
+    });
 
-      if (user) {
-        const apiKeysMap = user.apiKeys as Map<string, string>;
-        const serviceMap = user.service as Map<string, string>;
-        const idServiceMap = user.idService as Map<string, string>;
+    if (user) {
+      // Mise à jour des infos Spotify pour un utilisateur existant
+      const apiKeysMap = user.apiKeys as Map<string, string>;
+      const serviceMap = user.service as Map<string, string>;
+      const idServiceMap = user.idService as Map<string, string>;
 
-        apiKeysMap.set('spotify', access_token);
-        serviceMap.set('spotify', 'true');
-        idServiceMap.set('spotify', spotifyUserId);
+      apiKeysMap.set('spotify', access_token);
+      serviceMap.set('spotify', 'true');
+      idServiceMap.set('spotify', spotifyUserId);
 
-        await user.save();
-        return res.status(200).json({
-          message: 'Login successful',
-          user: {
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-          },
-        });
-      } else {
-        return res
-          .status(404)
-          .json({ message: 'No user found with this Spotify ID' });
-      }
-    }
-
-    if (isLogin) {
-      console.log('Checking login with Spotify ID:', spotifyUserId);
-      const user = await UserModel.findOne({
-        [`idService.spotify`]: spotifyUserId,
+      await user.save();
+    } else {
+      // Création automatique d'un nouveau compte
+      const nameParts = spotifyName ? spotifyName.split(' ') : ['Utilisateur', 'Spotify'];
+      user = new UserModel({
+        firstName: nameParts[0] || 'Utilisateur',
+        lastName: nameParts[1] || 'Spotify',
+        email: spotifyEmail,
+        password: '', // Pas besoin de mot de passe pour l'auth OAuth
+        apiKeys: new Map([['spotify', access_token]]),
+        service: new Map([['spotify', 'true']]),
+        idService: new Map([['spotify', spotifyUserId]]),
+        isOAuthUser: true
       });
 
-      if (user) {
-        console.log(
-          'firstName',
-          user.firstName,
-          'lastName',
-          user.lastName,
-          'email',
-          user.email
-        );
-        return res.status(200).json({
-          message: 'User found',
-          user: {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-          },
-        });
-      } else {
-        return res
-          .status(404)
-          .json({ message: 'No user found with this Spotify ID' });
-      }
+      await user.save();
+      console.log('✅ Nouveau compte créé avec Spotify:', {
+        email: spotifyEmail,
+        name: spotifyName
+      });
     }
 
-    return res.status(400).json({
-      message: 'Invalid parameters. Provide either email or isLogin.',
+    // Configuration des headers pour éviter la mise en cache
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+
+    return res.status(200).json({
+      message: user.isOAuthUser ? 'Compte créé et connecté avec succès' : 'Authentification Spotify réussie',
+      user: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        isFirstLogin: user.isOAuthUser
+      }
     });
+
   } catch (error) {
-    console.error('Error in authSpotifyCallback:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error('Erreur callback Spotify:', error);
+    res.status(500).json({
+      message: 'Erreur interne du serveur',
+      error: error instanceof Error ? error.message : 'Erreur inconnue'
+    });
   }
 };

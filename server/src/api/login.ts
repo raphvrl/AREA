@@ -16,6 +16,14 @@ export const signUp = async (req: Request, res: Response) => {
 
     // Vérifier si l'utilisateur existe déjà
     const existingUser = await userModel.findOne({ email });
+    if (existingUser && !existingUser.password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      existingUser.password = hashedPassword;
+      existingUser.firstName = firstName;
+      existingUser.lastName = lastName;
+      await existingUser.save();
+      return res.status(201).json({ message: 'User registered successfully' });
+    }
     if (existingUser) {
       return res.status(400).json({ message: 'Email already in use' });
     }

@@ -11,11 +11,14 @@ import { trackLiked_spotify } from './action/trackLiked_spotify';
 import { repoStarred_github } from './action/repoStarred_github';
 import { followerAdded_github } from './action/followerAdded_github';
 import { pageCreated_notion } from './action/pageCreated_notion';
-import {sendMessageTeams} from './reaction/teamsReaction';
-import {twitchFollowChange} from './action/twitchFollowChange';
-import {sendGifDiscord} from './reaction/giphyReaction';
-import {createFolder_dropbox} from './reaction/dropboxCreateReaction';
-import {createPlaylist_spotify} from './reaction/spotifyReaction';
+import { sendMessageTeams } from './reaction/teamsReaction';
+import { twitchFollowChange } from './action/twitchFollowChange';
+import { sendGifDiscord } from './reaction/giphyReaction';
+import { createFolder_dropbox } from './reaction/dropboxCreateReaction';
+import { createPlaylist_spotify } from './reaction/spotifyReaction';
+import { playTrack_spotify } from './reaction/playTrackReaction';
+import { createRepo_github } from './reaction/githubCreateReaction';
+import { createPage_notion } from './reaction/notionCreateReaction';
 
 type Handler = (email: string, option?: string, data?: any) => Promise<any>;
 
@@ -43,18 +46,26 @@ const areaHandlers: { [key: string]: Handler } = {
   },
   sendMessage_telegram: async (
     email: string,
-    actionResult?: any,
-    option?: string
+    option?: string,
+    actionResult?: any
   ) => {
-    const result = await sendMessageTelegram(email, actionResult);
+    const result = await sendMessageTelegram(
+      email,
+      option as string,
+      actionResult
+    );
     return result;
   },
   sendMessage_discord: async (
     email: string,
-    actionResult?: any,
-    option?: string
+    option?: string,
+    actionResult?: any
   ) => {
-    const result = await sendMessageDiscord(email, actionResult);
+    const result = await sendMessageDiscord(
+      email,
+      option as string,
+      actionResult
+    );
     return result;
   },
   playlistCreated_spotify: async (email: string, option?: string) => {
@@ -89,27 +100,70 @@ const areaHandlers: { [key: string]: Handler } = {
     const result = await pageCreated_notion(email);
     return result;
   },
-  sendMessage_teams: async (email: String, actionResult?: any) => {
-    const result = await sendMessageTeams(email, actionResult);
+  sendMessage_teams: async (
+    email: String,
+    option?: string,
+    actionResult?: any
+  ) => {
+    const result = await sendMessageTeams(
+      email,
+      option as string,
+      actionResult
+    );
     return result;
   },
-  createFolder_dropbox: async (email: string, actionResult?: any) => {
-    const result = await createFolder_dropbox(email, actionResult);
+  createFolder_dropbox: async (
+    email: string,
+    option?: string,
+    actionResult?: any
+  ) => {
+    const result = await createFolder_dropbox(
+      email,
+      option as string,
+      actionResult
+    );
     return result;
   },
-  sendGif_discord: async (email: string, actionResult?: any) => {
-    const result = await sendGifDiscord(email, actionResult);
+  sendGif_discord: async (
+    email: string,
+    option?: string,
+    actionResult?: any
+  ) => {
+    const result = await sendGifDiscord(email, option as string, actionResult);
     return result;
   },
-  createPlaylist_spotify: async (email: string, actionResult?: any) => {
-    const result = await createPlaylist_spotify(email, actionResult);
+  createPlaylist_spotify: async (
+    email: string,
+    option?: string,
+    actionResult?: any
+  ) => {
+    const result = await createPlaylist_spotify(
+      email,
+      option as string,
+      actionResult
+    );
     return result;
   },
   followlist_twitch: async (email: string) => {
     const result = await twitchFollowChange(email);
     return result;
+  },
+  playTrack_spotify: async (
+    email: string,
+    option?: string,
+    actionResult?: any
+  ) => {
+    const result = await playTrack_spotify(email, option as string, actionResult);
+    return result;
+  },
+  createPage_notion: async (
+    email: string,
+    option?: string,
+    actionResult?: any
+  ) => {
+    const result = await createPage_notion(email, option as string, actionResult);
+    return result;
   }
-  
 };
 
 export default areaHandlers;

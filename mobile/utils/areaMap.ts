@@ -1,6 +1,6 @@
 export const actionsMap = {
   repoCreated_github: "création d'un dépôt GitHub",
-  checkNewSong_spotify: "nouvelle chanson est ajoutée à Spotify",
+  checkNewSong_spotify: "nouvelle chanson est jouée sur Spotify",
   playlistCreated_spotify: "création d'une playlist Spotify",
   fileUploaded_dropbox: "fichier est ajouté à Dropbox",
   folderCreated_dropbox: "création d'un dossier Dropbox",
@@ -9,9 +9,16 @@ export const actionsMap = {
   repoStarred_github: "dépôt est étoilé sur GitHub",
   followerAdded_github: "nouveau follower GitHub",
   pageCreated_notion: "création d'une page Notion",
+  followlist_twitch: "changement de followers Twitch",
 };
 
 export const reactionMap = {
   sendMessage_telegram: "envoyer sur Telegram",
   sendMessage_discord: "envoyer sur Discord",
+  createFolder_dropbox: "créer un dossier sur Dropbox",
+  sendMessage_teams: "envoyer sur Teams",
+  sendGif_discord: "envoyer un GIF sur Discord",
+  createPlaylist_spotify: "créer une playlist sur Spotify",
+  playTrack_spotify: "jouer une chanson sur Spotify",
+  createPage_notion: "créer une page sur Notion",
 };

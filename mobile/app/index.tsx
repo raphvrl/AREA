@@ -13,7 +13,7 @@ export default function Index() {
       await AsyncStorage.setItem("API_URL", `http://${ipAddress}:8080`);
       router.push("/login");
     }
-  };
+  };    
 
   return (
     <View

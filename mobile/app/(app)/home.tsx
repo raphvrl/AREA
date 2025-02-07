@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, ScrollView, Alert } from "react-native";
+import { Text, View, TouchableOpacity, ScrollView, Alert, Linking } from "react-native";
 import { useEffect, useState } from "react";
 import { baseStyles } from "@/styles/baseStyles";
 import { AddAreaModal } from "@/components/modals/addArea";

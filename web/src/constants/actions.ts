@@ -112,5 +112,19 @@ export const availableReactions: Action[] = [
     type: 'createPlaylist',
     description: 'Create a new Spotify playlist',
     hasOptions: true // for name playlist
+  },
+  {
+    id: 'playTrack_spotify',
+    service: 'spotify',
+    type: 'playTrack',
+    description: 'Lancer la lecture d\'une musique sur Spotify',
+    hasOptions: true // Pour l'URL de la musique
+  },
+  {
+    id: 'createPage_notion',
+    service: 'notion',
+    type: 'createPage',
+    description: 'Créer une nouvelle page Notion',
+    hasOptions: true // Pour le titre de la page
   }
 ];
