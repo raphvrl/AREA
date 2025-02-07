@@ -42,7 +42,7 @@ describe('POST /api/logoutService', () => {
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty(
       'message',
-      'Service "Spotify" has been successfully logged out.'
+      'Service "Spotify" has been successfully logged out and associated data has been removed.'
     );
 
     const user = await userModel.findOne({ email: 'john.doe@example.com' });

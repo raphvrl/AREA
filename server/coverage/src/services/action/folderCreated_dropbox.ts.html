@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">7.35% </span>
+                <span class="strong">8.97% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/68</span>
+                <span class='fraction'>7/78</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">7.35% </span>
+                <span class="strong">8.97% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/68</span>
+                <span class='fraction'>7/78</span>
             </div>
         
             
@@ -160,7 +160,17 @@
 <a name='L95'></a><a href='#L95'>95</a>
 <a name='L96'></a><a href='#L96'>96</a>
 <a name='L97'></a><a href='#L97'>97</a>
-<a name='L98'></a><a href='#L98'>98</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -177,6 +187,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -185,6 +197,13 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -209,19 +228,20 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -272,26 +292,35 @@ interface FolderCreatedResult {
     name: string;
 }
 &nbsp;
-let knownFolderPaths: string[] = [];
+const knownFolderPaths = new Set&lt;string&gt;();
+let lastExecutionTime = 0;
+const EXECUTION_DELAY = 5000;
 let isInitialized = false;
 &nbsp;
 export const folderCreated_dropbox = <span class="fstat-no" title="function not covered" >async (email: string): Promise&lt;FolderCreatedResult | null&gt; =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >        console.log('Checking for new Dropbox folders for user:', email);</span>
+<span class="cstat-no" title="statement not covered" >        const currentTime = Date.now();</span>
+<span class="cstat-no" title="statement not covered" >        if (currentTime - lastExecutionTime &lt; EXECUTION_DELAY) {</span>
+<span class="cstat-no" title="statement not covered" >            console.log('⏳ Vérification ignorée : trop tôt depuis la dernière exécution');</span>
+<span class="cstat-no" title="statement not covered" >            return null;</span>
+<span class="cstat-no" title="statement not covered" >        }</span>
+<span class="cstat-no" title="statement not covered" >        lastExecutionTime = currentTime;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        console.log('🔍 Vérification des nouveaux dossiers Dropbox pour:', email);</span>
 <span class="cstat-no" title="statement not covered" >        const user = await UserModel.findOne({ email });</span>
 <span class="cstat-no" title="statement not covered" >        if (!user) {</span>
-<span class="cstat-no" title="statement not covered" >            throw new Error(`User with email "${email}" not found.`);</span>
+<span class="cstat-no" title="statement not covered" >            throw new Error(`Utilisateur avec l'email "${email}" non trouvé`);</span>
 <span class="cstat-no" title="statement not covered" >        }</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        const apiKeysMap = user.apiKeys as Map&lt;string, string&gt;;</span>
 <span class="cstat-no" title="statement not covered" >        const dropboxToken = apiKeysMap.get('dropbox');</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        if (!dropboxToken) {</span>
-<span class="cstat-no" title="statement not covered" >            throw new Error(`Dropbox token missing for user "${email}".`);</span>
+<span class="cstat-no" title="statement not covered" >            throw new Error('Token Dropbox manquant');</span>
 <span class="cstat-no" title="statement not covered" >        }</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        console.log('Making request to Dropbox API...');</span>
-<span class="cstat-no" title="statement not covered" >        const response = await axios.post('https://api.dropboxapi.com/2/files/list_folder', </span>
+<span class="cstat-no" title="statement not covered" >        const response = await axios.post(</span>
+<span class="cstat-no" title="statement not covered" >            'https://api.dropboxapi.com/2/files/list_folder',</span>
 <span class="cstat-no" title="statement not covered" >            {</span>
 <span class="cstat-no" title="statement not covered" >                path: "",</span>
 <span class="cstat-no" title="statement not covered" >                recursive: false,</span>
@@ -306,43 +335,44 @@ export const folderCreated_dropbox = <span class="fstat-no" title="function not 
 <span class="cstat-no" title="statement not covered" >            }</span>
 <span class="cstat-no" title="statement not covered" >        );</span>
 &nbsp;
-        // Filtrer pour ne garder que les dossiers
-<span class="cstat-no" title="statement not covered" >        const folders = response.data.entries.filter((entry: any) =&gt; entry['.tag'] === 'folder') as DropboxFolder[];</span>
-<span class="cstat-no" title="statement not covered" >        const currentFolderPaths = folders.map((folder: DropboxFolder) =&gt; folder.path_display);</span>
+<span class="cstat-no" title="statement not covered" >        const currentFolders = response.data.entries</span>
+<span class="cstat-no" title="statement not covered" >            .filter((entry: DropboxFolder) =&gt; entry['.tag'] === 'folder')</span>
+<span class="cstat-no" title="statement not covered" >            .map((folder: DropboxFolder) =&gt; folder.path_display);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        console.log('Current folders:', currentFolderPaths);</span>
+<span class="cstat-no" title="statement not covered" >        console.log('📂 Dossiers actuels:', currentFolders);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        if (!isInitialized) {</span>
-<span class="cstat-no" title="statement not covered" >            knownFolderPaths = currentFolderPaths;</span>
+<span class="cstat-no" title="statement not covered" >            currentFolders.forEach((path: string) =&gt; knownFolderPaths.add(path));</span>
 <span class="cstat-no" title="statement not covered" >            isInitialized = true;</span>
-<span class="cstat-no" title="statement not covered" >            console.log('First run - Initialized with folders:', knownFolderPaths);</span>
+<span class="cstat-no" title="statement not covered" >            console.log('🚀 Première exécution - Initialisation avec les dossiers:', Array.from(knownFolderPaths));</span>
 <span class="cstat-no" title="statement not covered" >            return null;</span>
 <span class="cstat-no" title="statement not covered" >        }</span>
 &nbsp;
-        // Trouver les nouveaux dossiers
-<span class="cstat-no" title="statement not covered" >        const newFolders = folders.filter((folder: DropboxFolder) =&gt; !knownFolderPaths.includes(folder.path_display));</span>
+<span class="cstat-no" title="statement not covered" >        const newFolders = currentFolders.filter((path: string) =&gt; !knownFolderPaths.has(path));</span>
+        
+<span class="cstat-no" title="statement not covered" >        currentFolders.forEach((path: string) =&gt; knownFolderPaths.add(path));</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        if (newFolders.length &gt; 0) {</span>
-<span class="cstat-no" title="statement not covered" >            const latestFolder = newFolders[0];</span>
-<span class="cstat-no" title="statement not covered" >            knownFolderPaths = currentFolderPaths;</span>
+<span class="cstat-no" title="statement not covered" >            const newFolder = newFolders[0];</span>
+<span class="cstat-no" title="statement not covered" >            const folderName = newFolder.split('/').pop() || 'unknown';</span>
             
-<span class="cstat-no" title="statement not covered" >            console.log('New folder detected:', {</span>
-<span class="cstat-no" title="statement not covered" >                name: latestFolder.name,</span>
-<span class="cstat-no" title="statement not covered" >                path: latestFolder.path_display</span>
+<span class="cstat-no" title="statement not covered" >            console.log('✨ Nouveau dossier détecté:', {</span>
+<span class="cstat-no" title="statement not covered" >                name: folderName,</span>
+<span class="cstat-no" title="statement not covered" >                path: newFolder</span>
 <span class="cstat-no" title="statement not covered" >            });</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >            return {</span>
-<span class="cstat-no" title="statement not covered" >                message: `📁 Nouveau dossier Dropbox créé:\nNom: ${latestFolder.name}\nChemin: ${latestFolder.path_display}`,</span>
-<span class="cstat-no" title="statement not covered" >                name: latestFolder.name</span>
+<span class="cstat-no" title="statement not covered" >                message: `📁 Nouveau dossier Dropbox créé:\nNom: ${folderName}\nChemin: ${newFolder}`,</span>
+<span class="cstat-no" title="statement not covered" >                name: folderName</span>
 <span class="cstat-no" title="statement not covered" >            };</span>
 <span class="cstat-no" title="statement not covered" >        }</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        console.log('No new folders detected');</span>
+<span class="cstat-no" title="statement not covered" >        console.log('😴 Aucun nouveau dossier détecté');</span>
 <span class="cstat-no" title="statement not covered" >        return null;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    } catch (error) {</span>
 <span class="cstat-no" title="statement not covered" >        const axiosError = error as AxiosError;</span>
-<span class="cstat-no" title="statement not covered" >        console.error('Error details:', {</span>
+<span class="cstat-no" title="statement not covered" >        console.error('❌ Erreur dans folderCreated_dropbox:', {</span>
 <span class="cstat-no" title="statement not covered" >            name: axiosError.name,</span>
 <span class="cstat-no" title="statement not covered" >            message: axiosError.message,</span>
 <span class="cstat-no" title="statement not covered" >            response: axiosError.response?.data</span>
@@ -361,7 +391,7 @@ export const folderCreated_dropbox = <span class="fstat-no" title="function not 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-02-05T09:03:35.095Z
+                at 2025-02-07T19:00:35.605Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

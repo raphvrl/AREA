@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">27.39% </span>
+                <span class="strong">26.82% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>40/146</span>
+                <span class='fraction'>44/164</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/19</span>
+                <span class='fraction'>0/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">27.39% </span>
+                <span class="strong">26.82% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>40/146</span>
+                <span class='fraction'>44/164</span>
             </div>
         
             
@@ -213,7 +213,26 @@
 <a name='L148'></a><a href='#L148'>148</a>
 <a name='L149'></a><a href='#L149'>149</a>
 <a name='L150'></a><a href='#L150'>150</a>
-<a name='L151'></a><a href='#L151'>151</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L151'></a><a href='#L151'>151</a>
+<a name='L152'></a><a href='#L152'>152</a>
+<a name='L153'></a><a href='#L153'>153</a>
+<a name='L154'></a><a href='#L154'>154</a>
+<a name='L155'></a><a href='#L155'>155</a>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -230,6 +249,9 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -357,6 +379,22 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -381,6 +419,9 @@ import { twitchFollowChange } from './action/twitchFollowChange';
 import { sendGifDiscord } from './reaction/giphyReaction';
 import { createFolder_dropbox } from './reaction/dropboxCreateReaction';
 import { createPlaylist_spotify } from './reaction/spotifyReaction';
+import { playTrack_spotify } from './reaction/playTrackReaction';
+import { createRepo_github } from './reaction/githubCreateReaction';
+import { createPage_notion } from './reaction/notionCreateReaction';
 &nbsp;
 type Handler = (email: string, option?: string, data?: any) =&gt; Promise&lt;any&gt;;
 &nbsp;
@@ -510,6 +551,22 @@ const areaHandlers: { [key: string]: Handler } = {
 <span class="cstat-no" title="statement not covered" >    const result = await twitchFollowChange(email);</span>
 <span class="cstat-no" title="statement not covered" >    return result;</span>
 <span class="cstat-no" title="statement not covered" >  },</span>
+  playTrack_spotify: <span class="fstat-no" title="function not covered" >async (</span>
+<span class="cstat-no" title="statement not covered" >    email: string,</span>
+<span class="cstat-no" title="statement not covered" >    option?: string,</span>
+<span class="cstat-no" title="statement not covered" >    actionResult?: any</span>
+<span class="cstat-no" title="statement not covered" >  ) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    const result = await playTrack_spotify(email, option as string, actionResult);</span>
+<span class="cstat-no" title="statement not covered" >    return result;</span>
+<span class="cstat-no" title="statement not covered" >  },</span>
+  createPage_notion: <span class="fstat-no" title="function not covered" >async (</span>
+<span class="cstat-no" title="statement not covered" >    email: string,</span>
+<span class="cstat-no" title="statement not covered" >    option?: string,</span>
+<span class="cstat-no" title="statement not covered" >    actionResult?: any</span>
+<span class="cstat-no" title="statement not covered" >  ) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    const result = await createPage_notion(email, option as string, actionResult);</span>
+<span class="cstat-no" title="statement not covered" >    return result;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
 };
 &nbsp;
 export default areaHandlers;
@@ -520,7 +577,7 @@ export default areaHandlers;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-02-05T09:03:35.095Z
+                at 2025-02-07T19:00:35.605Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
