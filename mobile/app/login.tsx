@@ -6,6 +6,7 @@ import {
   TextInput ,
   Alert,
   ScrollView,
+  Linking,
 } from "react-native";
 
 import { Link, router } from "expo-router";
@@ -43,12 +44,66 @@ export default function Login() {
   const [apiUrl, setApiUrl] = useState<string | null>(null);
 
   useEffect(() => {
+    const handleDeepLink = async (event: { url: string }) => {
+      if (!event.url.includes('/home')) return;
+
+      const apiUrl = await AsyncStorage.getItem("API_URL");
+      
+      const { url} = event;
+      const parseUrl = new URL(url);
+
+      const code = parseUrl.searchParams.get("code");
+      const state = parseUrl.searchParams.get("state");
+  
+      if (state) {
+        try {    
+          const stateData = JSON.parse(state);
+          const service = stateData.service;
+  
+          const apiLink = `${apiUrl}${service}`;
+  
+          const response = await fetch(apiLink, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              code: code,
+              redirectUri: redirectUri,
+            }),
+          });
+  
+          if (response.ok) {
+            const data = await response.json();
+            await Promise.all([
+              AsyncStorage.setItem("USER_EMAIL", data.user.email),
+              AsyncStorage.setItem("USER_FIRST_NAME", data.user.firstName),
+              AsyncStorage.setItem("USER_LAST_NAME", data.user.lastName),
+            ]);
+          } else {
+            const errorData = await response.json();
+            const info = errorData.message || response.statusText
+            Alert.alert("Erreur", info);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+
+    const subscription = Linking.addEventListener("url", handleDeepLink);
+
+    return () => subscription.remove();
+  }, []);
+
+  useEffect(() => {
     const fetchApiUrl = async () => {
       const url = await AsyncStorage.getItem("API_URL");
       setApiUrl(url);
     };
+
     fetchApiUrl();
-  }, []);
+  }, [apiUrl]);
 
   const handleLogin = async () => {
     try {
