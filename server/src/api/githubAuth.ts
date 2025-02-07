@@ -107,7 +107,8 @@ export const authGithubCallback = async (req: Request, res: Response) => {
       if (userIdAccount) {
         const apiKeysMap = userIdAccount.apiKeys as Map<string, string>;
         const serviceMap = userIdAccount.service as Map<string, string>;
-
+        const idServiceMap = userIdAccount.idService as Map<string, string>;
+        idServiceMap.set('github', githubUserId.toString()); 
         apiKeysMap.set('github', accessToken);
         serviceMap.set('github', 'true');
 
@@ -150,7 +151,8 @@ export const authGithubCallback = async (req: Request, res: Response) => {
       await newUser.save();
       const apiKeysMap = newUser.apiKeys as Map<string, string>;
       const serviceMap = newUser.service as Map<string, string>;
-  
+      const idServiceMap = newUser.idService as Map<string, string>;
+      idServiceMap.set('github', githubUserId.toString()); 
       apiKeysMap.set('github', accessToken);
       serviceMap.set('github', 'true');
       await newUser.save();

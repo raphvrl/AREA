@@ -22,7 +22,7 @@ export const authTwitch = async (req: Request, res: Response) => {
       { new: true, upsert: true }
     );
 
-    const scopes = ['user:read:follows', 'user:edit:follows'].join(' ');
+    const scopes = ['user:read:email', 'user:read:follows', 'user:edit:follows'].join(' ');
 
     const state = JSON.stringify({ service });
 
@@ -116,14 +116,45 @@ export const authTwitchCallback = async (req: Request, res: Response) => {
 
       const accessToken = tokenResponse.data.access_token;
 
-      // Récupération des informations utilisateur
       const userResponse = await axios.get('https://api.twitch.tv/helix/users', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          'Client-Id': TWITCH_CLIENT_ID as string,
+          'Client-Id': TWITCH_CLIENT_ID,
         },
       });
+      
+      console.log("DATA TWITCH", userResponse.data);
+      
+      // Récupérer les informations de l'utilisateur
+      const twitchUser = userResponse.data.data[0];
+      const twitchUserid = twitchUser.id;
+      const email = twitchUser.email; // Récupérer l'email (nécessite le scope user:read:email)
+      const displayName = twitchUser.display_name; // Nom d'affichage (pseudo)
       const twitchUserId = userResponse.data.data[0].id;
+      const userIdAccount = await userModel.findOne({
+        email: email,
+      });
+      if (userIdAccount) {
+        const apiKeysMap = userIdAccount.apiKeys as Map<string, string>;
+        const serviceMap = userIdAccount.service as Map<string, string>;
+        const idServiceMap = userIdAccount.idService as Map<string, string>;
+        apiKeysMap.set('twitch', accessToken);
+        serviceMap.set('twitch', 'true');
+        idServiceMap.set('twitch', twitchUserId);
+        await userIdAccount.save();
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        return res.status(200).json({
+          message: 'User found',
+          user: {
+            firstName: userIdAccount.firstName,
+            lastName: userIdAccount.lastName,
+            email: userIdAccount.email,
+            service: userIdAccount.service,
+          },
+        });
+      }
       console.log('👤 ID utilisateur Twitch récupéré:', twitchUserId);
       const user = await userModel.findOne({
         'idService.twitch': twitchUserId,
@@ -143,7 +174,31 @@ export const authTwitchCallback = async (req: Request, res: Response) => {
           },
         });
        }
-      }
+      const newUser = new userModel({
+        firstName: displayName,
+        lastName: displayName,
+        email: email,
+      });
+      await newUser.save();
+      const apiKeysMap = newUser.apiKeys as Map<string, string>;
+      const serviceMap = newUser.service as Map<string, string>;
+      const idServiceMap = newUser.idService as Map<string, string>;
+      apiKeysMap.set('twitch', accessToken);
+      serviceMap.set('twich', 'true');
+      idServiceMap.set('twitch', twitchUserId);
+      await newUser.save();
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+      return res.status(200).json({
+        message: 'User found',
+        user: {
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          email: newUser.email,
+        },
+      });
+    }
   } catch (error) {
     console.error('❌ Erreur callback Twitch:', error);
 
