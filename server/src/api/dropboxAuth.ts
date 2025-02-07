@@ -102,7 +102,7 @@ export const authDropboxCallback = async (req: Request, res: Response) => {
           },
         }
       );
-      const { account_id: dropboxUserId, name } = userInfoResponse.data;
+      const { account_id: dropboxUserId, nameUser: name } = userInfoResponse.data;
       console.log('Dropbox User ID:', dropboxUserId);
       if (user) {
         const idServiceMap = user.idService as Map<string, string>;
@@ -154,15 +154,46 @@ export const authDropboxCallback = async (req: Request, res: Response) => {
         }
       );
 
-      const { account_id: dropboxUserId, name } = userInfoResponse.data;
-      console.log('Dropbox User ID:', dropboxUserId);
+      const { account_id: dropboxUserId, email: emailUser} = userInfoResponse.data;
+      const {given_name: given_name, surname: surname} = userInfoResponse.data.name;
+      console.log('Dropbox User ID:', dropboxUserId, ' Email User', emailUser, "nom + prenom", given_name, surname);
+      const userIdAccount = await userModel.findOne({
+        email: emailUser,
+      });
+      if (userIdAccount) {
+        const apiKeysMap = userIdAccount.apiKeys as Map<string, string>;
+        const serviceMap = userIdAccount.service as Map<string, string>;
 
+        apiKeysMap.set('dropbox', access_token);
+        serviceMap.set('dropbox', 'true');
+
+        await userIdAccount.save();
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        return res.status(200).json({
+          message: 'User found',
+          user: {
+            firstName: userIdAccount.firstName,
+            lastName: userIdAccount.lastName,
+            email: userIdAccount.email,
+            service: userIdAccount.service,
+          },
+        });
+      }
       // Rechercher l'utilisateur par ID Dropbox
       const user = await userModel.findOne({
         'idService.dropbox': dropboxUserId,
       });
 
       if (user) {
+        const apiKeysMap = user.apiKeys as Map<string, string>;
+        const serviceMap = user.service as Map<string, string>;
+
+        apiKeysMap.set('dropbox', access_token);
+        serviceMap.set('dropbox', 'true');
+
+        await user.save();
         res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.setHeader('Pragma', 'no-cache');
         res.setHeader('Expires', '0');
@@ -175,11 +206,33 @@ export const authDropboxCallback = async (req: Request, res: Response) => {
             service: user.service,
           },
         });
-      } else {
-        return res
-          .status(404)
-          .json({ message: 'No user found with this Dropbox ID' });
       }
+      console.log("kod ",userInfoResponse.data);
+      console.log('name', given_name, ' lastname ', surname);
+      // create account
+      const newUser = new userModel({
+        firstName: given_name,
+        lastName: surname,
+        email: emailUser,
+      });
+      await newUser.save();
+      const apiKeysMap = newUser.apiKeys as Map<string, string>;
+      const serviceMap = newUser.service as Map<string, string>;
+
+      apiKeysMap.set('dropbox', access_token);
+      serviceMap.set('dropbox', 'true');
+      await newUser.save();
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+      return res.status(200).json({
+        message: 'User found',
+        user: {
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          email: newUser.email,
+        },
+      });
     }
 
     return res.status(400).json({
