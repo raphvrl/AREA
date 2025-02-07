@@ -73,7 +73,6 @@ export default function Profile() {
 
     const handleDeepLink = async (event: { url: string }) => {
       if (!event.url.includes('/profile')) return;
-      console.log("hello profile");
 
       const { url} = event;
       const parseUrl = new URL(url);
@@ -199,7 +198,7 @@ export default function Profile() {
           text="Notion"
           color="#000000"
           iconName="notion"
-          iconType="FontAwesome"
+          iconType="Notion-logo"
           apiUrl={`${apiUrl}/api/auth/notion`}
           redirectUri={redirectUri}
           userEmail={userEmail}
