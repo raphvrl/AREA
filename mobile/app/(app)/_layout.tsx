@@ -2,6 +2,8 @@ import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/styles/colors";
 import { SettingsProvider } from "@/contexts/settingsContext";
+import { useEffect } from "react";
+import { Linking } from "react-native";
 
 export default function AppLayout() {
   return (
