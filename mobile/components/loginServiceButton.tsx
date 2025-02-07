@@ -5,6 +5,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { baseStyles } from '@/styles/baseStyles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { colors } from '@/styles/colors';
+import { router } from 'expo-router';
 
 interface ServiceButtonProps {
   text: string;
@@ -30,7 +31,6 @@ const LoginServiceButton: React.FC<ServiceButtonProps> = ({
   const handlePress = async () => {
     const userEmail = 'jonh.doe@email.com';
     const url = `${apiUrl}?email=${encodeURIComponent(userEmail)}&redirectUri=${encodeURIComponent(redirectUri)}`;
-
     try {
       await Linking.openURL(url);
     } catch (error) {

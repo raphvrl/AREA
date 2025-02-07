@@ -73,6 +73,7 @@ export default function Profile() {
 
     const handleDeepLink = async (event: { url: string }) => {
       if (!event.url.includes('/profile')) return;
+      console.log("hello profile");
 
       const { url} = event;
       const parseUrl = new URL(url);
