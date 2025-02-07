@@ -18,6 +18,7 @@ import { createFolder_dropbox } from './reaction/dropboxCreateReaction';
 import { createPlaylist_spotify } from './reaction/spotifyReaction';
 import { playTrack_spotify } from './reaction/playTrackReaction';
 import { createRepo_github } from './reaction/githubCreateReaction';
+import { createPage_notion } from './reaction/notionCreateReaction';
 
 type Handler = (email: string, option?: string, data?: any) => Promise<any>;
 
@@ -155,15 +156,14 @@ const areaHandlers: { [key: string]: Handler } = {
     const result = await playTrack_spotify(email, option as string, actionResult);
     return result;
   },
-  createRepo_github: async (
+  createPage_notion: async (
     email: string,
     option?: string,
     actionResult?: any
   ) => {
-    const result = await createRepo_github(email, option as string, actionResult);
+    const result = await createPage_notion(email, option as string, actionResult);
     return result;
   }
-
 };
 
 export default areaHandlers;

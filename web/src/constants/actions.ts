@@ -121,10 +121,10 @@ export const availableReactions: Action[] = [
     hasOptions: true // Pour l'URL de la musique
   },
   {
-    id: 'createRepo_github',
-    service: 'github',
-    type: 'createRepo',
-    description: 'Créer un nouveau repository GitHub',
-    hasOptions: true // Pour le nom du repository
+    id: 'createPage_notion',
+    service: 'notion',
+    type: 'createPage',
+    description: 'Créer une nouvelle page Notion',
+    hasOptions: true // Pour le titre de la page
   }
 ];
