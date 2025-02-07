@@ -1,6 +1,6 @@
 export const actionsMap = {
   repoCreated_github: "création d'un dépôt GitHub",
-  checkNewSong_spotify: "nouvelle chanson est ajoutée à Spotify",
+  checkNewSong_spotify: "nouvelle chanson est jouée sur Spotify",
   playlistCreated_spotify: "création d'une playlist Spotify",
   fileUploaded_dropbox: "fichier est ajouté à Dropbox",
   folderCreated_dropbox: "création d'un dossier Dropbox",
@@ -9,7 +9,7 @@ export const actionsMap = {
   repoStarred_github: "dépôt est étoilé sur GitHub",
   followerAdded_github: "nouveau follower GitHub",
   pageCreated_notion: "création d'une page Notion",
-  twitchFollowChange: "changement de followers Twitch",
+  followlist_twitch: "changement de followers Twitch",
 };
 
 export const reactionMap = {

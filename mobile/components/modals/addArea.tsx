@@ -244,6 +244,8 @@ export const AddAreaModal = ({
                     value={reactionOption}
                     onChangeText={setReactionOption}
                     placeholderTextColor={colors.text}
+                    multiline={false}
+                    numberOfLines={1}
                   />
                 )}
             </View>

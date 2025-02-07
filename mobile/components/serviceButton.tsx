@@ -1,7 +1,8 @@
 import React from 'react';
-import { TouchableOpacity, View, Text, StyleSheet, Alert, Linking } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet, Alert, Linking, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { baseStyles } from '@/styles/baseStyles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { colors } from '@/styles/colors';
@@ -10,7 +11,7 @@ interface ServiceButtonProps {
   text: string;
   color: string;
   iconName: string;
-  iconType: 'Ionicons' | 'FontAwesome';
+  iconType: 'Ionicons' | 'FontAwesome' | 'MaterialCommunityIcons' | 'Notion-logo';
   apiUrl: string;
   redirectUri: string;
   userEmail: string;
@@ -80,6 +81,24 @@ const ServiceButton: React.FC<ServiceButtonProps> = ({
     }
   };
 
+  const getIcon = () => {
+    switch (iconType) {
+      case 'Ionicons':
+        return <Ionicons name={iconName} size={24} color="white" style={styles.buttonIcon} />;
+      case 'MaterialCommunityIcons':
+        return <MaterialCommunityIcons name={iconName} size={24} color="white" style={styles.buttonIcon} />;
+      case 'FontAwesome':
+        return <FontAwesome name={iconName} size={24} color="white" style={styles.buttonIcon} />;
+      case 'Notion-logo':
+        return <Image source={require('@/assets/images/notion-logo.png')} style={[
+          styles.buttonIcon,
+          { width: 24, height: 24 },
+        ]} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <View style={styles.outerContainer}>
       <View style={styles.greyBox}>
@@ -92,7 +111,7 @@ const ServiceButton: React.FC<ServiceButtonProps> = ({
           accessibilityRole="button"
         >
           <View style={styles.buttonContent}>
-            <IconComponent name={iconName} size={24} color="white" style={styles.buttonIcon} />
+            {getIcon()}
             <Text style={[baseStyles.buttonText, { fontSize }]}>
               {isActive ? `Déconnecter ${text}` : `Connecter ${text}`}
             </Text>
