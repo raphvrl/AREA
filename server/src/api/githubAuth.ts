@@ -17,7 +17,7 @@ export const authGithub = (req: Request, res: Response) => {
       .json({ message: 'Email and redirectUri are required' });
   }
 
-  const scopes = ['user', 'repo', 'notifications'];
+  const scopes = ['user', 'repo', 'notifications', 'user:email'];
 
   const state = JSON.stringify({ service });
 
@@ -65,7 +65,16 @@ export const authGithubCallback = async (req: Request, res: Response) => {
         Authorization: `token ${accessToken}`,
       },
     });
+    const response = await axios.get('https://api.github.com/user/emails', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        Accept: 'application/vnd.github+json',
+      },
+    });
 
+    // Les emails de l'utilisateur
+    const emails = response.data;
+    const emailUser = emails[0].email;
     const { id: githubUserId, login: githubUsername } = userResponse.data;
 
     console.log('GitHub ID:', githubUserId);
@@ -92,6 +101,30 @@ export const authGithubCallback = async (req: Request, res: Response) => {
     }
 
     if (redirectUri) {
+      const userIdAccount = await userModel.findOne({
+        email: emailUser,
+      });
+      if (userIdAccount) {
+        const apiKeysMap = userIdAccount.apiKeys as Map<string, string>;
+        const serviceMap = userIdAccount.service as Map<string, string>;
+
+        apiKeysMap.set('github', accessToken);
+        serviceMap.set('github', 'true');
+
+        await userIdAccount.save();
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        return res.status(200).json({
+          message: 'User found',
+          user: {
+            firstName: userIdAccount.firstName,
+            lastName: userIdAccount.lastName,
+            email: userIdAccount.email,
+            service: userIdAccount.service,
+          },
+        });
+      }
       console.log('Checking login with GitHub ID:', githubUserId);
       const user = await userModel.findOne({
         [`idService.github`]: githubUserId.toString(),
@@ -108,16 +141,31 @@ export const authGithubCallback = async (req: Request, res: Response) => {
             apiKeys: user.apiKeys,
           },
         });
-      } else {
-        return res
-          .status(404)
-          .json({ message: 'No user found with this GitHub ID' });
-      }
+      }     
+      const newUser = new userModel({
+        firstName: githubUsername,
+        lastName: githubUsername,
+        email: emailUser,
+      });
+      await newUser.save();
+      const apiKeysMap = newUser.apiKeys as Map<string, string>;
+      const serviceMap = newUser.service as Map<string, string>;
+  
+      apiKeysMap.set('github', accessToken);
+      serviceMap.set('github', 'true');
+      await newUser.save();
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+      return res.status(200).json({
+        message: 'User found',
+        user: {
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          email: newUser.email,
+        },
+      });
     }
-
-    return res.status(400).json({
-      message: 'Invalid parameters. Provide either email or redirectUri.',
-    });
   } catch (error) {
     console.error('Error in GitHub callback:', error);
     res.status(500).json({ message: 'Internal server error' });
