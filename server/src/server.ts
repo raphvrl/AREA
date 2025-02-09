@@ -21,12 +21,8 @@ console.log(FRONTEND_PORT);
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      console.log('Origin request from:', origin);
-      callback(null, true); // Accepte toutes les origines temporairement
-    },
+    origin: `http://localhost:${FRONTEND_PORT}`,
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
   })
 );
 
