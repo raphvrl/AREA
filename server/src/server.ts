@@ -8,7 +8,7 @@ import { executeAreas } from './tasks/asyncTasks';
 const app = express();
 dotenv.config();
 
-const PORT = process.env.BACKEND_PORT;
+const PORT = process.env.BACKEND_PORT ? parseInt(process.env.BACKEND_PORT, 10) : 3000;
 const FRONTEND_PORT = process.env.FRONTEND_PORT;
 
 // Ne pas se connecter à MongoDB en mode test
@@ -21,8 +21,12 @@ console.log(FRONTEND_PORT);
 
 app.use(
   cors({
-    origin: `http://localhost:${FRONTEND_PORT}`,
+    origin: (origin, callback) => {
+      console.log('Origin request from:', origin);
+      callback(null, true); // Accepte toutes les origines temporairement
+    },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
   })
 );
 
@@ -34,8 +38,8 @@ setInterval(() => {
 
 // Démarrer le serveur uniquement si ce fichier est exécuté directement
 if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is running on port ${PORT}`);
   });
 }
 
