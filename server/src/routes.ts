@@ -14,6 +14,7 @@ import { authLinkedin, authLinkedinCallback } from './api/linkedinAuth';
 import { authDropbox, authDropboxCallback } from './api/dropboxAuth';
 import { authNotion, authNotionCallback } from './api/notionAuth';
 import { authTwitch, authTwitchCallback } from './api/twitchAuth';
+import { downloadApk } from './api/downloadApk';
 
 const router = Router();
 
@@ -141,4 +142,7 @@ router.get('/auth/notion', authNotion);
 router.post('/auth/notion/callback', authNotionCallback);
 router.get('/auth/twitch', authTwitch);
 router.post('/auth/twitch/callback', authTwitchCallback);
+
+// Route pour le telechargement de l'apk android
+router.get('/download/apk', downloadApk);
 export default router;

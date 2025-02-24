@@ -1,20 +1,37 @@
 import React, { useEffect } from 'react';
 
-const APKDownload: React.FC = () => {
-  useEffect(() => {
-    // Create a download link
-    const link = document.createElement('a');
-    link.href = '/shared/apk/area.apk';
-    link.download = 'area.apk';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+const BACKEND_PORT = process.env.REACT_APP_BACKEND_PORT || '8080';
 
-    // Optionally redirect back to home page after download starts
-    window.location.href = '/';
+const APKDownload: React.FC = () => {
+  const handleDownload = () => {
+    fetch(`http://localhost:${BACKEND_PORT}/api/download/apk`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erreur lors du téléchargement');
+        }
+        return response.blob();
+    })
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'AREA.apk';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        alert('Erreur lors du téléchargement de l\'APK');
+    });
+  };
+
+  useEffect(() => {
+      handleDownload();
   }, []);
 
-  return null; // No visual rendering needed
+  return null;
 };
 
 export default APKDownload;
