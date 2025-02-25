@@ -51,3 +51,13 @@ PORT=8080
 BACKEND_PORT=8081
 
 ```
+
+### 🖥️ **Mobile Environment (mobile/.env)**
+```env
+# 🌐 Mobile Configuration
+CI=1
+EXPO_TOKEN=***
+ENV EAS_LOCAL_BUILD_ARTIFACTS_DIR=/apk
+ENV NODE_ENV=production
+
+```
