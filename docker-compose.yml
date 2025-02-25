@@ -16,6 +16,8 @@ services:
     volumes:
       - shared_volume:/apk
       - ~/.gradle:/root/.gradle
+    env_file:
+      - ./mobile/.env
     depends_on:
       - server
     mem_limit: 8g
